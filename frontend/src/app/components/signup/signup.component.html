@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kutak dobre hrane</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+      <h1>Kutak dobre hrane</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container d-flex flex-column justify-content-center align-items-center">
+      <div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+              <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="firstname" class="form-label">First Name:</label>
+                      <input type="text" id="firstname" class="form-control" required [(ngModel)]="newGuest.firstname" name="firstname" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="lastname" class="form-label">Last Name:</label>
+                      <input type="text" id="lastname" class="form-control" required [(ngModel)]="newGuest.lastname" name="lastname" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="username" class="form-label">Username:</label>
+                      <input type="text" id="username" class="form-control" required [(ngModel)]="newGuest.username" name="username" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Password:</label>
+                      <input type="password" id="password" class="form-control" required [(ngModel)]="newGuest.password" name="password" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="securityQuestion" class="form-label">Security question:</label>
+                      <select id="securityQuestion" class="form-select" required [(ngModel)]="newGuest.security_question" name="securityQuestion">
+                        <option value="" disabled selected>Select a security question</option>
+                        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                        <option value="What city were you born in?">What city were you born in?</option>
+                        <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                        <!-- Add more options as needed -->
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="security_question_answer" class="form-label">Answer:</label>
+                      <input type="text" id="security_question_answer" class="form-control" required [(ngModel)]="newGuest.security_question_answer" name="security_question_answer" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email:</label>
+                      <input type="email" id="email" class="form-control" required [(ngModel)]="newGuest.email" name="email" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address:</label>
+                      <input type="text" id="address" class="form-control" required [(ngModel)]="newGuest.address" name="address" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="phone_number" class="form-label">Phone number:</label>
+                      <input type="text" id="phone_number" class="form-control" required [(ngModel)]="newGuest.phone_number" name="phone_number" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="credit_card_number" class="form-label">Credit card number:</label>
+                      <input type="text" id="credit_card_number" class="form-control" required [(ngModel)]="newGuest.credit_card_number" name="credit_card_number" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control" id="inputGroupFile02" (change)="onFileSelected($event)" />
+                      <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Gender:</label><br />
+                      <div class="form-check form-check-inline">
+                        <input type="radio" id="male" class="form-check-input" name="gender" [(ngModel)]="newGuest.gender" value="male" required />
+                        <label for="male" class="form-check-label">Male</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input type="radio" id="female" class="form-check-input" name="gender" [(ngModel)]="newGuest.gender" value="female" required />
+                        <label for="female" class="form-check-label">Female</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-dark" [disabled]="!userForm.form.valid">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
+      <p>&copy; 2024 Marko Jovanovic</p>
+    </footer>
+  </body>
+</html>

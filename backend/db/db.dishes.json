@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "6672d4c7618e02cf2bec8250"
+  },
+  "name": "Burek",
+  "price": 200,
+  "ingredients": [
+    "Beef",
+    "Onion",
+    "Flour"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6672d6d1618e02cf2bec8255"
+  },
+  "name": "Roasted pig",
+  "price": 1500,
+  "ingredients": [
+    "Pork"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6672d6e2618e02cf2bec8257"
+  },
+  "name": "Roasted lamb",
+  "price": 1300,
+  "ingredients": [
+    "Lamb"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6672d7a8618e02cf2bec8259"
+  },
+  "name": "Carbonara",
+  "price": 2000,
+  "ingredients": [
+    "Beef",
+    "Onion",
+    "Tomato sauce"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6672d7c1618e02cf2bec825b"
+  },
+  "name": "Curry",
+  "price": 1000,
+  "ingredients": [
+    "Beef",
+    "Onion",
+    "Spices"
+  ]
+}]

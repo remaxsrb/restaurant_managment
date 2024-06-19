@@ -1,0 +1,78 @@
+[{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade45"
+  },
+  "name": "Beef"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade46"
+  },
+  "name": "Pork"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade47"
+  },
+  "name": "Lamb"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade48"
+  },
+  "name": "Tomato"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade49"
+  },
+  "name": "Potato"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade4a"
+  },
+  "name": "Onion"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade4b"
+  },
+  "name": "Garlic"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade4c"
+  },
+  "name": "BBQ sauce"
+},
+{
+  "_id": {
+    "$oid": "6672d1a317759c1782eade4d"
+  },
+  "name": "Flour"
+},
+{
+  "_id": {
+    "$oid": "6672d76217759c1782eade53"
+  },
+  "name": "Chicken"
+},
+{
+  "_id": {
+    "$oid": "6672d76217759c1782eade54"
+  },
+  "name": "Pasta"
+},
+{
+  "_id": {
+    "$oid": "6672d76217759c1782eade55"
+  },
+  "name": "Tomato sauce"
+},
+{
+  "_id": {
+    "$oid": "6672d76217759c1782eade56"
+  },
+  "name": "Spices"
+}]
