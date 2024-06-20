@@ -3,4 +3,5 @@ dist/
 .vscode/
 .editorconfig
 .angular/
-frontend/src/README.md
+**/README.md
+

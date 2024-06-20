@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Guest } from 'src/app/models/guest';
 import * as CryptoJS from 'crypto-js';
 import { NgForm } from '@angular/forms';
 import { GuestService } from 'src/app/services/guest.service';
 import { Router } from '@angular/router';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -72,7 +71,6 @@ export class SignupComponent {
     this.selectedFile = file;
   }
 
- 
   onSubmit(form: NgForm) {
     if (!this.validateForm()) {
       return; // Validation failed, stop submission
@@ -140,9 +138,10 @@ export class SignupComponent {
       this.newGuest.profile_photo = this.selectedFile.name;
     } else {
       // Set default profile photo based on gender
-      this.newGuest.profile_photo = this.newGuest.gender === 'male'
-        ? 'default_male.png'
-        : 'default_female.png';
+      this.newGuest.profile_photo =
+        this.newGuest.gender === 'male'
+          ? 'default_male.png'
+          : 'default_female.png';
     }
 
     this.guest_service.register(this.newGuest).subscribe({
@@ -158,7 +157,7 @@ export class SignupComponent {
         } else {
           alert('Failed to create guest. Please try again later.'); // General error
         }
-      }
+      },
     });
   }
 }

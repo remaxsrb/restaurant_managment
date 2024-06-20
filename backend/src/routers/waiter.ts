@@ -7,18 +7,18 @@ waiterRouter.route('/all').get(
 )
 
 
-waiterRouter.route('/readbyusername').get(
+waiterRouter.route('/readbyusername/:username').get(
     (req, res) => new WaiterController().readByUsername(req, res)
 )
 
-waiterRouter.route('/readbyemail').get(
+waiterRouter.route('/readbyemail/:email').get(
     (req, res) => new WaiterController().readByEmail(req, res)
 )
 
 waiterRouter.route('/login').get(
     (req, res) => new WaiterController().login(req, res)
 )
-waiterRouter.route('/updatefirstname').get(
+waiterRouter.route('/updatefirstname').post(
     (req, res) => new WaiterController().updateFirstname(req, res)
 )
 waiterRouter.route('/updatelastname').post(

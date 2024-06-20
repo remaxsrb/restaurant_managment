@@ -36,11 +36,11 @@ export class WaiterController {
   }
 
   readByUsername(req: express.Request, res: express.Response) {
-    this.readWaiterByField("username", req.body.username, "No such user", res);
+    this.readWaiterByField("username", req.params.username, "No such user", res);
   }
 
   readByEmail(req: express.Request, res: express.Response) {
-    this.readWaiterByField("email", req.body.email, "No such user", res);
+    this.readWaiterByField("email", req.params.email, "No such user", res);
   }
 
   login(req: express.Request, res: express.Response) {

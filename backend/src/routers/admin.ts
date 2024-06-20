@@ -23,6 +23,11 @@ adminRouter.route('/deactivate').post(
     (req, res) => new AdminController().setGuestStatus(req, res)
 )
 
+adminRouter.route('/login').post(
+    (req, res) => new AdminController().login(req, res)
+)
+
+
 
 
 export default adminRouter;

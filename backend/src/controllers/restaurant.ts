@@ -138,7 +138,18 @@ export class RestaurantController {
     this.sortByFieldDesc(req, res, "type", "Internal server error");
   }
 
-  
+  readByName(req: express.Request, res: express.Response) {
+    this.readByField(req, res, "name", "Restourant with such name not found");
+  }
+
+  readByAddress(req: express.Request, res: express.Response) {
+    this.readByField(req, res, "address", "Restourant with such address not found");
+  }
+
+  readByType(req: express.Request, res: express.Response) {
+    this.readByField(req, res, "type", "Restourant with such type not found");
+
+  }
 
   addDish(req: express.Request, res: express.Response) {
     const name = req.body.name;
@@ -161,18 +172,7 @@ export class RestaurantController {
       });
   }
 
-  readByName(req: express.Request, res: express.Response) {
-    this.readByField(req, res, "name", "Restourant with such name not found");
-  }
-
-  readByAddress(req: express.Request, res: express.Response) {
-    this.readByField(req, res, "address", "Restourant with such address not found");
-  }
-
-  readByType(req: express.Request, res: express.Response) {
-    this.readByField(req, res, "type", "Restourant with such type not found");
-
-  }
+  
 
   removeDish(req: express.Request, res: express.Response) {
     const name = req.body.name;

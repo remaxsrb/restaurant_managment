@@ -34,15 +34,15 @@ restaurantRouter.route('/sort_by_type_desc').get(
     (req, res) => new RestaurantController().sortByTypeDesc(req, res)
 )
 
-restaurantRouter.route('/read_by_name').get(
+restaurantRouter.route('/read_by_name/:name').get(
     (req, res) => new RestaurantController().readByName(req, res)
 )
 
-restaurantRouter.route('/read_by_address').get(
+restaurantRouter.route('/read_by_address/:address').get(
     (req, res) => new RestaurantController().readByAddress(req, res)
 )
 
-restaurantRouter.route('/read_by_type').get(
+restaurantRouter.route('/read_by_type/:type').get(
     (req, res) => new RestaurantController().readByType(req, res)
 )
 

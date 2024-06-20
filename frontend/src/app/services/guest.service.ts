@@ -50,4 +50,16 @@ export class GuestService {
     return this.http.get<Guest>(`${this.backendUrl}/readbyemail/${email}`);
   }
 
+  login(username: String, password:String) : Observable<any> {
+    const data = {
+      username: username,
+      password: password,
+
+    };
+
+    return this.http.post<any>(`${this.backendUrl}/login`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }
