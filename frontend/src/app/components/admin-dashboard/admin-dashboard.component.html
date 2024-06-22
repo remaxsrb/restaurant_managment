@@ -117,7 +117,7 @@
               </table>
             </div>
             <div class="col-md-6">
-              <form (ngSubmit)="onSubmitRestaurant()" #restaurant_form="ngForm">
+              <form (ngSubmit)="onSubmitRestaurant(); restaurant_form.resetForm()" #restaurant_form="ngForm">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
@@ -293,7 +293,7 @@
           </div>
           <!-- Form on the right -->
           <div class="col-md-6">
-            <form (ngSubmit)="onSubmitWaiter()" #waiter_form="ngForm">
+            <form (ngSubmit)="onSubmitWaiter(); waiter_form.resetForm()" #waiter_form="ngForm">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">

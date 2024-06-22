@@ -1,10 +1,18 @@
 {
     "circles": [
-      { "id": 1, "x": 100, "y": 50, "radius": 20, "color": "white", "label": "4" }
+      { "id": 1, "x": 70, "y": 50, "radius":35, "color": "white", "label": "4" },
+      { "id": 2, "x": 200, "y": 150, "radius": 35, "color": "white", "label": "4" },
+      { "id": 3, "x": 200, "y": 50, "radius": 35, "color": "white", "label": "4" },
+      { "id": 4, "x": 70, "y": 150, "radius": 35, "color": "white", "label": "4" },
+      { "id": 5, "x": 410, "y": 340, "radius":35, "color": "white", "label": "4" },
+      { "id": 6, "x": 280, "y": 240, "radius": 35, "color": "white", "label": "4" },
+      { "id": 7, "x": 280, "y": 340, "radius": 35, "color": "white", "label": "4" },
+      { "id": 8, "x": 410, "y": 240, "radius": 35, "color": "white", "label": "4" }
+
     ],
     "rectangles": [
-      { "id": 1, "x": 200, "y": 100, "width": 100, "height": 80, "label": "Kitchen" },
-      { "id": 2, "x": 350, "y": 200, "width": 80, "height": 60, "label": "Toilet" }
+      { "id": 1, "x": 10, "y": 310, "width": 150, "height": 80, "label": "Kitchen" },
+      { "id": 2, "x": 390, "y": 10, "width": 100, "height": 80, "label": "Toilet" }
     ]
   }
   
