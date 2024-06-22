@@ -11,7 +11,7 @@ import { RestaurantTypeService } from 'src/app/services/restaurant-type.service'
 import { RestaurantService } from 'src/app/services/restaurant.service';
 import { WaiterService } from 'src/app/services/waiter.service';
 import * as CryptoJS from 'crypto-js';
-import { JsonService} from 'src/app/services/json.service';
+import { JsonService } from 'src/app/services/json.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -36,8 +36,8 @@ export class AdminDashboardComponent implements OnInit {
   restaurants: Restaurant[] = [];
   restaurant_types: RestaurantType[] = [];
 
-  selected_restaurant: string | null = null; 
-  selected_restaurant_floor_plan: string = ''
+  selected_restaurant: string | null = null;
+  selected_restaurant_floor_plan: string = '';
 
   waiters: Waiter[] = [];
   guests: Guest[] = [];
@@ -102,7 +102,6 @@ export class AdminDashboardComponent implements OnInit {
     });
     this.new_guest_statuses.fill('');
   }
-  
 
   updateStatus(guest: Guest, index: number): void {
     this.admin_service
@@ -237,12 +236,9 @@ export class AdminDashboardComponent implements OnInit {
         if (error.status === 408) {
           this.waiter_form_flags.username_taken = true;
           // Conflict error
-        } 
-        else if (error.status === 409) {
+        } else if (error.status === 409) {
           this.waiter_form_flags.email_taken = true;
-
-        }
-        else {
+        } else {
           this.waiter_form_flags.general_errors = true;
           // General error
         }
@@ -259,9 +255,8 @@ export class AdminDashboardComponent implements OnInit {
       return; //not valid email abort submission
     }
 
-    if(this.selectedFile)
+    if (this.selectedFile)
       this.newRestaurant.floor_plan = this.selectedFile.name;
-
 
     this.admin_service.add_restaurant(this.newRestaurant).subscribe((data) => {
       this.restaurants = [];
@@ -280,39 +275,53 @@ export class AdminDashboardComponent implements OnInit {
 
   onRadioChange(restourant_name: string) {
     this.selected_restaurant = restourant_name;
-    this.selected_restaurant_floor_plan = this.restaurants.filter(item => item.name === restourant_name)[0].floor_plan;
+    this.selected_restaurant_floor_plan = this.restaurants.filter(
+      (item) => item.name === restourant_name
+    )[0].floor_plan;
 
-    this.json_service.getData(this.selected_restaurant_floor_plan).subscribe( {
+    this.json_service.getData(this.selected_restaurant_floor_plan).subscribe({
       next: (data) => {
         this.renderFloorPlan(data);
-
       },
-      error: (err) => { alert(err.message); }
-    }
-    );
-
-
+      error: (err) => {
+        alert(err.message);
+      },
+    });
   }
 
-
   renderFloorPlan(floorPlan: any): void {
-    const canvas = document.getElementById('floorPlanCanvas') as HTMLCanvasElement;
+    const canvas = document.getElementById(
+      'floorPlanCanvas'
+    ) as HTMLCanvasElement;
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         // Render rectangles
         floorPlan.rectangles.forEach((rect: any) => {
+          const centerX = rect.x + rect.width / 2;
+          const centerY = rect.y + rect.height / 2;
+          const text = rect.label;
+          const textWidth = ctx.measureText(text).width;
+
           ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+
+          // Rechtangle label is positioned in such manner that its x cooridate starts left of x coordinate of center by half of its width
+          ctx.fillText(text, centerX - textWidth / 2, centerY);
         });
         // Render circles
         floorPlan.circles.forEach((circle: any) => {
+          const text = circle.label;
+          const textWidth = ctx.measureText(text).width;
+
           ctx.beginPath();
           ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
           ctx.stroke();
+          // Circle label is positioned in such manner that its x cooridate starts left of x coordinate of center by half of its width
+
+          ctx.fillText(text, circle.x - textWidth / 2, circle.y);
         });
       }
     }
   }
-
 }
