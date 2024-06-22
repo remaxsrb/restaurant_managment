@@ -1,19 +1,50 @@
 import express from "express";
 import Waiter from "../models/waiter";
+import Guest from "../models/guest";
+
+
 
 export class WaiterController {
   register(req: express.Request, res: express.Response) {
-    Waiter.create(req.body)
+    Waiter.findOne({ username: req.body.username })
+      .then((existingWaiter) => {
+        if (existingWaiter) {
+          return Promise.reject({ status: 408, message: "Username already taken by waiter" });
+        }
+        return Guest.findOne({ username: req.body.username });
+      })
+      .then((existingGuest) => {
+        if (existingGuest) {
+          return Promise.reject({ status: 408, message: "Username already taken by guest" });
+        }
+        // Check if email is already taken by a waiter
+        return Waiter.findOne({ email: req.body.email });
+      })
+      .then((existingWaiterEmail) => {
+        if (existingWaiterEmail) {
+          return Promise.reject({ status: 409, message: "Email already taken by waiter" });
+        }
+        return Guest.findOne({ email: req.body.email });
+      })
+      .then((existingGuestEmail) => {
+        if (existingGuestEmail) {
+          return Promise.reject({ status: 409, message: "Email already taken by guest" });
+        }
+        // Create new waiter
+        return Waiter.create(req.body);
+      })
       .then(() => {
         res.json({ message: "Waiter created" });
       })
       .catch((err) => {
         console.error(err);
-        res
-          .status(400)
-          .json({ message: "Waiter with given name or email already exists" });
+        const statusCode = err.status || 500; // Default to 500 Internal Server Error
+        const message = err.message || "Error creating waiter";
+        res.status(statusCode).json({ message });
       });
   }
+  
+
 
   private readWaiterByField(
     field: string,
@@ -36,7 +67,12 @@ export class WaiterController {
   }
 
   readByUsername(req: express.Request, res: express.Response) {
-    this.readWaiterByField("username", req.params.username, "No such user", res);
+    this.readWaiterByField(
+      "username",
+      req.params.username,
+      "No such user",
+      res
+    );
   }
 
   readByEmail(req: express.Request, res: express.Response) {
@@ -44,13 +80,20 @@ export class WaiterController {
   }
 
   login(req: express.Request, res: express.Response) {
-    const { username, password } = req.body;
-    Waiter.findOne({ username, password })
+    Waiter.findOne({ username: req.body.username })
       .then((waiter) => {
         if (waiter) {
-          res.json(waiter);
+          Waiter.findOne({
+            username: req.body.username,
+            password: req.body.password,
+          }).then((waiter) => {
+            if (waiter) res.status(200).json(waiter);
+            else res.status(401).json({ message: "Invalid password" });
+          });
         } else {
-          res.status(401).json({ message: "Invalid credentials" });
+          res
+            .status(402)
+            .json({ message: "Waiter with this username does not exist" });
         }
       })
       .catch((err) => {

@@ -12,13 +12,7 @@ export class WaiterService {
 
   backendUrl = 'http://127.0.0.1:4000/waiter';
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    
-    let errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
-    
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
-  }
+
 
   login(username: String, password:String) : Observable<any> {
     const data = {
@@ -27,9 +21,7 @@ export class WaiterService {
 
     };
 
-    return this.http.post<any>(`${this.backendUrl}/login`, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.backendUrl}/login`, data);
     
   }
 

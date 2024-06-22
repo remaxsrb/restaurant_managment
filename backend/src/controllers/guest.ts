@@ -1,15 +1,8 @@
 import express from "express";
 import Guest from "../models/guest";
 import Cart from "../models/cart";
+import Waiter from "../models/waiter";
 
-class HttpError extends Error {
-  status: number;
-
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
 
 export class GuestController {
   register(req: express.Request, res: express.Response) {
@@ -27,22 +20,32 @@ export class GuestController {
       credit_card_number: req.body.credit_card_number,
       profile_photo: req.body.profile_photo,
     };
-
-    // Check if username is already taken
+  
+    // Check if username is already taken by a guest or waiter
     Guest.findOne({ username: guest.username })
-      .then((existingUser) => {
-        if (existingUser) {
-          throw new HttpError("Username already exists", 409); // Conflict
+      .then((existingGuest) => {
+        if (existingGuest) {
+          return Promise.reject({ status: 408, message: "Username is taken by guest" });
         }
-
-        // Check if email is already taken
+        return Waiter.findOne({ username: guest.username });
+      })
+      .then((existingWaiter) => {
+        if (existingWaiter) {
+          return Promise.reject({ status: 408, message: "Username is taken by waiter" });
+        }
+        // Check if email is already taken by a guest
         return Guest.findOne({ email: guest.email });
       })
-      .then((existingEmail) => {
-        if (existingEmail) {
-          throw new HttpError("Email already exists", 409); // Conflict
+      .then((existingGuestEmail) => {
+        if (existingGuestEmail) {
+          return Promise.reject({ status: 409, message: "Email is taken by guest" });
         }
-
+        return Waiter.findOne({ email: guest.email });
+      })
+      .then((existingWaiterEmail) => {
+        if (existingWaiterEmail) {
+          return Promise.reject({ status: 409, message: "Email is taken by waiter" });
+        }
         // Create new guest
         return new Guest(guest).save();
       })
@@ -64,6 +67,7 @@ export class GuestController {
         res.status(statusCode).json({ message });
       });
   }
+  
 
   all(req: express.Request, res: express.Response) {
     Guest.find({})
@@ -106,12 +110,20 @@ export class GuestController {
   }
 
   login(req: express.Request, res: express.Response) {
-    Guest.findOne({ username: req.body.username, password: req.body.password })
+    Guest.findOne({ username: req.body.username })
       .then((guest) => {
-        if (guest.status === 'active') {
-          res.json(guest);
+        if (guest) {
+          Guest.findOne({
+            username: req.body.username,
+            password: req.body.password,
+          }).then((guest) => {
+            if (guest) res.status(200).json(guest);
+            else res.status(401).json({ message: "Invalid password" });
+          });
         } else {
-          res.status(404).json({ message: "Invalid credentials" });
+          res
+            .status(402)
+            .json({ message: "Guest with this username does not exist" });
         }
       })
       .catch((err) => {

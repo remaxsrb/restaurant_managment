@@ -12,13 +12,6 @@ export class GuestService {
 
   backendUrl = 'http://127.0.0.1:4000/guest';
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    
-    let errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
-    
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
-  }
 
   register(guest: any): Observable<any> {
     const data = {
@@ -36,9 +29,7 @@ export class GuestService {
       profile_photo: guest.profile_photo
     };
 
-    return this.http.post<any>(`${this.backendUrl}/register`, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.backendUrl}/register`, data);
   }
 
   find_by_username(username: string) {
@@ -57,9 +48,7 @@ export class GuestService {
 
     };
 
-    return this.http.post<any>(`${this.backendUrl}/login`, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.backendUrl}/login`, data);
   }
 
   all() {

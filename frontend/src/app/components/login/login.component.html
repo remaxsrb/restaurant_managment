@@ -34,6 +34,9 @@
                       [(ngModel)]="signInData.username"
                       name="username"
                     />
+                    <div class="alert alert-danger" role="alert" *ngIf="login_form_flags.user_not_found">
+                      User with this username was not found
+                    </div>
                   </div>
                   
                   <div class="mb-3">
@@ -46,36 +49,11 @@
                       [(ngModel)]="signInData.password"
                       name="password"
                     />
-                    
+                    <div class="alert alert-danger" role="alert" *ngIf="login_form_flags.invalid_password">
+                      Invalid password
+                    </div>
                   </div>
       
-                  <div class="mb-3">
-                    <label class="form-label">Type:</label><br />
-                    <div class="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        id="guest"
-                        class="form-check-input"
-                        name="userType"
-                        [(ngModel)]="signInData.type"
-                        value="guest"
-                        required
-                      />
-                      <label for="guest" class="form-check-label">Guest</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        id="waiter"
-                        class="form-check-input"
-                        name="userTypeuserType"
-                        [(ngModel)]="signInData.type"
-                        value="waiter"
-                        required
-                      />
-                      <label for="waiter" class="form-check-label">Waiter</label>
-                    </div>
-                  </div>
                   <button
                     type="submit"
                     class="btn btn-dark"

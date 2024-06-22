@@ -10,8 +10,11 @@ import * as CryptoJS from 'crypto-js';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-
-  constructor(private guest_service: GuestService, private waiter_service: WaiterService, private router: Router) {}
+  constructor(
+    private guest_service: GuestService,
+    private waiter_service: WaiterService,
+    private router: Router
+  ) {}
 
   signInData = {
     username: '',
@@ -19,40 +22,51 @@ export class LoginComponent {
     type: '',
   };
 
+  login_form_flags = {
+    invalid_password: false,
+    user_not_found: false,
+    general_errors: false,
+  };
+
   onLogin() {
-    this.signInData.password = CryptoJS.MD5(this.signInData.password).toString()
-    if (this.signInData.type === 'guest') {
-      this.guest_service.login(this.signInData.username, this.signInData.password).subscribe({
+    this.signInData.password = CryptoJS.MD5(
+      this.signInData.password
+    ).toString();
+
+    // Attempt to log in as a guest first
+    this.guest_service
+      .login(this.signInData.username, this.signInData.password)
+      .subscribe({
         next: (data) => {
-          console.log('Guest logged in successfully:', data);
-        this.router.navigate(['guest']);
+          this.router.navigate(['guest']);
         },
         error: (error) => {
-          console.error('Error logging in:', error);
-        // Handle specific errors or show a general message
-        if (error.status === 404) {
-          alert('Invalid credentials'); // Conflict error
-        } else {
-          alert('Error logging in'); // General error
-        }
-        }
-      });
-    } else {
-      this.waiter_service.login(this.signInData.username, this.signInData.password).subscribe({
-        next: (data) => {
-          console.log('Waiter logged in successfully:', data);
-        this.router.navigate(['waiter']);
+         
+          if (error.status === 402) {
+            // If guest login fails with 402, attempt to log in as a waiter
+            this.waiter_service
+              .login(this.signInData.username, this.signInData.password)
+              .subscribe({
+                next: (data) => {
+                  this.router.navigate(['waiter']);
+                },
+                error: (error) => {
+
+                  if (error.status === 402) {
+                    this.login_form_flags.user_not_found = true;
+                  } else if (error.status === 401) {
+                    this.login_form_flags.invalid_password = true;
+                  } else {
+                    this.login_form_flags.general_errors = true;
+                  }
+                },
+              });
+          } else if (error.status === 401) {
+            this.login_form_flags.invalid_password = true;
+          } else {
+            this.login_form_flags.general_errors = true;
+          }
         },
-        error: (error) => {
-          console.error('Error logging in:', error);
-        // Handle specific errors or show a general message
-        if (error.status === 404) {
-          alert('Invalid credentials'); // Conflict error
-        } else {
-          alert('Error logging in'); // General error
-        }
-        }
       });
-    }
   }
 }

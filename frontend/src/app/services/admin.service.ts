@@ -58,12 +58,10 @@ export class AdminService {
       phone_number: waiter.phone_number,
       email: waiter.email,
       profile_photo: waiter.profile_photo,
-      restourant: waiter.restourant
+      restaurant: waiter.restaurant
     };
 
-    return this.http.post<any>(`${this.backendUrl}/register_waiter`, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.backendUrl}/register_waiter`, data);
   }
 
   add_restaurant(restaurant: any): Observable<any> {

@@ -15,7 +15,7 @@ waiterRouter.route('/readbyemail/:email').get(
     (req, res) => new WaiterController().readByEmail(req, res)
 )
 
-waiterRouter.route('/login').get(
+waiterRouter.route('/login').post(
     (req, res) => new WaiterController().login(req, res)
 )
 waiterRouter.route('/updatefirstname').post(

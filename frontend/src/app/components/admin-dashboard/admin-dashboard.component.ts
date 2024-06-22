@@ -37,6 +37,21 @@ export class AdminDashboardComponent implements OnInit {
   waiters: Waiter[] = [];
   guests: Guest[] = [];
 
+  waiter_form_flags = {
+    invalid_password: false,
+    invalid_email: false,
+    invalid_phone_number: false,
+    invalid_picture_format: false,
+    username_taken: false,
+    email_taken: false,
+
+    general_errors: false,
+  };
+
+  restaurant_form_flags = {
+    invalid_email: false,
+  };
+
   newRestaurant = {
     name: '',
     address: '',
@@ -162,22 +177,23 @@ export class AdminDashboardComponent implements OnInit {
       : true;
 
     if (!isValidPassword) {
-      alert('Password is not valid');
+      this.waiter_form_flags.invalid_password = true;
       return false;
     }
 
     if (!isValidEmail) {
-      alert('Email is not valid');
+      this.waiter_form_flags.invalid_email = true;
       return false;
     }
 
     if (!isValidPhoneNumber) {
-      alert('Phone number is not valid');
+      this.waiter_form_flags.invalid_phone_number = true;
       return false;
     }
 
     if (!isPngOrJpg) {
-      alert('Picture should be PNG or JPG');
+      this.waiter_form_flags.invalid_picture_format = true;
+
       return false;
     }
 
@@ -209,12 +225,19 @@ export class AdminDashboardComponent implements OnInit {
         });
       },
       error: (error) => {
-        console.error('Error creating guest:', error);
+        console.error('Error creating waiter:', error);
         // Handle specific errors or show a general message
-        if (error.status === 409) {
-          alert('Username or email already exists.'); // Conflict error
-        } else {
-          alert('Failed to create guest. Please try again later.'); // General error
+        if (error.status === 408) {
+          this.waiter_form_flags.username_taken = true;
+          // Conflict error
+        } 
+        else if (error.status === 409) {
+          this.waiter_form_flags.email_taken = true;
+
+        }
+        else {
+          this.waiter_form_flags.general_errors = true;
+          // General error
         }
       },
     });
@@ -225,7 +248,7 @@ export class AdminDashboardComponent implements OnInit {
     const isValidEmail = emailRegex.test(this.newRestaurant.email);
 
     if (!isValidEmail) {
-      alert('Email is not valid');
+      this.restaurant_form_flags.invalid_email = true;
       return; //not valid email abort submission
     }
 

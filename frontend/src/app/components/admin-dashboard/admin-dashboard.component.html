@@ -175,6 +175,10 @@
                         [(ngModel)]="newRestaurant.email"
                         name="email"
                       />
+                      <div class="alert alert-danger" role="alert" *ngIf="restaurant_form_flags.invalid_email">
+                        Invalid email
+                      </div>
+                      
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -297,6 +301,9 @@
                       [(ngModel)]="newWaiter.username"
                       name="username"
                     />
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.username_taken">
+                      There already exists a user with this username
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -310,6 +317,10 @@
                       [(ngModel)]="newWaiter.password"
                       name="password"
                     />
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.invalid_password">
+                      Invalid password
+                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -372,6 +383,12 @@
                       [(ngModel)]="newWaiter.email"
                       name="email"
                     />
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.invalid_email">
+                      Invalid E-mail
+                    </div>
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.email_taken">
+                      There is a user registered with this email
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -403,6 +420,9 @@
                       [(ngModel)]="newWaiter.phone_number"
                       name="phone_number"
                     />
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.invalid_password">
+                      Invalid phone number
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -416,6 +436,9 @@
                     <label class="input-group-text" for="inputGroupFile02"
                       >Upload</label
                     >
+                    <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.invalid_picture_format">
+                      Image has to be either .png or .jpg
+                    </div>
                   </div>
                 </div>
               </div>
@@ -485,6 +508,9 @@
                 </div>
               </div>
             </form>
+            <div class="alert alert-danger" role="alert" *ngIf="waiter_form_flags.general_errors">
+              Error adding waiter
+            </div>
           </div>
         </div>
       </div>
