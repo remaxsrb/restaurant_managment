@@ -8,5 +8,6 @@ export class Restaurant {
     phone_number: string = ''
     location: string = ''
     description: string = ''
+    floor_plan: string = ''
     dishes: Dish[] = []
 }

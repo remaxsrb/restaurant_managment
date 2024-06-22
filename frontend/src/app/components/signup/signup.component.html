@@ -12,7 +12,9 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container d-flex flex-column justify-content-center align-items-center">
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
       <div>
         <div class="container">
           <div class="row justify-content-center">
@@ -21,14 +23,32 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="firstname" class="form-label">First Name:</label>
-                      <input type="text" id="firstname" class="form-control" required [(ngModel)]="newGuest.firstname" name="firstname" />
+                      <label for="firstname" class="form-label"
+                        >First Name:</label
+                      >
+                      <input
+                        type="text"
+                        id="firstname"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.firstname"
+                        name="firstname"
+                      />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="lastname" class="form-label">Last Name:</label>
-                      <input type="text" id="lastname" class="form-control" required [(ngModel)]="newGuest.lastname" name="lastname" />
+                      <label for="lastname" class="form-label"
+                        >Last Name:</label
+                      >
+                      <input
+                        type="text"
+                        id="lastname"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.lastname"
+                        name="lastname"
+                      />
                     </div>
                   </div>
                 </div>
@@ -37,8 +57,19 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="username" class="form-label">Username:</label>
-                      <input type="text" id="username" class="form-control" required [(ngModel)]="newGuest.username" name="username" />
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.username_exists">
+                      <input
+                        type="text"
+                        id="username"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.username"
+                        name="username"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.username_exists"
+                      >
                         User with this username already exists
                       </div>
                     </div>
@@ -46,8 +77,19 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="password" class="form-label">Password:</label>
-                      <input type="password" id="password" class="form-control" required [(ngModel)]="newGuest.password" name="password" />
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.invalid_password">
+                      <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.password"
+                        name="password"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.invalid_password"
+                      >
                         Invalid password
                       </div>
                     </div>
@@ -57,20 +99,45 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="securityQuestion" class="form-label">Security question:</label>
-                      <select id="securityQuestion" class="form-select" required [(ngModel)]="newGuest.security_question" name="securityQuestion">
-                        <option value="" disabled selected>Select a security question</option>
-                        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-                        <option value="What city were you born in?">What city were you born in?</option>
-                        <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                      <label for="securityQuestion" class="form-label"
+                        >Security question:</label
+                      >
+                      <select
+                        id="securityQuestion"
+                        class="form-select"
+                        required
+                        [(ngModel)]="newGuest.security_question"
+                        name="securityQuestion"
+                      >
+                        <option value="" disabled selected>
+                          Select a security question
+                        </option>
+                        <option value="What is your mother's maiden name?">
+                          What is your mother's maiden name?
+                        </option>
+                        <option value="What city were you born in?">
+                          What city were you born in?
+                        </option>
+                        <option value="What is the name of your first pet?">
+                          What is the name of your first pet?
+                        </option>
                         <!-- Add more options as needed -->
                       </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="security_question_answer" class="form-label">Answer:</label>
-                      <input type="text" id="security_question_answer" class="form-control" required [(ngModel)]="newGuest.security_question_answer" name="security_question_answer" />
+                      <label for="security_question_answer" class="form-label"
+                        >Answer:</label
+                      >
+                      <input
+                        type="text"
+                        id="security_question_answer"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.security_question_answer"
+                        name="security_question_answer"
+                      />
                     </div>
                   </div>
                 </div>
@@ -79,11 +146,26 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="email" class="form-label">Email:</label>
-                      <input type="email" id="email" class="form-control" required [(ngModel)]="newGuest.email" name="email" />
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.invalid_email">
+                      <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.email"
+                        name="email"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.invalid_email"
+                      >
                         Invalid email
                       </div>
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.email_taken">
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.email_taken"
+                      >
                         There is a user registered with this email
                       </div>
                     </div>
@@ -91,7 +173,14 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="address" class="form-label">Address:</label>
-                      <input type="text" id="address" class="form-control" required [(ngModel)]="newGuest.address" name="address" />
+                      <input
+                        type="text"
+                        id="address"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.address"
+                        name="address"
+                      />
                     </div>
                   </div>
                 </div>
@@ -99,18 +188,46 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="phone_number" class="form-label">Phone number:</label>
-                      <input type="text" id="phone_number" class="form-control" required [(ngModel)]="newGuest.phone_number" name="phone_number" />
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.invalid_phone_number">
+                      <label for="phone_number" class="form-label"
+                        >Phone number:</label
+                      >
+                      <input
+                        type="text"
+                        id="phone_number"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.phone_number"
+                        name="phone_number"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.invalid_phone_number"
+                      >
                         Invalid phone number
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label for="credit_card_number" class="form-label">Credit card number:</label>
-                      <input type="text" id="credit_card_number" class="form-control" required [(ngModel)]="newGuest.credit_card_number" name="credit_card_number" />
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.invalid_picture_credit_card_format">
+                      <label for="credit_card_number" class="form-label"
+                        >Credit card number:</label
+                      >
+                      <input
+                        type="text"
+                        id="credit_card_number"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newGuest.credit_card_number"
+                        name="credit_card_number"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="
+                          guest_form_flags.invalid_picture_credit_card_format
+                        "
+                      >
                         Invalid credit card number format
                       </div>
                     </div>
@@ -119,11 +236,21 @@
 
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="input-group mb-3">
-                      <input type="file" class="form-control" id="inputGroupFile02" (change)="onFileSelected($event)" />
-                      <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                      <div class="alert alert-danger" role="alert" *ngIf="guest_form_flags.invalid_picture_format">
-                        Image should be either .png or .jpg 
+                    <div class="mb-3">
+                      <label for="inputGroupFile02">Profile photo</label>
+
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="inputGroupFile02"
+                        (change)="onFileSelected($event)"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.invalid_picture_format"
+                      >
+                        Image should be either .png or .jpg
                       </div>
                     </div>
                   </div>
@@ -131,12 +258,30 @@
                     <div class="mb-3">
                       <label class="form-label">Gender:</label><br />
                       <div class="form-check form-check-inline">
-                        <input type="radio" id="male" class="form-check-input" name="gender" [(ngModel)]="newGuest.gender" value="male" required />
+                        <input
+                          type="radio"
+                          id="male"
+                          class="form-check-input"
+                          name="gender"
+                          [(ngModel)]="newGuest.gender"
+                          value="male"
+                          required
+                        />
                         <label for="male" class="form-check-label">Male</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input type="radio" id="female" class="form-check-input" name="gender" [(ngModel)]="newGuest.gender" value="female" required />
-                        <label for="female" class="form-check-label">Female</label>
+                        <input
+                          type="radio"
+                          id="female"
+                          class="form-check-input"
+                          name="gender"
+                          [(ngModel)]="newGuest.gender"
+                          value="female"
+                          required
+                        />
+                        <label for="female" class="form-check-label"
+                          >Female</label
+                        >
                       </div>
                     </div>
                   </div>
@@ -144,7 +289,13 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="submit" class="btn btn-dark" [disabled]="!userForm.form.valid">Submit</button>
+                    <button
+                      type="submit"
+                      class="btn btn-dark"
+                      [disabled]="!userForm.form.valid"
+                    >
+                      Submit
+                    </button>
                   </div>
                 </div>
               </form>

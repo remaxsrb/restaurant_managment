@@ -73,6 +73,8 @@ export class AdminService {
       type: restaurant.type,
       location: restaurant.location,
       description: restaurant.description,
+      floor_plan: restaurant.floor_plan,
+
     };
 
     return this.http.post<any>(`${this.backendUrl}/add_restaurant`, data).pipe(

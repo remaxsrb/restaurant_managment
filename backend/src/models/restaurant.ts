@@ -35,6 +35,11 @@ let Restaurant = new Schema ({
         type: String,
         required: true
     },
+    floor_plan: {
+        type: String,
+        required: true
+    },
+
     dishes: [{
         type: String,
         ref: "Dish"

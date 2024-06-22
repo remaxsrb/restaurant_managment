@@ -11,6 +11,7 @@ import { RestaurantTypeService } from 'src/app/services/restaurant-type.service'
 import { RestaurantService } from 'src/app/services/restaurant.service';
 import { WaiterService } from 'src/app/services/waiter.service';
 import * as CryptoJS from 'crypto-js';
+import { JsonService} from 'src/app/services/json.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,6 +25,7 @@ export class AdminDashboardComponent implements OnInit {
     private guest_service: GuestService,
     private admin_service: AdminService,
     private restaurant_type_service: RestaurantTypeService,
+    private json_service: JsonService,
 
     private router: Router
   ) {}
@@ -33,6 +35,9 @@ export class AdminDashboardComponent implements OnInit {
 
   restaurants: Restaurant[] = [];
   restaurant_types: RestaurantType[] = [];
+
+  selected_restaurant: string | null = null; 
+  selected_restaurant_floor_plan: string = ''
 
   waiters: Waiter[] = [];
   guests: Guest[] = [];
@@ -60,6 +65,7 @@ export class AdminDashboardComponent implements OnInit {
     type: '',
     location: '',
     description: '',
+    floor_plan: '',
   };
 
   newWaiter = {
@@ -96,6 +102,7 @@ export class AdminDashboardComponent implements OnInit {
     });
     this.new_guest_statuses.fill('');
   }
+  
 
   updateStatus(guest: Guest, index: number): void {
     this.admin_service
@@ -252,6 +259,10 @@ export class AdminDashboardComponent implements OnInit {
       return; //not valid email abort submission
     }
 
+    if(this.selectedFile)
+      this.newRestaurant.floor_plan = this.selectedFile.name;
+
+
     this.admin_service.add_restaurant(this.newRestaurant).subscribe((data) => {
       this.restaurants = [];
 
@@ -260,4 +271,48 @@ export class AdminDashboardComponent implements OnInit {
       });
     });
   }
+
+  //Restaurant radios
+
+  isChecked(restourant_name: string): boolean {
+    return this.selected_restaurant === restourant_name;
+  }
+
+  onRadioChange(restourant_name: string) {
+    this.selected_restaurant = restourant_name;
+    this.selected_restaurant_floor_plan = this.restaurants.filter(item => item.name === restourant_name)[0].floor_plan;
+
+    this.json_service.getData(this.selected_restaurant_floor_plan).subscribe( {
+      next: (data) => {
+        this.renderFloorPlan(data);
+
+      },
+      error: (err) => { alert(err.message); }
+    }
+    );
+
+
+  }
+
+
+  renderFloorPlan(floorPlan: any): void {
+    const canvas = document.getElementById('floorPlanCanvas') as HTMLCanvasElement;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Render rectangles
+        floorPlan.rectangles.forEach((rect: any) => {
+          ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        });
+        // Render circles
+        floorPlan.circles.forEach((circle: any) => {
+          ctx.beginPath();
+          ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+      }
+    }
+  }
+
 }

@@ -11,6 +11,8 @@ export class RestaurantController {
       location: req.body.location,
       email: req.body.email,
       description: req.body.description,
+      floor_plan: req.body.floor_plan,
+
     };
 
     new Restaurant(restaurant)
