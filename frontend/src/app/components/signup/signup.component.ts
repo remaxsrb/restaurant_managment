@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { NgForm } from '@angular/forms';
 import { GuestService } from 'src/app/services/guest.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -71,7 +70,7 @@ export class SignupComponent {
     this.selectedFile = file;
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit() {
     if (!this.validateForm()) {
       return; // Validation failed, stop submission
     }

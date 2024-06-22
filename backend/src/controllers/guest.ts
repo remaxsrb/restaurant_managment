@@ -108,7 +108,7 @@ export class GuestController {
   login(req: express.Request, res: express.Response) {
     Guest.findOne({ username: req.body.username, password: req.body.password })
       .then((guest) => {
-        if (guest) {
+        if (guest.status === 'active') {
           res.json(guest);
         } else {
           res.status(404).json({ message: "Invalid credentials" });

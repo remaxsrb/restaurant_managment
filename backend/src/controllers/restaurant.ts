@@ -5,11 +5,12 @@ export class RestaurantController {
   create(req: express.Request, res: express.Response) {
     let restaurant = {
       name: req.body.name,
-      address: req.body.password,
-      phone_number: req.body.security_question,
+      address: req.body.address,
+      phone_number: req.body.phone_number,
       type: req.body.type,
       location: req.body.location,
-      addescriptionress: req.body.description,
+      email: req.body.email,
+      description: req.body.description,
     };
 
     new Restaurant(restaurant)

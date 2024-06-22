@@ -45,4 +45,41 @@ export class AdminService {
 
   }
 
+  register_waiter(waiter: any): Observable<any> {
+    const data = {
+      username: waiter.username,
+      password: waiter.password,
+      security_question: waiter.security_question,
+      security_question_answer: waiter.security_question_answer,
+      firstname: waiter.firstname,
+      lastname: waiter.lastname,
+      gender: waiter.gender,
+      address: waiter.address,
+      phone_number: waiter.phone_number,
+      email: waiter.email,
+      profile_photo: waiter.profile_photo,
+      restourant: waiter.restourant
+    };
+
+    return this.http.post<any>(`${this.backendUrl}/register_waiter`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  add_restaurant(restaurant: any): Observable<any> {
+    const data = {
+      name: restaurant.name,
+      address: restaurant.address,
+      phone_number: restaurant.phone_number,
+      email: restaurant.email,
+      type: restaurant.type,
+      location: restaurant.location,
+      description: restaurant.description,
+    };
+
+    return this.http.post<any>(`${this.backendUrl}/add_restaurant`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }

@@ -11,7 +11,7 @@ restaurantTypeRouter.route('/byName').get(
 )
 
 restaurantTypeRouter.route('/all').get(
-    (req, res) => new RestaurantTypeController().readAll(req, res)
+    (req, res) => new RestaurantTypeController().all(req, res)
 )
 
 export default restaurantTypeRouter;

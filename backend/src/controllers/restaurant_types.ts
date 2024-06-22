@@ -33,7 +33,7 @@ export class RestaurantTypeController {
       });
   }
 
-  readAll(req: express.Request, res: express.Response) {
+  all(req: express.Request, res: express.Response) {
     RestaurantType.find({})
       .sort({ name: 1 })
       .then((restaurant_types) => {

@@ -69,50 +69,424 @@
     >
       <div>
         <div *ngIf="selectedOption === 'restaurants'">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Phone number</th>
-                <th>Address</th>
-                <th>Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of restaurants; let i = index">
-                <td>{{ row.name }}</td>
-                <td>{{ row.type }}</td>
-                <td>{{ row.phone_number }}</td>
-                <td>{{ row.address }}</td>
-                <td>{{ row.location }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Phone number</th>
+                    <th>Address</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of restaurants; let i = index">
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.type }}</td>
+                    <td>{{ row.phone_number }}</td>
+                    <td>{{ row.address }}</td>
+                    <td>{{ row.location }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <form (ngSubmit)="onSubmitRestaurant()" #restaurant_form="ngForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Name:</label>
+                      <input
+                        type="text"
+                        id="name"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.name"
+                        name="name"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address:</label>
+                      <input
+                        type="text"
+                        id="address"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.address"
+                        name="address"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="type" class="form-label">Type:</label>
+                      <select
+                        id="type"
+                        class="form-select"
+                        required
+                        [(ngModel)]="newRestaurant.type"
+                        name="type"
+                      >
+                        <option value="" disabled selected>
+                          Select a type
+                        </option>
+                        <option
+                          *ngFor="let type of restaurant_types"
+                          [value]="type.name"
+                        >
+                          {{ type.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="phone_number" class="form-label"
+                        >Phone number:</label
+                      >
+                      <input
+                        type="text"
+                        id="phone_number"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.phone_number"
+                        name="phone_number"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email:</label>
+                      <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.email"
+                        name="email"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="location" class="form-label">Location:</label>
+                      <input
+                        type="text"
+                        id="location"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.location"
+                        name="location"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label for="description" class="form-label"
+                        >Description:</label
+                      >
+                      <textarea
+                        id="description"
+                        class="form-control"
+                        required
+                        [(ngModel)]="newRestaurant.description"
+                        name="description"
+                        rows="4"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <button
+                      type="submit"
+                      class="btn btn-dark"
+                      [disabled]="!restaurant_form.form.valid"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div *ngIf="selectedOption === 'waiters'">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>First name</th>
-              <th>Last name</th>
-              <th>Username</th>
-              <th>Phone number</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of waiters; let i = index">
-              <td>{{ row.firstname }}</td>
-              <td>{{ row.lastname }}</td>
-              <td>{{ row.username }}</td>
-              <td>{{ row.phone_number }}</td>
-              <td>{{ row.email }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div *ngIf="selectedOption === 'waiters'" class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Username</th>
+                  <th>Phone number</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of waiters; let i = index">
+                  <td>{{ row.firstname }}</td>
+                  <td>{{ row.lastname }}</td>
+                  <td>{{ row.username }}</td>
+                  <td>{{ row.phone_number }}</td>
+                  <td>{{ row.email }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Form on the right -->
+          <div class="col-md-6">
+            <form (ngSubmit)="onSubmitWaiter()" #waiter_form="ngForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="firstname" class="form-label"
+                      >First Name:</label
+                    >
+                    <input
+                      type="text"
+                      id="firstname"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.firstname"
+                      name="firstname"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="lastname" class="form-label">Last Name:</label>
+                    <input
+                      type="text"
+                      id="lastname"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.lastname"
+                      name="lastname"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input
+                      type="text"
+                      id="username"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.username"
+                      name="username"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input
+                      type="password"
+                      id="password"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.password"
+                      name="password"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="securityQuestion" class="form-label"
+                      >Security question:</label
+                    >
+                    <select
+                      id="securityQuestion"
+                      class="form-select"
+                      required
+                      [(ngModel)]="newWaiter.security_question"
+                      name="securityQuestion"
+                    >
+                      <option value="" disabled selected>
+                        Select a security question
+                      </option>
+                      <option value="What is your mother's maiden name?">
+                        What is your mother's maiden name?
+                      </option>
+                      <option value="What city were you born in?">
+                        What city were you born in?
+                      </option>
+                      <option value="What is the name of your first pet?">
+                        What is the name of your first pet?
+                      </option>
+                      <!-- Add more options as needed -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="security_question_answer" class="form-label"
+                      >Answer:</label
+                    >
+                    <input
+                      type="text"
+                      id="security_question_answer"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.security_question_answer"
+                      name="security_question_answer"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input
+                      type="email"
+                      id="email"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.email"
+                      name="email"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Address:</label>
+                    <input
+                      type="text"
+                      id="address"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.address"
+                      name="address"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="phone_number" class="form-label"
+                      >Phone number:</label
+                    >
+                    <input
+                      type="text"
+                      id="phone_number"
+                      class="form-control"
+                      required
+                      [(ngModel)]="newWaiter.phone_number"
+                      name="phone_number"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="inputGroupFile02"
+                      (change)="onFileSelected($event)"
+                    />
+                    <label class="input-group-text" for="inputGroupFile02"
+                      >Upload</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Gender:</label><br />
+                    <div class="form-check form-check-inline">
+                      <input
+                        type="radio"
+                        id="male"
+                        class="form-check-input"
+                        name="gender"
+                        [(ngModel)]="newWaiter.gender"
+                        value="male"
+                        required
+                      />
+                      <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        type="radio"
+                        id="female"
+                        class="form-check-input"
+                        name="gender"
+                        [(ngModel)]="newWaiter.gender"
+                        value="female"
+                        required
+                      />
+                      <label for="female" class="form-check-label"
+                        >Female</label
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="restaurantSelect">Select Restaurant:</label>
+                    <select
+                      id="restaurantSelect"
+                      name="restaurant"
+                      class="form-control"
+                      [(ngModel)]="newWaiter.restaurant"
+                    >
+                      <option
+                        *ngFor="let restaurant of restaurants"
+                        [value]="restaurant.name"
+                      >
+                        {{ restaurant.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    type="submit"
+                    class="btn btn-dark"
+                    [disabled]="!waiter_form.form.valid"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
 
       <div *ngIf="selectedOption === 'guests'">
@@ -124,6 +498,8 @@
               <th>Username</th>
               <th>Phone number</th>
               <th>Email</th>
+              <th>Credit card number</th>
+
               <th>Status</th>
               <th>Change status</th>
             </tr>
@@ -135,9 +511,14 @@
               <td>{{ row.username }}</td>
               <td>{{ row.phone_number }}</td>
               <td>{{ row.email }}</td>
+              <td>{{ row.credit_card_number }}</td>
+
               <td>{{ row.status }}</td>
               <td>
-                <form (ngSubmit)="updateStatus(row, i)" #guestStatusForm="ngForm">
+                <form
+                  (ngSubmit)="updateStatus(row, i)"
+                  #guestStatusForm="ngForm"
+                >
                   <div class="d-flex align-items-center">
                     <select
                       id="status-{{ i }}"
@@ -151,8 +532,15 @@
                       <option value="Active">Active</option>
                       <option value="Rejected">Rejected</option>
                       <option value="Banned">Banned</option>
+                      <option value="Deactivated">Deactivated</option>
                     </select>
-                    <button type="submit" class="btn btn-primary" [disabled]="!guestStatusForm.form.valid">Change</button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      [disabled]="!guestStatusForm.form.valid"
+                    >
+                      Change
+                    </button>
                   </div>
                 </form>
               </td>
@@ -160,7 +548,6 @@
           </tbody>
         </table>
       </div>
-         
     </main>
 
     <!-- Footer -->

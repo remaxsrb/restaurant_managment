@@ -49,7 +49,7 @@ let Waiter = new Schema ({
     profile_photo: {
         type: String
     },
-    restourant: {
+    restaurant: {
         type: String,
         ref: "Restourant",
         required: true
