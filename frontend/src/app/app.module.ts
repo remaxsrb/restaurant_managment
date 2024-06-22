@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { RegisterGuestComponent } from './components/register-guest/register-guest.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,18 +13,20 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { GuestDashboradComponent } from './components/guest-dashborad/guest-dashborad.component';
 import { WaiterDashboardComponent } from './components/waiter-dashboard/waiter-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    RegisterGuestComponent,
     LoginComponent,
     SignupComponent,
     AdminLoginComponent,
     GuestDashboradComponent,
     WaiterDashboardComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    ChangePasswordComponent,
+
   ],
   imports: [
     BrowserModule,

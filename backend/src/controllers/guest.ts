@@ -30,23 +30,23 @@ export class GuestController {
 
     // Check if username is already taken
     Guest.findOne({ username: guest.username })
-      .then(existingUser => {
+      .then((existingUser) => {
         if (existingUser) {
-          throw new HttpError('Username already exists', 409); // Conflict
+          throw new HttpError("Username already exists", 409); // Conflict
         }
 
         // Check if email is already taken
         return Guest.findOne({ email: guest.email });
       })
-      .then(existingEmail => {
+      .then((existingEmail) => {
         if (existingEmail) {
-          throw new HttpError('Email already exists', 409); // Conflict
+          throw new HttpError("Email already exists", 409); // Conflict
         }
 
         // Create new guest
         return new Guest(guest).save();
       })
-      .then(savedGuest => {
+      .then((savedGuest) => {
         // Create new cart for the guest
         const newCart = new Cart({
           username: savedGuest.username,
@@ -57,11 +57,21 @@ export class GuestController {
       .then(() => {
         res.json({ message: "Guest created" });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         const statusCode = err.status || 500; // Default to 500 Internal Server Error
         const message = err.message || "Error creating guest";
         res.status(statusCode).json({ message });
+      });
+  }
+
+  all(req: express.Request, res: express.Response) {
+    Guest.find({})
+      .then((guest) => {
+        res.json(guest);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -118,6 +128,11 @@ export class GuestController {
     successMessage: string,
     errorMessage: string
   ) {
+    if (!req.body.username || !updateValue) {
+      return res.status(400).json({
+        message: "Missing required fields: username or new value",
+      });
+    }
     const updateQuery = { username: req.body.username };
     const update = { [fieldToUpdate]: updateValue };
     Guest.updateOne(updateQuery, update)
@@ -218,12 +233,12 @@ export class GuestController {
     );
   }
 
-  setStatus(req: express.Request, res: express.Response) {
+  updateStatus(req: express.Request, res: express.Response) {
     this.updateField(
       req,
       res,
       "status",
-      req.body.status,
+      req.body.new_status,
       "Status updated",
       "Error updating status"
     );

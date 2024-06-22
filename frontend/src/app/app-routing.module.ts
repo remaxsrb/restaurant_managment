@@ -7,21 +7,24 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { GuestDashboradComponent } from './components/guest-dashborad/guest-dashborad.component';
 import { WaiterDashboardComponent } from './components/waiter-dashboard/waiter-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+
 
 const routes: Routes = [
-  {path: "", component: HomepageComponent},
-  {path: "login", component: LoginComponent},
-  {path: "signup", component: SignupComponent},
-  {path: "admin_login", component: AdminLoginComponent},
-  {path: "guest", component: GuestDashboradComponent},
-  {path: "waiter", component: WaiterDashboardComponent},
-  {path: "admin", component: AdminDashboardComponent},
+  { path: '', component: HomepageComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'admin_login', component: AdminLoginComponent },
+  { path: 'guest', component: GuestDashboradComponent },
+  { path: 'waiter', component: WaiterDashboardComponent },
+  { path: 'admin', component: AdminDashboardComponent },
+  { path: 'change_password', component: ChangePasswordComponent },
 
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

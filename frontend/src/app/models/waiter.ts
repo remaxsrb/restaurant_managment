@@ -1,4 +1,4 @@
-export class Guest {
+export class Waiter {
     _id: string = ''
     username: string = ''
     password: string = ''
@@ -10,8 +10,6 @@ export class Guest {
     address: string = ''
     phone_number: string = ''
     email: string = ''
-    credit_card_number: string = ''
     profile_photo: string = ''
-    status: string = ''
-    late_for_reservation: string = ''
+
 }

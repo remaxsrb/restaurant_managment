@@ -62,4 +62,11 @@ export class GuestService {
     );
   }
 
+  all() {
+    return this.http.get<Guest[]>(`${this.backendUrl}/all`);
+  }
+
+
+
+
 }

@@ -1,11 +1,11 @@
 import express from "express";
 import { GuestController } from "./guest";
 import { WaiterController } from "./waiter";
-import  Admin  from "../models/admin";
+import Admin from "../models/admin";
 
 export class AdminController {
   setGuestStatus = (req: express.Request, res: express.Response) => {
-    new GuestController().setStatus(req, res);
+    new GuestController().updateStatus(req, res);
   };
 
   registerWaiter = (req: express.Request, res: express.Response) => {
@@ -13,7 +13,6 @@ export class AdminController {
   };
 
   login(req: express.Request, res: express.Response) {
-
     Admin.findOne({ username: req.body.username, password: req.body.password })
       .then((admin) => {
         if (admin) {
@@ -26,5 +25,5 @@ export class AdminController {
         console.error(err);
         res.status(400).json({ message: "Error logging in" });
       });
-  };
+  }
 }

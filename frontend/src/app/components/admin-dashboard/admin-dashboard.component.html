@@ -1,1 +1,171 @@
-<p>admin-dashboard works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kutak dobre hrane</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+      <h1>Kutak dobre hrane</h1>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div
+            class="btn-group"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio1"
+              autocomplete="off"
+              [(ngModel)]="selectedOption"
+              value="restaurants"
+            />
+            <label class="btn btn-outline-primary" for="btnradio1"
+              >Restaurants</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio2"
+              autocomplete="off"
+              [(ngModel)]="selectedOption"
+              value="waiters"
+            />
+            <label class="btn btn-outline-primary" for="btnradio2"
+              >Waiters</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio3"
+              autocomplete="off"
+              [(ngModel)]="selectedOption"
+              value="guests"
+            />
+            <label class="btn btn-outline-primary" for="btnradio3"
+              >Guests</label
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
+      <div>
+        <div *ngIf="selectedOption === 'restaurants'">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Phone number</th>
+                <th>Address</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of restaurants; let i = index">
+                <td>{{ row.name }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.phone_number }}</td>
+                <td>{{ row.address }}</td>
+                <td>{{ row.location }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="selectedOption === 'waiters'">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Username</th>
+              <th>Phone number</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of waiters; let i = index">
+              <td>{{ row.firstname }}</td>
+              <td>{{ row.lastname }}</td>
+              <td>{{ row.username }}</td>
+              <td>{{ row.phone_number }}</td>
+              <td>{{ row.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="selectedOption === 'guests'">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Username</th>
+              <th>Phone number</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Change status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of guests; let i = index">
+              <td>{{ row.firstname }}</td>
+              <td>{{ row.lastname }}</td>
+              <td>{{ row.username }}</td>
+              <td>{{ row.phone_number }}</td>
+              <td>{{ row.email }}</td>
+              <td>{{ row.status }}</td>
+              <td>
+                <form (ngSubmit)="updateStatus(row, i)" #guestStatusForm="ngForm">
+                  <div class="d-flex align-items-center">
+                    <select
+                      id="status-{{ i }}"
+                      class="form-select"
+                      required
+                      [(ngModel)]="new_guest_statuses[i]"
+                      name="status-{{ i }}"
+                      required
+                    >
+                      <option value="" disabled>Select a status</option>
+                      <option value="Active">Active</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Banned">Banned</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" [disabled]="!guestStatusForm.form.valid">Change</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+         
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
+      <p>&copy; 2024 Marko Jovanovic</p>
+    </footer>
+  </body>
+</html>

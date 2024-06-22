@@ -32,4 +32,17 @@ export class AdminService {
     );
   }
 
+
+  update_status(username: String, new_status: String) {
+
+    const data = {
+      username: username,
+      new_status: new_status.toLowerCase(),
+ 
+    };
+
+    return this.http.post<any>(`${this.backendUrl}/set_guest_status`, data);
+
+  }
+
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError, catchError } from 'rxjs';
+import { Waiter } from '../models/waiter';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,12 @@ export class WaiterService {
     return this.http.post<any>(`${this.backendUrl}/login`, data).pipe(
       catchError(this.handleError)
     );
+    
   }
+
+  all() {
+    return this.http.get<Waiter[]>(`${this.backendUrl}/all`);
+  }
+
 
 }
