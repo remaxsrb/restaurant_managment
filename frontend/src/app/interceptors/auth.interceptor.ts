@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const url = req.url;
     const isRoleRequest =
       url.startsWith('/admin') ||
-      url.startsWith('/user') ||
+      url.startsWith('/guest') ||
       url.startsWith('/waiter');
 
     if (token && isRoleRequest) {

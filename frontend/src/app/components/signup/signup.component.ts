@@ -73,10 +73,7 @@ export class SignupComponent {
       this.selectedFile
     );
 
-    if (!isValid) {
-      // Set form flags based on validation results
-      this.set_form_flags();
-    }
+    if (!isValid) this.set_form_flags();
 
     return isValid;
   }
@@ -91,33 +88,40 @@ export class SignupComponent {
     this.guest_form_flags.invalid_picture_dimensions = false;
 
     // Set flags based on validation errors
-    const isValidPassword = RegexPatterns.PASSWORD.test(this.new_guest.password);
-    const isValidEmail = RegexPatterns.EMAIL.test(this.new_guest.email);
-    const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(this.new_guest.phone_number);
-    const isValidCreditCardNumber = RegexPatterns.CREDIT_CARD_NUMBER.test(this.new_guest.credit_card_number);
-    const isPngOrJpg = this.selectedFile ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name) : true;
+    const is_valid_password = RegexPatterns.PASSWORD.test(
+      this.new_guest.password
+    );
+    const is_valid_email = RegexPatterns.EMAIL.test(this.new_guest.email);
+    const is_valid_phone_number = RegexPatterns.PHONE_NUMBER.test(
+      this.new_guest.phone_number
+    );
+    const is_valid_credit_card_number = RegexPatterns.CREDIT_CARD_NUMBER.test(
+      this.new_guest.credit_card_number
+    );
+    const is_valid_png_or_jpg = this.selectedFile
+      ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name)
+      : true;
 
-    if (!isValidPassword) {
+    if (!is_valid_password) {
       this.guest_form_flags.invalid_password = true;
     }
 
-    if (!isValidEmail) {
+    if (!is_valid_email) {
       this.guest_form_flags.invalid_email = true;
     }
 
-    if (!isValidPhoneNumber) {
+    if (!is_valid_phone_number) {
       this.guest_form_flags.invalid_phone_number = true;
     }
 
-    if (!isValidCreditCardNumber) {
+    if (!is_valid_credit_card_number) {
       this.guest_form_flags.invalid_picture_credit_card_format = true;
     }
 
-    if (!isPngOrJpg) {
+    if (!is_valid_png_or_jpg) {
       this.guest_form_flags.invalid_picture_format = true;
     }
   }
-
 
   processFormSubmission() {
     this.new_guest.password = CryptoJS.MD5(this.new_guest.password).toString();
@@ -137,11 +141,9 @@ export class SignupComponent {
 
     this.user_service.register(this.new_guest).subscribe({
       next: (data) => {
-        console.log('Guest registered successfully:', data);
         this.router.navigate(['/']);
       },
       error: (error) => {
-        console.error('Error creating guest:', error);
         // Handle specific errors or show a general message
         if (error.status === 408) {
           this.guest_form_flags.username_exists = true;

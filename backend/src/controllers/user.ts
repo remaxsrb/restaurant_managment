@@ -250,6 +250,40 @@ export class UserController {
       res
     );
   }
+  check_question(req: express.Request, res: express.Response) {
+    console.log(req.body);
+    const { username, security_question, security_question_answer } = req.body;
+
+    // First check if the user exists by username
+    User.findOne({ username })
+        .then(existingUser => {
+            if (!existingUser) {
+                // User does not exist
+                return res.status(404).json({ message: "User not found" });
+            } 
+            
+            // User exists, now check if the security question matches
+            if (existingUser.security_question !== security_question) {
+                // Security question does not match
+                return res.status(400).json({ message: "Security question does not match" });
+            }
+            
+            // Security question matches, now check if the security question answer matches
+            if (existingUser.security_question_answer !== security_question_answer) {
+                // Security question answer does not match
+                return res.status(401).json({ message: "Security answer is incorrect" });
+            }
+            
+            // All checks passed
+            return res.status(200).json({ message: "Security check passed" });
+        })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        });
+}
+
+
 }
 
 export default new UserController();

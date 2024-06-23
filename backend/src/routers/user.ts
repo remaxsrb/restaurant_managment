@@ -43,5 +43,9 @@ userRouter.route('/update_password').post(
     (req, res) => new UserController().updatePassword(req, res)
 )
 
+userRouter.route('/check_question').post(
+    (req, res) => new UserController().check_question(req, res)
+)
+
 
 export default userRouter;

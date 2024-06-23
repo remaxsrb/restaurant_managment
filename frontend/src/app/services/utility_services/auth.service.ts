@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { UserService } from '../model_services/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,12 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userService: UserService,
     public jwtHelper: JwtHelperService
   ) {}
 
   login(username: string, password: string) {
-    return this.http.post<any>('/user/login', { username, password });
+    return this.userService.login(username, password)
   }
 
   logout() {

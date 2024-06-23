@@ -17,6 +17,7 @@ import { WaiterDashboardComponent } from './components/waiter-dashboard/waiter-d
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GuestDashBoardComponent } from './components/guest-dashboard/guest-dashborad.component';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+import { AskQuestionComponent } from './components/ask-question/ask-question.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
     WaiterDashboardComponent,
     AdminDashboardComponent,
     ChangePasswordComponent,
+    AskQuestionComponent,
   ],
   imports: [
     BrowserModule,

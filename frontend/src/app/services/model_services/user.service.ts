@@ -13,7 +13,6 @@ export class UserService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   register(user: any): Observable<any> {
-
     // Send POST request with headers
     return this.http.post<any>(
       `${this.backendUrl}/register`,
@@ -46,4 +45,25 @@ export class UserService {
   find_by_role(role: string) {
     return this.http.get<any[]>(`${this.backendUrl}/read_by_role/${role}`);
   }
+
+  change_password(data: any) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_password/`,
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  check_question(data: any) {
+    return this.http.post<any>(
+      `${this.backendUrl}/check_question/`,
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
 }

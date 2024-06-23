@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutak dobre hrane</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+        <h1>Kutak dobre hrane</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container d-flex flex-column justify-content-center align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <form (ngSubmit)="onAnswerSubmit(); askQuestionUpForm.reset()" #askQuestionUpForm="ngForm" *ngIf="show_password_form===false">
+                        <!-- Username -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username:</label>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        class="form-control"
+                                        required
+                                        [(ngModel)]="component_data.username"
+                                        name="username"
+                                    />
+                                    <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.username_not_found">
+                                        User with this username does not exist
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Question -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="securityQuestion" class="form-label">Security question:</label>
+                                    <select
+                                        id="securityQuestion"
+                                        class="form-select"
+                                        required
+                                        [(ngModel)]="component_data.security_question"
+                                        name="securityQuestion"
+                                    >
+                                        <option value="" disabled selected>Select a security question</option>
+                                        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                                        <option value="What city were you born in?">What city were you born in?</option>
+                                        <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Answer to Security Question -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="security_question_answer" class="form-label">Answer:</label>
+                                    <input
+                                        type="text"
+                                        id="security_question_answer"
+                                        class="form-control"
+                                        required
+                                        [(ngModel)]="component_data.security_question_answer"
+                                        name="security_question_answer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button
+                                    type="submit"
+                                    class="btn btn-dark"
+                                    [disabled]="!askQuestionUpForm.form.valid"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.security_question_mismatch">
+                            User with this username is not using this question
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.wrong_answer">
+                            Wrong answer
+                        </div>
+                    </form>
+                    <form (ngSubmit)="onPasswordSubmit(); passwordForm.reset()" #passwordForm="ngForm" *ngIf="show_password_form">
+                        <!-- Password -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password:</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        class="form-control"
+                                        required
+                                        [(ngModel)]="password"
+                                        name="password"
+                                    />
+                                    <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.invalid_password_format">
+                                        Invalid password format
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button
+                                    type="submit"
+                                    class="btn btn-dark"
+                                    [disabled]="!passwordForm.form.valid"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
+        <p>&copy; 2024 Marko Jovanovic</p>
+    </footer>
+
+</body>
+</html>

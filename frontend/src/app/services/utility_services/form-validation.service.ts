@@ -28,4 +28,7 @@ export class FormValidationService {
       isPngOrJpg
     );
   }
+  validate_change_password_form(new_password: string) {
+    return RegexPatterns.PASSWORD.test(new_password);
+  }
 }

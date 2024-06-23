@@ -30,6 +30,9 @@ export class LoginComponent {
   };
 
   onLogin() {
+    this.signInData.password = CryptoJS.MD5(
+      this.signInData.password
+    ).toString();
     this.auth_service.login(this.signInData.username, this.signInData.password)
       .subscribe({
         next: (data) => {
@@ -38,6 +41,8 @@ export class LoginComponent {
             this.router.navigate(['guest']);
           } else if (data.role === 'waiter') {
             this.router.navigate(['waiter']);
+          } else if (data.role === 'admin') {
+            this.router.navigate(['admin']);
           } else {
             this.login_form_flags.general_errors = true;
           }

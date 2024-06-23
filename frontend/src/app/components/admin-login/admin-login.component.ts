@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import * as CryptoJS from 'crypto-js';
 import { UserService } from 'src/app/services/model_services/user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from 'src/app/services/utility_services/auth.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AdminLoginComponent {
   constructor(
-    private user_service: UserService,
+    private auth_service: AuthService,
     public jwtHelper: JwtHelperService,
     private router: Router
   ) {}
@@ -30,7 +31,7 @@ export class AdminLoginComponent {
       this.signInData.password
     ).toString();
 
-    this.user_service
+    this.auth_service
       .login(this.signInData.username, this.signInData.password)
       .subscribe({
         next: (data) => {

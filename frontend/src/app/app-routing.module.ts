@@ -10,6 +10,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { GuestDashBoardComponent } from './components/guest-dashboard/guest-dashborad.component';
+import { AskQuestionComponent } from './components/ask-question/ask-question.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,8 @@ const routes: Routes = [
   { path: 'waiter', component: WaiterDashboardComponent,canActivate: [AuthGuard, RoleGuard], data: { expected_role: 'waiter' } },
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { expected_role: 'admin' } } ,
   { path: 'change_password', component: ChangePasswordComponent },
+  { path: 'ask_question', component: AskQuestionComponent },
+
 
 
 ];

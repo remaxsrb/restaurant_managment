@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const secretKey = ''; //write your secret key
+const secretKey = 'Naruto_D_Kurosaki'; //write your secret key
 
 class jwt_service {
   generate_token(user: any): string {

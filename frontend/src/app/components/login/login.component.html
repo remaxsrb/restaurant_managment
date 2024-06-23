@@ -49,6 +49,8 @@
                       [(ngModel)]="signInData.password"
                       name="password"
                     />
+                    <a class="nav-link" routerLink="/change_password">Forgot password?</a>
+
                     <div class="alert alert-danger" role="alert" *ngIf="login_form_flags.invalid_password">
                       Invalid password
                     </div>
