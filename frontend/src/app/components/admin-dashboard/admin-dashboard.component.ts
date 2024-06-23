@@ -5,14 +5,17 @@ import { Guest } from 'src/app/models/guest';
 import { Restaurant } from 'src/app/models/restaurant';
 import { RestaurantType } from 'src/app/models/restaurant_type';
 import { Waiter } from 'src/app/models/waiter';
-import { AdminService } from 'src/app/services/admin.service';
-import { RestaurantTypeService } from 'src/app/services/restaurant-type.service';
-import { RestaurantService } from 'src/app/services/restaurant.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AdminService } from 'src/app/services/model_services/admin.service';
+import { RestaurantTypeService } from 'src/app/services/model_services/restaurant-type.service';
+import { RestaurantService } from 'src/app/services/model_services/restaurant.service';
+import { AuthService } from 'src/app/services/utility_services/auth.service';
 import * as CryptoJS from 'crypto-js';
-import { JsonService } from 'src/app/services/json.service';
-import { UserService } from 'src/app/services/user.service';
-
+import { JsonService } from 'src/app/services/utility_services/json.service';
+import { UserService } from 'src/app/services/model_services/user.service';
+import { RestaurantPlanService } from 'src/app/services/utility_services/restaurant-plan.service';
+import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
+import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
+import { RegexPatterns } from '../regex_patterns';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -26,12 +29,15 @@ export class AdminDashboardComponent implements OnInit {
     private restaurant_type_service: RestaurantTypeService,
     private json_service: JsonService,
     private auth_service: AuthService,
+    private restaurant_plan_service: RestaurantPlanService,
+    private image_dim: ImageDimensionValidationService,
+    private form_validation_service: FormValidationService,
 
     private router: Router
   ) {}
 
   selectedOption: String = 'restaurants';
-  new_guest_statuses: string[] = [];
+  updated_guest_statuses: string[] = [];
 
   restaurants: Restaurant[] = [];
   restaurant_types: RestaurantType[] = [];
@@ -49,7 +55,7 @@ export class AdminDashboardComponent implements OnInit {
     invalid_picture_format: false,
     username_taken: false,
     email_taken: false,
-
+    invalid_picture_dimensions: false,
     general_errors: false,
   };
 
@@ -68,7 +74,7 @@ export class AdminDashboardComponent implements OnInit {
     floor_plan: '',
   };
 
-  newWaiter = {
+  new_waiter = {
     username: '',
     password: '',
     security_question: '',
@@ -81,8 +87,7 @@ export class AdminDashboardComponent implements OnInit {
     email: '',
     profile_photo: '',
     restaurant: '',
-    role: "waiter"
-
+    role: 'waiter',
   };
 
   selectedFile: File | null = null;
@@ -96,28 +101,26 @@ export class AdminDashboardComponent implements OnInit {
       this.restaurant_types = data;
     });
 
-    this.user_service.find_by_role("waiter").subscribe((data) => {
+    this.user_service.find_by_role('waiter').subscribe((data) => {
       this.waiters = data;
     });
-    this.user_service.find_by_role("guest").subscribe((data) => {
+    this.user_service.find_by_role('guest').subscribe((data) => {
       this.guests = data;
     });
-    this.new_guest_statuses.fill('');
-
-
+    this.updated_guest_statuses.fill('');
   }
 
   onNavRadioChange() {
-    this.selected_restaurant = ''
+    this.selected_restaurant = '';
   }
 
   updateStatus(guest: Guest, index: number): void {
     this.admin_service
-      .update_status(guest.username, this.new_guest_statuses[index])
+      .update_status(guest.username, this.updated_guest_statuses[index])
       .subscribe((data) => {
         this.guests = [];
 
-        this.user_service.find_by_role("guest").subscribe((data) => {
+        this.user_service.find_by_role('guest').subscribe((data) => {
           this.guests = data;
         });
       });
@@ -126,39 +129,7 @@ export class AdminDashboardComponent implements OnInit {
   //waiter addition
 
   validDimensions(image: File): Observable<boolean> {
-    return new Observable((observer) => {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        const img = new Image();
-        img.onload = () => {
-          const minWidth = 100;
-          const minHeight = 100;
-          const maxWidth = 300;
-          const maxHeight = 300;
-
-          const validDimensions =
-            img.width >= minWidth &&
-            img.width <= maxWidth &&
-            img.height >= minHeight &&
-            img.height <= maxHeight;
-
-          if (!validDimensions) {
-            this.selectedFile = null;
-          }
-          observer.next(validDimensions);
-          observer.complete();
-        };
-        img.onerror = () => {
-          observer.error(false);
-        };
-        img.src = e.target.result;
-      };
-      reader.onerror = () => {
-        observer.error(false);
-      };
-      reader.readAsDataURL(image);
-    });
+    return this.image_dim.validateImageDimensions(image);
   }
 
   onFileSelected(event: any) {
@@ -167,74 +138,81 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onSubmitWaiter() {
-    if (!this.validateForm()) {
+    if (!this.validate_waiter_form()) {
       return; // Validation failed, stop submission
     }
 
-    this.processFormSubmission();
+    this.process_form_submission();
   }
 
-  validateForm(): boolean {
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*[a-z]{3,})(?=.*\d)(?=.*[\W_]).{6,10}$/;
-    const isValidPassword = passwordRegex.test(this.newWaiter.password);
+  private validate_waiter_form(): boolean {
+    const isValid = this.form_validation_service.validate_user_form(
+      this.new_waiter,
+      this.selectedFile
+    );
 
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-    const isValidEmail = emailRegex.test(this.newWaiter.email);
+    if (!isValid) {
+      // Set form flags based on validation results
+      this.set_form_flags();
+    }
 
-    const phoneRegex = /^06\d{8}$/;
-    const isValidPhoneNumber = phoneRegex.test(this.newWaiter.phone_number);
+    return isValid;
+  }
 
-    const fileRegex = /\.(png|jpg)$/i;
-    const isPngOrJpg = this.selectedFile
-      ? fileRegex.test(this.selectedFile.name)
-      : true;
+  private set_form_flags() {
+    // Reset flags
+    this.waiter_form_flags.invalid_password = false;
+    this.waiter_form_flags.invalid_email = false;
+    this.waiter_form_flags.invalid_phone_number = false;
+    this.waiter_form_flags.invalid_picture_format = false;
+   
+    this.waiter_form_flags.invalid_picture_dimensions = false;
+
+    // Set flags based on validation errors
+    const isValidPassword = RegexPatterns.PASSWORD.test(this.new_waiter.password);
+    const isValidEmail = RegexPatterns.EMAIL.test(this.new_waiter.email);
+    const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(this.new_waiter.phone_number);
+   
+    const isPngOrJpg = this.selectedFile ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name) : true;
 
     if (!isValidPassword) {
       this.waiter_form_flags.invalid_password = true;
-      return false;
     }
 
     if (!isValidEmail) {
       this.waiter_form_flags.invalid_email = true;
-      return false;
     }
 
     if (!isValidPhoneNumber) {
       this.waiter_form_flags.invalid_phone_number = true;
-      return false;
     }
 
     if (!isPngOrJpg) {
       this.waiter_form_flags.invalid_picture_format = true;
-
-      return false;
     }
-
-    return true;
   }
 
-  processFormSubmission() {
-    this.newWaiter.password = CryptoJS.MD5(this.newWaiter.password).toString();
-    this.newWaiter.security_question_answer = CryptoJS.MD5(
-      this.newWaiter.security_question_answer
+  private process_form_submission() {
+    this.new_waiter.password = CryptoJS.MD5(this.new_waiter.password).toString();
+    this.new_waiter.security_question_answer = CryptoJS.MD5(
+      this.new_waiter.security_question_answer
     ).toString();
 
     if (this.selectedFile) {
-      this.newWaiter.profile_photo = this.selectedFile.name;
+      this.new_waiter.profile_photo = this.selectedFile.name;
     } else {
       // Set default profile photo based on gender
-      this.newWaiter.profile_photo =
-        this.newWaiter.gender === 'male'
+      this.new_waiter.profile_photo =
+        this.new_waiter.gender === 'male'
           ? 'default_male.png'
           : 'default_female.png';
     }
 
-    this.admin_service.register_waiter(this.newWaiter).subscribe({
+    this.admin_service.register_waiter(this.new_waiter).subscribe({
       next: (data) => {
         this.waiters = [];
 
-        this.user_service.find_by_role("waiter").subscribe((data) => {
+        this.user_service.find_by_role('waiter').subscribe((data) => {
           this.waiters = data;
         });
       },
@@ -289,48 +267,20 @@ export class AdminDashboardComponent implements OnInit {
 
     this.json_service.getData(this.selected_restaurant_floor_plan).subscribe({
       next: (data) => {
-        this.renderFloorPlan(data);
+        this.renderRestaurantPlan(data);
       },
       error: (err) => {
         alert(err.message);
       },
-    });
+    }); 
   }
 
-  renderFloorPlan(floorPlan: any): void {
+  renderRestaurantPlan(restaurant_plan: any): void {
     const canvas = document.getElementById(
-      'floorPlanCanvas'
+      'restaurantPlanCanvas'
     ) as HTMLCanvasElement;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Render rectangles
-        floorPlan.rectangles.forEach((rect: any) => {
-          const centerX = rect.x + rect.width / 2;
-          const centerY = rect.y + rect.height / 2;
-          const text = rect.label;
-          const textWidth = ctx.measureText(text).width;
 
-          ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-
-          // Rechtangle label is positioned in such manner that its x cooridate starts left of x coordinate of center by half of its width
-          ctx.fillText(text, centerX - textWidth / 2, centerY);
-        });
-        // Render circles
-        floorPlan.circles.forEach((circle: any) => {
-          const text = circle.label;
-          const textWidth = ctx.measureText(text).width;
-
-          ctx.beginPath();
-          ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-          ctx.stroke();
-          // Circle label is positioned in such manner that its x cooridate starts left of x coordinate of center by half of its width
-
-          ctx.fillText(text, circle.x - textWidth / 2, circle.y);
-        });
-      }
-    }
+    this.restaurant_plan_service.renderRestaurantPlan(restaurant_plan, canvas);
   }
 
   logout() {

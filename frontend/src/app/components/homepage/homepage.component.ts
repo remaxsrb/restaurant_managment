@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Restaurant } from 'src/app/models/restaurant';
 import { Waiter } from 'src/app/models/waiter';
-import { RestaurantService } from 'src/app/services/restaurant.service';
+import { RestaurantService } from 'src/app/services/model_services/restaurant.service';
 import * as CryptoJS from 'crypto-js';
 
 

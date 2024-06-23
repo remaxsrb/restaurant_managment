@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "6677fb7e0c3a4285c1ac7880"
+  },
+  "username": "remaxsrb",
+  "password": "cdb67a63d447bab6c83d81fe1b33599a",
+  "email": "remaxsrb@protonmail.com",
+  "role": "guest",
+  "security_question": "What city were you born in?",
+  "security_question_answer": "1f29b84bb2a19a40d69daaef1afebfd5",
+  "firstname": "Marko",
+  "lastname": "Jovanovic",
+  "gender": "male",
+  "address": "Praska 34",
+  "phone_number": "0654340122",
+  "credit_card_number": "1312131213121312",
+  "profile_photo": "default_male.png",
+  "status": "pending",
+  "late_for_reservation": 0
+},
+{
+  "_id": {
+    "$oid": "6677fefd6d04a4b209d0b02c"
+  },
+  "username": "admin",
+  "password": "928685e214fa387530cc8e14d09a1858",
+  "role": "admin",
+  "email": "admin@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "66785c757d542781968ac10a"
+  },
+  "username": "tea",
+  "password": "641b47d386003d80f02c300c8816b1dc",
+  "email": "tijana@gmail.com",
+  "role": "guest",
+  "security_question": "What is the name of your first pet?",
+  "security_question_answer": "3484e3eed2ac0aa9ce7adaec444ed538",
+  "firstname": "Tijana",
+  "lastname": "Jeremic",
+  "gender": "female",
+  "address": "Humska 1",
+  "phone_number": "0641111111",
+  "credit_card_number": "1970197019701970",
+  "profile_photo": "default_female.png",
+  "status": "pending",
+  "late_for_reservation": 0
+}]

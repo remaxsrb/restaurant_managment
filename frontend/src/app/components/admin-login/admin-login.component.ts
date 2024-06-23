@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as CryptoJS from 'crypto-js';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/model_services/user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 

@@ -1,13 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Guest } from '../models/guest';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, throwError, catchError } from 'rxjs';
+import { Waiter } from '../../models/waiter';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GuestService {
+export class WaiterService {
   constructor(private http: HttpClient) {}
 
-  backendUrl = 'http://127.0.0.1:4000/guest';
+  backendUrl = 'http://127.0.0.1:4000/waiter';
 }

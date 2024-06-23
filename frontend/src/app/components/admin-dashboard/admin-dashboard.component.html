@@ -109,7 +109,7 @@
                     <tr *ngIf="selected_restaurant === row.name">
                       <td colspan="6">
                         <canvas
-                          id="floorPlanCanvas"
+                          id="restaurantPlanCanvas"
                           width="500"
                           height="400"
                           style="border: 1px solid #000000"
@@ -309,7 +309,7 @@
                       id="firstname"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.firstname"
+                      [(ngModel)]="new_waiter.firstname"
                       name="firstname"
                     />
                   </div>
@@ -322,7 +322,7 @@
                       id="lastname"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.lastname"
+                      [(ngModel)]="new_waiter.lastname"
                       name="lastname"
                     />
                   </div>
@@ -338,7 +338,7 @@
                       id="username"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.username"
+                      [(ngModel)]="new_waiter.username"
                       name="username"
                     />
                     <div
@@ -358,7 +358,7 @@
                       id="password"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.password"
+                      [(ngModel)]="new_waiter.password"
                       name="password"
                     />
                     <div
@@ -382,7 +382,7 @@
                       id="securityQuestion"
                       class="form-select"
                       required
-                      [(ngModel)]="newWaiter.security_question"
+                      [(ngModel)]="new_waiter.security_question"
                       name="securityQuestion"
                     >
                       <option value="" disabled selected>
@@ -411,7 +411,7 @@
                       id="security_question_answer"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.security_question_answer"
+                      [(ngModel)]="new_waiter.security_question_answer"
                       name="security_question_answer"
                     />
                   </div>
@@ -427,7 +427,7 @@
                       id="email"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.email"
+                      [(ngModel)]="new_waiter.email"
                       name="email"
                     />
                     <div
@@ -454,7 +454,7 @@
                       id="address"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.address"
+                      [(ngModel)]="new_waiter.address"
                       name="address"
                     />
                   </div>
@@ -472,7 +472,7 @@
                       id="phone_number"
                       class="form-control"
                       required
-                      [(ngModel)]="newWaiter.phone_number"
+                      [(ngModel)]="new_waiter.phone_number"
                       name="phone_number"
                     />
                     <div
@@ -514,7 +514,7 @@
                         id="male"
                         class="form-check-input"
                         name="gender"
-                        [(ngModel)]="newWaiter.gender"
+                        [(ngModel)]="new_waiter.gender"
                         value="male"
                         required
                       />
@@ -526,7 +526,7 @@
                         id="female"
                         class="form-check-input"
                         name="gender"
-                        [(ngModel)]="newWaiter.gender"
+                        [(ngModel)]="new_waiter.gender"
                         value="female"
                         required
                       />
@@ -544,7 +544,7 @@
                       id="restaurantSelect"
                       name="restaurant"
                       class="form-control"
-                      [(ngModel)]="newWaiter.restaurant"
+                      [(ngModel)]="new_waiter.restaurant"
                     >
                       <option
                         *ngFor="let restaurant of restaurants"
@@ -615,7 +615,7 @@
                       id="status-{{ i }}"
                       class="form-select"
                       required
-                      [(ngModel)]="new_guest_statuses[i]"
+                      [(ngModel)]="updated_guest_statuses[i]"
                       name="status-{{ i }}"
                       required
                     >

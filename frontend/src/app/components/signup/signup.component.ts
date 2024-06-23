@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/model_services/user.service';
+import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
+import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
+import { RegexPatterns } from '../regex_patterns';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +13,12 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  constructor(private user_service: UserService, private router: Router) {}
+  constructor(
+    private user_service: UserService,
+    private image_dim: ImageDimensionValidationService,
+    private form_validation_service: FormValidationService,
+    private router: Router
+  ) {}
 
   new_guest = {
     username: '',
@@ -43,39 +51,7 @@ export class SignupComponent {
   selectedFile: File | null = null;
 
   validDimensions(image: File): Observable<boolean> {
-    return new Observable((observer) => {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        const img = new Image();
-        img.onload = () => {
-          const minWidth = 100;
-          const minHeight = 100;
-          const maxWidth = 300;
-          const maxHeight = 300;
-
-          const validDimensions =
-            img.width >= minWidth &&
-            img.width <= maxWidth &&
-            img.height >= minHeight &&
-            img.height <= maxHeight;
-
-          if (!validDimensions) {
-            this.selectedFile = null;
-          }
-          observer.next(validDimensions);
-          observer.complete();
-        };
-        img.onerror = () => {
-          observer.error(false);
-        };
-        img.src = e.target.result;
-      };
-      reader.onerror = () => {
-        observer.error(false);
-      };
-      reader.readAsDataURL(image);
-    });
+    return this.image_dim.validateImageDimensions(image);
   }
 
   onFileSelected(event: any) {
@@ -84,61 +60,64 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    if (!this.validateForm()) {
+    if (!this.validate_form()) {
       return; // Validation failed, stop submission
     }
 
     this.processFormSubmission();
   }
 
-  validateForm(): boolean {
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*[a-z]{3,})(?=.*\d)(?=.*[\W_]).{6,10}$/;
-    const isValidPassword = passwordRegex.test(this.new_guest.password);
-
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-    const isValidEmail = emailRegex.test(this.new_guest.email);
-
-    const phoneRegex = /^06\d{8}$/;
-    const isValidPhoneNumber = phoneRegex.test(this.new_guest.phone_number);
-
-    const creditCardRegex = /^\d{16}$/;
-    const isValidCreditCardNumber = creditCardRegex.test(
-      this.new_guest.credit_card_number
+  validate_form(): boolean {
+    const isValid = this.form_validation_service.validate_user_form(
+      this.new_guest,
+      this.selectedFile
     );
 
-    const fileRegex = /\.(png|jpg)$/i;
-    const isPngOrJpg = this.selectedFile
-      ? fileRegex.test(this.selectedFile.name)
-      : true;
+    if (!isValid) {
+      // Set form flags based on validation results
+      this.set_form_flags();
+    }
+
+    return isValid;
+  }
+
+  private set_form_flags() {
+    // Reset flags
+    this.guest_form_flags.invalid_password = false;
+    this.guest_form_flags.invalid_email = false;
+    this.guest_form_flags.invalid_phone_number = false;
+    this.guest_form_flags.invalid_picture_format = false;
+    this.guest_form_flags.invalid_picture_credit_card_format = false;
+    this.guest_form_flags.invalid_picture_dimensions = false;
+
+    // Set flags based on validation errors
+    const isValidPassword = RegexPatterns.PASSWORD.test(this.new_guest.password);
+    const isValidEmail = RegexPatterns.EMAIL.test(this.new_guest.email);
+    const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(this.new_guest.phone_number);
+    const isValidCreditCardNumber = RegexPatterns.CREDIT_CARD_NUMBER.test(this.new_guest.credit_card_number);
+    const isPngOrJpg = this.selectedFile ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name) : true;
 
     if (!isValidPassword) {
       this.guest_form_flags.invalid_password = true;
-      return false;
     }
 
     if (!isValidEmail) {
       this.guest_form_flags.invalid_email = true;
-      return false;
     }
 
     if (!isValidPhoneNumber) {
       this.guest_form_flags.invalid_phone_number = true;
-      return false;
     }
 
     if (!isValidCreditCardNumber) {
       this.guest_form_flags.invalid_picture_credit_card_format = true;
-      return false;
     }
 
     if (!isPngOrJpg) {
       this.guest_form_flags.invalid_picture_format = true;
-      return false;
     }
-
-    return true;
   }
+
 
   processFormSubmission() {
     this.new_guest.password = CryptoJS.MD5(this.new_guest.password).toString();
@@ -167,10 +146,8 @@ export class SignupComponent {
         if (error.status === 408) {
           this.guest_form_flags.username_exists = true;
           // Conflict error
-        } 
-        else if (error.status === 409) {
+        } else if (error.status === 409) {
           this.guest_form_flags.email_taken = true;
-
         } else {
           this.guest_form_flags.general_errors = true; // General error
         }

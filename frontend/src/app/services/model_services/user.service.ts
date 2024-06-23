@@ -13,8 +13,6 @@ export class UserService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   register(user: any): Observable<any> {
-    // Optionally, you can log or alert the user data before sending
-    alert(JSON.stringify(user));
 
     // Send POST request with headers
     return this.http.post<any>(
