@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminService } from 'src/app/services/admin.service';
 import * as CryptoJS from 'crypto-js';
+import { UserService } from 'src/app/services/user.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @Component({
   selector: 'app-admin-login',
@@ -9,7 +11,14 @@ import * as CryptoJS from 'crypto-js';
   styleUrls: ['./admin-login.component.css'],
 })
 export class AdminLoginComponent {
-  constructor(private admin_service: AdminService, private router: Router) {}
+  constructor(
+    private user_service: UserService,
+    public jwtHelper: JwtHelperService,
+    private router: Router
+  ) {}
+
+  private readonly TOKEN_KEY = 'authToken';
+
 
   signInData = {
     username: '',
@@ -21,12 +30,15 @@ export class AdminLoginComponent {
       this.signInData.password
     ).toString();
 
-    this.admin_service
+    this.user_service
       .login(this.signInData.username, this.signInData.password)
       .subscribe({
         next: (data) => {
-          console.log('Admin logged in successfully:', data);
-          this.router.navigate(['admin']);
+          localStorage.setItem(this.TOKEN_KEY, data.token);
+
+          if (data.role === 'admin') {
+            this.router.navigate(['admin']);
+          }
         },
         error: (error) => {
           console.error('Error logging in:', error);

@@ -11,6 +11,9 @@ export class RestaurantTypeService {
 
   backendUrl = 'http://127.0.0.1:4000/restaurant_type';
 
+  //headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+
 
   all() {
     return this.http.get<RestaurantType[]>(`${this.backendUrl}/all`);

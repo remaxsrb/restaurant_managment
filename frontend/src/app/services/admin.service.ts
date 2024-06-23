@@ -1,85 +1,30 @@
-
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
+  private backendUrl = 'http://127.0.0.1:4000/admin';
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) {}
 
-  backendUrl = 'http://127.0.0.1:4000/admin';
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    
-    let errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
-    
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
-  }
-
-  login(username: String, password:String) : Observable<any> {
+  update_status(username: string, newStatus: string): Observable<any> {
     const data = {
       username: username,
-      password: password,
-
+      new_status: newStatus.toLowerCase(),
     };
 
-    return this.http.post<any>(`${this.backendUrl}/login`, data).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-
-  update_status(username: String, new_status: String) {
-
-    const data = {
-      username: username,
-      new_status: new_status.toLowerCase(),
- 
-    };
-
-    return this.http.post<any>(`${this.backendUrl}/set_guest_status`, data);
-
+    return this.http.post<any>(`${this.backendUrl}/set_guest_status`, data, { headers: this.headers });
   }
 
   register_waiter(waiter: any): Observable<any> {
-    const data = {
-      username: waiter.username,
-      password: waiter.password,
-      security_question: waiter.security_question,
-      security_question_answer: waiter.security_question_answer,
-      firstname: waiter.firstname,
-      lastname: waiter.lastname,
-      gender: waiter.gender,
-      address: waiter.address,
-      phone_number: waiter.phone_number,
-      email: waiter.email,
-      profile_photo: waiter.profile_photo,
-      restaurant: waiter.restaurant
-    };
-
-    return this.http.post<any>(`${this.backendUrl}/register_waiter`, data);
+    return this.http.post<any>(`${this.backendUrl}/register_waiter`, waiter, { headers: this.headers });
   }
 
   add_restaurant(restaurant: any): Observable<any> {
-    const data = {
-      name: restaurant.name,
-      address: restaurant.address,
-      phone_number: restaurant.phone_number,
-      email: restaurant.email,
-      type: restaurant.type,
-      location: restaurant.location,
-      description: restaurant.description,
-      floor_plan: restaurant.floor_plan,
-
-    };
-
-    return this.http.post<any>(`${this.backendUrl}/add_restaurant`, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<any>(`${this.backendUrl}/add_restaurant`, restaurant, { headers: this.headers });
   }
-
 }

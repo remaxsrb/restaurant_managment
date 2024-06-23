@@ -1,6 +1,7 @@
 import express from "express";
 import { AdminController } from "../controllers/admin";
 import { RestaurantController } from "../controllers/restaurant";
+import { UserController } from "../controllers/user";
 
 const adminRouter = express.Router();
 
@@ -14,7 +15,7 @@ adminRouter
 
 adminRouter
   .route("/login")
-  .post((req, res) => new AdminController().login(req, res));
+  .post((req, res) => new UserController().login(req, res));
 
   adminRouter
   .route("/add_restaurant")

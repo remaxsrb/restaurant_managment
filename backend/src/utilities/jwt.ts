@@ -1,0 +1,20 @@
+import jwt from 'jsonwebtoken';
+
+const secretKey = ''; //write your secret key
+
+class jwt_service {
+  generate_token(user: any): string {
+    const data = {
+      username: user.username,
+      role: user.role,
+    };
+
+    const options = {
+      expiresIn: '1h',
+    };
+
+    return jwt.sign(data, secretKey, options);
+  }
+}
+
+export default new jwt_service();

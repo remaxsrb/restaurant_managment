@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GuestService } from 'src/app/services/guest.service';
-import { WaiterService } from 'src/app/services/waiter.service';
 import * as CryptoJS from 'crypto-js';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,10 +10,12 @@ import * as CryptoJS from 'crypto-js';
 })
 export class LoginComponent {
   constructor(
-    private guest_service: GuestService,
-    private waiter_service: WaiterService,
-    private router: Router
+    private auth_service: AuthService,
+    private router: Router,
+    public jwtHelper: JwtHelperService
   ) {}
+
+  private readonly TOKEN_KEY = 'authToken';
 
   signInData = {
     username: '',
@@ -29,44 +30,35 @@ export class LoginComponent {
   };
 
   onLogin() {
-    this.signInData.password = CryptoJS.MD5(
-      this.signInData.password
-    ).toString();
-
-    // Attempt to log in as a guest first
-    this.guest_service
-      .login(this.signInData.username, this.signInData.password)
+    this.auth_service.login(this.signInData.username, this.signInData.password)
       .subscribe({
         next: (data) => {
-          this.router.navigate(['guest']);
-        },
-        error: (error) => {
-         
-          if (error.status === 402) {
-            // If guest login fails with 402, attempt to log in as a waiter
-            this.waiter_service
-              .login(this.signInData.username, this.signInData.password)
-              .subscribe({
-                next: (data) => {
-                  this.router.navigate(['waiter']);
-                },
-                error: (error) => {
-
-                  if (error.status === 402) {
-                    this.login_form_flags.user_not_found = true;
-                  } else if (error.status === 401) {
-                    this.login_form_flags.invalid_password = true;
-                  } else {
-                    this.login_form_flags.general_errors = true;
-                  }
-                },
-              });
-          } else if (error.status === 401) {
-            this.login_form_flags.invalid_password = true;
+          localStorage.setItem(this.TOKEN_KEY, data.token);
+          if (data.role === 'guest') {
+            this.router.navigate(['guest']);
+          } else if (data.role === 'waiter') {
+            this.router.navigate(['waiter']);
           } else {
             this.login_form_flags.general_errors = true;
           }
         },
+        error: (error) => {
+          if (error.status === 401) {
+            this.login_form_flags.invalid_password = true;
+          } else if (error.status === 402) {
+            this.login_form_flags.user_not_found = true;
+          } else {
+            this.login_form_flags.general_errors = true;
+          }
+        }
       });
   }
+
+  onLogout() {
+    this.auth_service.logout();
+    this.router.navigate(['/']);
+
+  }
+
+
 }

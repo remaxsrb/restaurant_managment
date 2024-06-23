@@ -6,7 +6,7 @@ restaurantTypeRouter.route('/create').post(
     (req, res) => new RestaurantTypeController().create(req, res)
 )
 
-restaurantTypeRouter.route('/byName').get(
+restaurantTypeRouter.route('/by_name').get(
     (req, res) => new RestaurantTypeController().readByName(req, res)
 )
 

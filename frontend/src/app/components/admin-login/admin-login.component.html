@@ -21,8 +21,8 @@
               <div class="col-md-12">
                 <form
                   
-                  (ngSubmit)="onLogin()"
-                  #userForm="ngForm"
+                  (ngSubmit)="onLogin(); adminLogin.reset()"
+                  #adminLogin="ngForm"
                 >
                   <div class="mb-3">
                     <label for="username" class="form-label">Userame:</label>
@@ -52,7 +52,7 @@
                   <button
                     type="submit"
                     class="btn btn-dark"
-                    [disabled]="!userForm.form.valid"
+                    [disabled]="!adminLogin.form.valid"
                   >
                     Submit
                   </button>

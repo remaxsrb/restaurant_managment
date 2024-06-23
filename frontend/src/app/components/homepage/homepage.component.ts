@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Restaurant } from 'src/app/models/restaurant';
 import { Waiter } from 'src/app/models/waiter';
 import { RestaurantService } from 'src/app/services/restaurant.service';
+import * as CryptoJS from 'crypto-js';
+
 
 @Component({
   selector: 'app-homepage',
@@ -20,6 +22,7 @@ export class HomepageComponent implements OnInit {
   number_of_guests: Number = 0
 
   ngOnInit(): void {
+
       
   }
 }

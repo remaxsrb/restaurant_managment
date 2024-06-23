@@ -6,12 +6,12 @@ import { Restaurant } from 'src/app/models/restaurant';
 import { RestaurantType } from 'src/app/models/restaurant_type';
 import { Waiter } from 'src/app/models/waiter';
 import { AdminService } from 'src/app/services/admin.service';
-import { GuestService } from 'src/app/services/guest.service';
 import { RestaurantTypeService } from 'src/app/services/restaurant-type.service';
 import { RestaurantService } from 'src/app/services/restaurant.service';
-import { WaiterService } from 'src/app/services/waiter.service';
+import { AuthService } from 'src/app/services/auth.service';
 import * as CryptoJS from 'crypto-js';
 import { JsonService } from 'src/app/services/json.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -21,11 +21,11 @@ import { JsonService } from 'src/app/services/json.service';
 export class AdminDashboardComponent implements OnInit {
   constructor(
     private restaurant_service: RestaurantService,
-    private waiter_service: WaiterService,
-    private guest_service: GuestService,
+    private user_service: UserService,
     private admin_service: AdminService,
     private restaurant_type_service: RestaurantTypeService,
     private json_service: JsonService,
+    private auth_service: AuthService,
 
     private router: Router
   ) {}
@@ -81,6 +81,8 @@ export class AdminDashboardComponent implements OnInit {
     email: '',
     profile_photo: '',
     restaurant: '',
+    role: "waiter"
+
   };
 
   selectedFile: File | null = null;
@@ -94,13 +96,19 @@ export class AdminDashboardComponent implements OnInit {
       this.restaurant_types = data;
     });
 
-    this.waiter_service.all().subscribe((data) => {
+    this.user_service.find_by_role("waiter").subscribe((data) => {
       this.waiters = data;
     });
-    this.guest_service.all().subscribe((data) => {
+    this.user_service.find_by_role("guest").subscribe((data) => {
       this.guests = data;
     });
     this.new_guest_statuses.fill('');
+
+
+  }
+
+  onNavRadioChange() {
+    this.selected_restaurant = ''
   }
 
   updateStatus(guest: Guest, index: number): void {
@@ -109,7 +117,7 @@ export class AdminDashboardComponent implements OnInit {
       .subscribe((data) => {
         this.guests = [];
 
-        this.guest_service.all().subscribe((data) => {
+        this.user_service.find_by_role("guest").subscribe((data) => {
           this.guests = data;
         });
       });
@@ -226,7 +234,7 @@ export class AdminDashboardComponent implements OnInit {
       next: (data) => {
         this.waiters = [];
 
-        this.waiter_service.all().subscribe((data) => {
+        this.user_service.find_by_role("waiter").subscribe((data) => {
           this.waiters = data;
         });
       },
@@ -269,11 +277,11 @@ export class AdminDashboardComponent implements OnInit {
 
   //Restaurant radios
 
-  isChecked(restourant_name: string): boolean {
+  isRestaurantChecked(restourant_name: string): boolean {
     return this.selected_restaurant === restourant_name;
   }
 
-  onRadioChange(restourant_name: string) {
+  onRestaurantRadioChange(restourant_name: string) {
     this.selected_restaurant = restourant_name;
     this.selected_restaurant_floor_plan = this.restaurants.filter(
       (item) => item.name === restourant_name
@@ -323,5 +331,9 @@ export class AdminDashboardComponent implements OnInit {
         });
       }
     }
+  }
+
+  logout() {
+    this.auth_service.logout();
   }
 }

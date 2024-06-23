@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class JsonService {
 
   private floor_plan_url = 'assets/floor_plans'; 
+  
 
   constructor(private http: HttpClient) { }
 

@@ -12,9 +12,16 @@ import reservation from "./models/reservation";
 import reservationRouter from "./routers/reservation";
 import restaurantRouter from "./routers/restourant";
 import restaurantTypeRouter from "./routers/restourant_types";
+import userRouter from "./routers/user";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4200', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+// Middleware to parse JSON bodies
 app.use(express.json());
 
 mongoose.connect("mongodb://127.0.0.1:27017/db");
@@ -24,6 +31,7 @@ connection.once("open", () => {
 });
 
 const router = express.Router();
+router.use("/user", userRouter);
 router.use("/guest", guestRouter);
 router.use("/waiter", waiterRouter);
 router.use("/admin", adminRouter);

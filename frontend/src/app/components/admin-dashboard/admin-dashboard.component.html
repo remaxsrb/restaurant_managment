@@ -28,6 +28,7 @@
               autocomplete="off"
               [(ngModel)]="selectedOption"
               value="restaurants"
+              
             />
             <label class="btn btn-outline-primary" for="btnradio1"
               >Restaurants</label
@@ -41,6 +42,7 @@
               autocomplete="off"
               [(ngModel)]="selectedOption"
               value="waiters"
+              (click)="onNavRadioChange()"
             />
             <label class="btn btn-outline-primary" for="btnradio2"
               >Waiters</label
@@ -54,10 +56,12 @@
               autocomplete="off"
               [(ngModel)]="selectedOption"
               value="guests"
+              (click)="onNavRadioChange()"
             />
             <label class="btn btn-outline-primary" for="btnradio3"
               >Guests</label
             >
+            <button type="button" class="btn btn-outline-primary" (click)="logout()">Log out</button>
           </div>
         </div>
       </div>
@@ -91,9 +95,9 @@
                           type="radio"
                           id="flexCheckDefault{{ i }}"
                           name="radioGroup"
-                          [checked]="isChecked(row.name)"
+                          [checked]="isRestaurantChecked(row.name)"
                           [value]="row.name"
-                          (change)="onRadioChange(row.name)"
+                          (change)="onRestaurantRadioChange(row.name)"
                         />
                       </td>
                       <td>{{ row.name }}</td>

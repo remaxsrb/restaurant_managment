@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Dish from "./dish"
 
 const Schema = mongoose.Schema;
 

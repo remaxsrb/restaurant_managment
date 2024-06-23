@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { GuestService } from 'src/app/services/guest.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,11 +10,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  constructor(private guest_service: GuestService, private router: Router) {}
+  constructor(private user_service: UserService, private router: Router) {}
 
-  newGuest = {
+  new_guest = {
     username: '',
     password: '',
+    email: '',
+    role: 'guest',
     security_question: '',
     security_question_answer: '',
     firstname: '',
@@ -22,7 +24,6 @@ export class SignupComponent {
     gender: '',
     address: '',
     phone_number: '',
-    email: '',
     credit_card_number: '',
     profile_photo: '',
   };
@@ -93,17 +94,17 @@ export class SignupComponent {
   validateForm(): boolean {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z]{3,})(?=.*\d)(?=.*[\W_]).{6,10}$/;
-    const isValidPassword = passwordRegex.test(this.newGuest.password);
+    const isValidPassword = passwordRegex.test(this.new_guest.password);
 
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-    const isValidEmail = emailRegex.test(this.newGuest.email);
+    const isValidEmail = emailRegex.test(this.new_guest.email);
 
     const phoneRegex = /^06\d{8}$/;
-    const isValidPhoneNumber = phoneRegex.test(this.newGuest.phone_number);
+    const isValidPhoneNumber = phoneRegex.test(this.new_guest.phone_number);
 
     const creditCardRegex = /^\d{16}$/;
     const isValidCreditCardNumber = creditCardRegex.test(
-      this.newGuest.credit_card_number
+      this.new_guest.credit_card_number
     );
 
     const fileRegex = /\.(png|jpg)$/i;
@@ -140,22 +141,22 @@ export class SignupComponent {
   }
 
   processFormSubmission() {
-    this.newGuest.password = CryptoJS.MD5(this.newGuest.password).toString();
-    this.newGuest.security_question_answer = CryptoJS.MD5(
-      this.newGuest.security_question_answer
+    this.new_guest.password = CryptoJS.MD5(this.new_guest.password).toString();
+    this.new_guest.security_question_answer = CryptoJS.MD5(
+      this.new_guest.security_question_answer
     ).toString();
 
     if (this.selectedFile) {
-      this.newGuest.profile_photo = this.selectedFile.name;
+      this.new_guest.profile_photo = this.selectedFile.name;
     } else {
       // Set default profile photo based on gender
-      this.newGuest.profile_photo =
-        this.newGuest.gender === 'male'
+      this.new_guest.profile_photo =
+        this.new_guest.gender === 'male'
           ? 'default_male.png'
           : 'default_female.png';
     }
 
-    this.guest_service.register(this.newGuest).subscribe({
+    this.user_service.register(this.new_guest).subscribe({
       next: (data) => {
         console.log('Guest registered successfully:', data);
         this.router.navigate(['/']);
