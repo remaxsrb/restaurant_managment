@@ -21,7 +21,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "*.json", "input": "src/app/floor_plans/", "output": "./assets/floor_plans/" },
+              { "glob": "*.json", "input": "src/app/restaurant_plans", "output": "./assets/restaurant_plans/" },
               { "glob": "*.jpg|*.png", "input": "src/app/photos/", "output": "./assets/photos/" }
             ],
             "styles": [
