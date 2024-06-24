@@ -29,11 +29,20 @@ export class LoginComponent {
     general_errors: false,
   };
 
+  private reset_form_flags() {
+    this.login_form_flags.invalid_password = false;
+    this.login_form_flags.invalid_password = false;
+    this.login_form_flags.invalid_password = false;
+  }
+
   onLogin() {
+    this.reset_form_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
+
     this.signInData.password = CryptoJS.MD5(
       this.signInData.password
     ).toString();
-    this.auth_service.login(this.signInData.username, this.signInData.password)
+    this.auth_service
+      .login(this.signInData.username, this.signInData.password)
       .subscribe({
         next: (data) => {
           localStorage.setItem(this.TOKEN_KEY, data.token);
@@ -48,6 +57,7 @@ export class LoginComponent {
           }
         },
         error: (error) => {
+
           if (error.status === 401) {
             this.login_form_flags.invalid_password = true;
           } else if (error.status === 402) {
@@ -55,15 +65,7 @@ export class LoginComponent {
           } else {
             this.login_form_flags.general_errors = true;
           }
-        }
+        },
       });
   }
-
-  onLogout() {
-    this.auth_service.logout();
-    this.router.navigate(['/']);
-
-  }
-
-
 }

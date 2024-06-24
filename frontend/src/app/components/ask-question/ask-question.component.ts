@@ -36,15 +36,19 @@ export class AskQuestionComponent {
   };
 
   onAnswerSubmit() {
-    this.component_data.security_question_answer = CryptoJS.MD5(this.component_data.security_question_answer).toString();
-    localStorage.setItem('username', this.component_data.username)
+    this.reset_ask_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
+
+    this.component_data.security_question_answer = CryptoJS.MD5(
+      this.component_data.security_question_answer
+    ).toString();
+    localStorage.setItem('username', this.component_data.username);
 
     this.user_service.check_question(this.component_data).subscribe({
       next: (data) => {
         this.show_password_form = true;
-        this.reset_ask_flags() //incase someone does not reload after bad submission
       },
       error: (error) => {
+
         // Handle specific errors or show a general message
         if (error.status === 404) {
           this.ask_form_flags.username_not_found = true;
@@ -73,12 +77,10 @@ export class AskQuestionComponent {
   }
 
   private set_form_flag() {
-    this.ask_form_flags.invalid_password_format = false;
 
     const is_valid_password = RegexPatterns.PASSWORD.test(this.password);
 
-    if (!is_valid_password) this.ask_form_flags.invalid_password_format = true
-
+    if (!is_valid_password) this.ask_form_flags.invalid_password_format = true;
   }
 
   private process_new_password_submission() {
@@ -93,7 +95,6 @@ export class AskQuestionComponent {
 
     this.user_service.change_password(data).subscribe({
       next: (data) => {
-        
         this.router.navigate(['/']);
       },
       error: (error) => {
@@ -108,11 +109,11 @@ export class AskQuestionComponent {
     this.ask_form_flags.username_not_found = false;
     this.ask_form_flags.security_question_mismatch = false;
     this.ask_form_flags.wrong_answer = false;
-
-
   }
 
   onPasswordSubmit() {
+    this.ask_form_flags.invalid_password_format = false; 
+
     if (!this.validate_password()) return; // Validation failed, stop submission
 
     this.process_new_password_submission();

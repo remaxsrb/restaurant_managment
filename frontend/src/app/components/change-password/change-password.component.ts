@@ -35,7 +35,6 @@ export class ChangePasswordComponent {
   }
 
   private set_form_flags() {
-    this.form_error_flags.invalid_password_format = false;
 
     const is_valid_password = RegexPatterns.PASSWORD.test(
       this.component_data.new_password
@@ -47,6 +46,7 @@ export class ChangePasswordComponent {
   }
 
   process_form_submission() {
+
     this.component_data.new_password = CryptoJS.MD5(
       this.component_data.new_password
     ).toString();
@@ -73,6 +73,8 @@ export class ChangePasswordComponent {
   }
 
   onSubmit() {
+    this.form_error_flags.invalid_password_format = false;
+
     if (!this.validate_form()) return; // Validation failed, stop submission
 
     this.process_form_submission();

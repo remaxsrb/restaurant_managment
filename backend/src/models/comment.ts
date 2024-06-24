@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-let Comment = new Schema ({
+const Comment = new Schema ({
 
     restaurant_id: {
         type: String,

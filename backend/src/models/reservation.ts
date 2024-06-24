@@ -2,8 +2,16 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-let Reservation = new Schema ({
+const Reservation = new Schema ({
 
+    restaurant_id: {
+        type: String,
+        required: true,
+    },
+    user_id: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
         required: true,
@@ -11,22 +19,11 @@ let Reservation = new Schema ({
     date: {
         type: Date,
         required: true,
-        default: Date.now()
     },
-    restaurant_id: {
-        type: String,
-        required: true,
-    },
-    comment: {
-        type: String,
-    },
-    rating: {
-        type: String,
-    },
-    user_id: {
-        type: String,
-        required: true
+    time: {
+
     }
+    
 
 
 }, { versionKey: false })

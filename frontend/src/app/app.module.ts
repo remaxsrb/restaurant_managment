@@ -18,6 +18,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { GuestDashBoardComponent } from './components/guest-dashboard/guest-dashborad.component';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { AskQuestionComponent } from './components/ask-question/ask-question.component';
+import { AdminDashboardRestaurantsComponent } from './components/admin-dashboard-restaurants/admin-dashboard-restaurants.component';
+import { AdminDashboardWaitersComponent } from './components/admin-dashboard-waiters/admin-dashboard-waiters.component';
+import { AdminDashboardGuestsComponent } from './components/admin-dashboard-guests/admin-dashboard-guests.component';
+
 
 @NgModule({
   declarations: [
@@ -31,6 +35,10 @@ import { AskQuestionComponent } from './components/ask-question/ask-question.com
     AdminDashboardComponent,
     ChangePasswordComponent,
     AskQuestionComponent,
+    AdminDashboardRestaurantsComponent,
+    AdminDashboardWaitersComponent,
+    AdminDashboardGuestsComponent,
+
   ],
   imports: [
     BrowserModule,

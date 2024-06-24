@@ -60,6 +60,8 @@ export class SignupComponent {
   }
 
   onSubmit() {
+    this.reset_form_flags() //Incase someone does not reload after bad submission, reset flags as to not confuse the user
+
     if (!this.validate_form()) {
       return; // Validation failed, stop submission
     }
@@ -78,7 +80,7 @@ export class SignupComponent {
     return isValid;
   }
 
-  private set_form_flags() {
+  private reset_form_flags() { 
     // Reset flags
     this.guest_form_flags.invalid_password = false;
     this.guest_form_flags.invalid_email = false;
@@ -86,6 +88,10 @@ export class SignupComponent {
     this.guest_form_flags.invalid_picture_format = false;
     this.guest_form_flags.invalid_picture_credit_card_format = false;
     this.guest_form_flags.invalid_picture_dimensions = false;
+  }
+
+  private set_form_flags() {
+
 
     // Set flags based on validation errors
     const is_valid_password = RegexPatterns.PASSWORD.test(

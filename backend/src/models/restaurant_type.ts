@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Scheme = mongoose.Schema;
 
-let RestaurantType = new Scheme({
+const RestaurantType = new Scheme({
     name: {
         type: String,
         required: true,

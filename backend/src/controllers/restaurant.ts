@@ -3,17 +3,7 @@ import Restaurant from "../models/restaurant";
 
 export class RestaurantController {
   create(req: express.Request, res: express.Response) {
-    let restaurant = {
-      name: req.body.name,
-      address: req.body.address,
-      phone_number: req.body.phone_number,
-      type: req.body.type,
-      location: req.body.location,
-      email: req.body.email,
-      description: req.body.description,
-      floor_plan: req.body.floor_plan,
-
-    };
+    const restaurant = req.body;
 
     new Restaurant(restaurant)
       .save()
@@ -29,8 +19,7 @@ export class RestaurantController {
   }
 
   all(req: express.Request, res: express.Response) {
-    Restaurant
-      .find({})
+    Restaurant.find({})
       .sort({ name: 1 })
       .then((restaurants) => {
         res.json(restaurants);
@@ -97,13 +86,15 @@ export class RestaurantController {
     errorMessage: string
   ) {
     const valueToSearch = req.query[fieldToSearch];
-  
+
     if (!valueToSearch) {
-      res.status(400).json({ message: `Missing query parameter: ${fieldToSearch}` });
+      res
+        .status(400)
+        .json({ message: `Missing query parameter: ${fieldToSearch}` });
       return;
     }
 
-    Restaurant.findOne({valueToSearch})
+    Restaurant.findOne({ valueToSearch })
       .then((restourant) => {
         if (restourant) {
           res.json(restourant);
@@ -116,7 +107,7 @@ export class RestaurantController {
         res.status(500).json({ message: errorMessage });
       });
   }
-  
+
   sortByNameAsc(req: express.Request, res: express.Response) {
     this.sortByFieldAsc(req, res, "name", "Internal server error");
   }
@@ -146,12 +137,16 @@ export class RestaurantController {
   }
 
   readByAddress(req: express.Request, res: express.Response) {
-    this.readByField(req, res, "address", "Restourant with such address not found");
+    this.readByField(
+      req,
+      res,
+      "address",
+      "Restourant with such address not found"
+    );
   }
 
   readByType(req: express.Request, res: express.Response) {
     this.readByField(req, res, "type", "Restourant with such type not found");
-
   }
 
   addDish(req: express.Request, res: express.Response) {
@@ -164,7 +159,6 @@ export class RestaurantController {
       { new: true }
     )
       .then((restaurant) => {
-
         res.json({ message: "Dish addedd successfully", restaurant });
       })
       .catch((err) => {
@@ -175,19 +169,16 @@ export class RestaurantController {
       });
   }
 
-  
-
   removeDish(req: express.Request, res: express.Response) {
     const name = req.body.name;
     const dish = req.body.dish;
 
     Restaurant.findOneAndUpdate(
       { username: name },
-      { $pull: { dishes: {name: dish.name} } },
+      { $pull: { dishes: { name: dish.name } } },
       { new: true }
     )
       .then((restaurant) => {
-
         res.json({ message: "Dish removed successfully", restaurant });
       })
       .catch((err) => {

@@ -1,0 +1,236 @@
+<div class="row">
+    <div class="col-md-6">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Show</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Phone number</th>
+            <th>Address</th>
+            <th>Location</th>
+            <th>Open</th>
+            <th>Closed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of restaurants; let i = index">
+            <tr>
+              <td>
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  id="flexCheckDefault{{ i }}"
+                  name="radioGroup"
+                  [checked]="isRestaurantChecked(row.name)"
+                  [value]="row.name"
+                  (change)="onRestaurantRadioChange(row.name)"
+                />
+              </td>
+              <td>{{ row.name }}</td>
+              <td>{{ row.type }}</td>
+              <td>{{ row.phone_number }}</td>
+              <td>{{ row.address }}</td>
+              <td>{{ row.location }}</td>
+              <td>{{ row.open }}</td>
+              <td>{{ row.close }}</td>
+            </tr>
+            <tr *ngIf="selected_restaurant === row.name">
+              <td colspan="6">
+                <canvas
+                  id="restaurantPlanCanvas"
+                  width="500"
+                  height="400"
+                  style="border: 1px solid #000000"
+                ></canvas>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <form
+        (ngSubmit)="onSubmitRestaurant(); restaurant_form.resetForm()"
+        #restaurant_form="ngForm"
+      >
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name:</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.name"
+                name="name"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="address" class="form-label">Address:</label>
+              <input
+                type="text"
+                id="address"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.address"
+                name="address"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="type" class="form-label">Type:</label>
+              <select
+                id="type"
+                class="form-select"
+                required
+                [(ngModel)]="newRestaurant.type"
+                name="type"
+              >
+                <option value="" disabled selected>
+                  Select a type
+                </option>
+                <option
+                  *ngFor="let type of restaurant_types"
+                  [value]="type.name"
+                >
+                  {{ type.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="phone_number" class="form-label"
+                >Phone number:</label
+              >
+              <input
+                type="text"
+                id="phone_number"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.phone_number"
+                name="phone_number"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.email"
+                name="email"
+              />
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="restaurant_form_flags.invalid_email"
+              >
+                Invalid email
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="location" class="form-label">Location:</label>
+              <input
+                type="text"
+                id="location"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.location"
+                name="location"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="d-inline-block-timepicker">
+                <label for="opening_hours" class="form-label"
+                  >Opening Hours:</label
+                >
+                <ngb-timepicker
+                  name="opening_hours"
+                  [(ngModel)]="newRestaurant.open"
+                  [spinners]="true"
+                  required
+                ></ngb-timepicker>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="d-inline-block-timepicker">
+                <label for="closing_hours" class="form-label"
+                >Closing Hours:</label
+              >
+              <ngb-timepicker
+                name="closing_hours"
+                [(ngModel)]="newRestaurant.close"
+                [spinners]="true"
+                required
+              ></ngb-timepicker>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="inputGroupFile02">Floor plan:</label>
+            <input
+              type="file"
+              class="form-control"
+              id="inputGroupFile02"
+              (change)="onFileSelected($event)"
+            />
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="description" class="form-label"
+                >Description:</label
+              >
+              <textarea
+                id="description"
+                class="form-control"
+                required
+                [(ngModel)]="newRestaurant.description"
+                name="description"
+                rows="1"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <button
+              type="submit"
+              class="btn btn-dark"
+              [disabled]="!restaurant_form.form.valid"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
