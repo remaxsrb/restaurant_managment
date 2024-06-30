@@ -1,57 +1,54 @@
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Username</th>
-          <th>Phone number</th>
-          <th>Email</th>
-          <th>Credit card number</th>
-
-          <th>Status</th>
-          <th>Change status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of guests; let i = index">
-          <td>{{ row.firstname }}</td>
-          <td>{{ row.lastname }}</td>
-          <td>{{ row.username }}</td>
-          <td>{{ row.phone_number }}</td>
-          <td>{{ row.email }}</td>
-          <td>{{ row.credit_card_number }}</td>
-
-          <td>{{ row.status }}</td>
-          <td>
-            <form
-              (ngSubmit)="updateStatus(row, i)"
-              #guestStatusForm="ngForm"
-            >
-              <div class="d-flex align-items-center">
-                <select
-                  id="status-{{ i }}"
-                  class="form-select"
-                  required
-                  [(ngModel)]="updated_guest_statuses[i]"
-                  name="status-{{ i }}"
-                  required
-                >
-                  <option value="" disabled>Select a status</option>
-                  <option value="Active">Active</option>
-                  <option value="Rejected">Rejected</option>
-                  <option value="Banned">Banned</option>
-                  <option value="Deactivated">Deactivated</option>
-                </select>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  [disabled]="!guestStatusForm.form.valid"
-                >
-                  Change
-                </button>
-              </div>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Username</th>
+        <th>Phone number</th>
+        <th>Email</th>
+        <th>Credit card number</th>
+        <th>Status</th>
+        <th>Change status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of guests; let i = index">
+        <td>{{ row.firstname }}</td>
+        <td>{{ row.lastname }}</td>
+        <td>{{ row.username }}</td>
+        <td>{{ row.phone_number }}</td>
+        <td>{{ row.email }}</td>
+        <td>{{ row.credit_card_number }}</td>
+        <td>{{ row.status }}</td>
+        <td>
+          <form (ngSubmit)="updateStatus(row, i)" #guestStatusForm="ngForm">
+            <div class="d-flex align-items-center">
+              <select
+                id="status-{{ i }}"
+                class="form-select"
+                required
+                [(ngModel)]="updated_guest_statuses[i]"
+                name="status-{{ i }}"
+                required
+              >
+                <option value="" disabled>Select a status</option>
+                <option value="Active">Active</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Banned">Banned</option>
+                <option value="Deactivated">Deactivated</option>
+              </select>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!guestStatusForm.form.valid"
+              >
+                Change
+              </button>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

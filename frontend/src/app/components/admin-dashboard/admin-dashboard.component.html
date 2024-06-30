@@ -8,61 +8,78 @@
   <body>
     <!-- Header -->
     <header class="bg-primary text-white py-3">
-      <h1>Kutak dobre hrane</h1>
+      <div class="container text-center">
+        <h1>Kutak dobre hrane</h1>
+      </div>
     </header>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <div
-            class="btn-group"
-            role="group"
-            aria-label="Basic radio toggle button group"
-          >
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio1"
-              autocomplete="off"
-              [(ngModel)]="selectedOption"
-              value="restaurants"
-            />
-            <label class="btn btn-outline-primary" for="btnradio1"
-              >Restaurants</label
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavAltMarkup"
+        >
+          <div class="navbar-nav">
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio1"
             >
-
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio2"
-              autocomplete="off"
-              [(ngModel)]="selectedOption"
-              value="waiters"
-              (click)="onNavRadioChange()"
-            />
-            <label class="btn btn-outline-primary" for="btnradio2"
-              >Waiters</label
+              Restaurants
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio1"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="restaurants"
+              />
+            </label>
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio2"
             >
-
-            <input
-              type="radio"
-              class="btn-check"
-              name="btnradio"
-              id="btnradio3"
-              autocomplete="off"
-              [(ngModel)]="selectedOption"
-              value="guests"
-              (click)="onNavRadioChange()"
-            />
-            <label class="btn btn-outline-primary" for="btnradio3"
-              >Guests</label
+              Waiters
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio2"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="waiters"
+              />
+            </label>
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio3"
             >
+              Guests
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio3"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="guests"
+              />
+            </label>
             <button
               type="button"
-              class="btn btn-outline-primary"
+              class="btn btn-outline-primary logout-btn ms-2"
               (click)="logout()"
             >
               Log out
@@ -74,24 +91,29 @@
 
     <!-- Main Content -->
     <main
-      class="container d-flex flex-column justify-content-center align-items-center"
+      class="container-fluid d-flex flex-column justify-content-start"
     >
-      <div>
-        <app-admin-dashboard-restaurants
-          *ngIf="selectedOption === 'restaurants'"
-        ></app-admin-dashboard-restaurants>
-        <app-admin-dashboard-waiters
-          *ngIf="selectedOption === 'waiters'"
-        ></app-admin-dashboard-waiters>
-        <app-admin-dashboard-guests
-          *ngIf="selectedOption === 'guests'"
-        ></app-admin-dashboard-guests>
-      </div>
+
+    <div class="content-container">
+      <app-admin-dashboard-restaurants
+      *ngIf="selected_option === 'restaurants'"
+    ></app-admin-dashboard-restaurants>
+    <app-admin-dashboard-waiters
+      *ngIf="selected_option === 'waiters'"
+    ></app-admin-dashboard-waiters>
+    <app-admin-dashboard-guests
+      *ngIf="selected_option === 'guests'"
+    ></app-admin-dashboard-guests>
+    </div>
+
+        
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-3 mt-4">
-      <p>&copy; 2024 Marko Jovanovic</p>
+    <footer class="bg-dark text-white py-3">
+      <div class="container text-center">
+        <p>&copy; 2024 Marko Jovanovic</p>
+      </div>
     </footer>
   </body>
 </html>

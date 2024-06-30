@@ -1,53 +1,124 @@
-body, html {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-header, footer {
-    width: 100%;
-    text-align: center;
+/* Global CSS */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 
 }
+
 header {
-    top: 0;
+  background-color: #007bff; 
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+  width: 100%; 
 }
-footer {
-    bottom: 0;
-    position: fixed;
-}
-main {
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
 nav {
+  background-color: #f8f9fa; 
+}
+
+/* Ensure radios and links are centered */
+.navbar-nav {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  flex-wrap: nowrap; /* Ensure items stay in a single row */
+}
+
+.nav-item {
+  margin: 5px;
+}
+
+/* Full width for buttons on small screens */
+@media (max-width: 991px) {
+  .navbar-nav .nav-item,
+  .logout-btn {
     width: 100%;
-}
-nav .container {
-    display: flex;
-    justify-content: center;
-}
-nav ul.nav {
-    justify-content: center;
-}
-#navbarNav {
+    margin: 5px 0;
     text-align: center;
-    justify-content: center;
-    font-size: 20px;
+  }
+
+  /* Ensure main content expands to full width if necessary */
+  main {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 10px; /* Add padding to main content as necessary */
+  }
+
+  /* Ensure footer spans full width */
+  footer {
+    width: 100%;
+  }
+}
+
+main {
+  flex: 1; /* Fill remaining space */
+  display: flex;
+  flex-direction: column; /* Stack child elements vertically */
+  align-items: center; /* Center align horizontally */
+}
+
+.container {
+  width: 100%; /* Ensure container takes full width */
+  padding: 20px;
+  flex: 1; /* Ensure container takes remaining height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Ensure components wrap and have space between them */
+.content-container {
+  width: 100%;
+  flex: 1; /* Take remaining height */
+  display: flex;
+  flex-direction: column; /* Ensure components stack vertically */
+  align-items: center; /* Center align horizontally */
+}
+
+.content-container > * { 
+  width: 100%; 
 
 }
 
-.nav-link:link {
-    color: blue;
-  }
 
-  .nav-link:visited {
-    color: purple; 
-  }
+/* Ensure the table can stretch */
+table {
+  width: 100%;
+  max-width: none; /* Ensure the table can exceed the container width */
+  white-space: nowrap; /* Prevent table content from wrapping */
+  text-align: center;
 
-  .d-inline-block-timepicker {
-    display: inline-block; 
-    text-align: center; 
-  }
+}
+
+th, td {
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+form {
+  width: 100%; /* Ensure form takes full width */
+  max-width: 500px; /* Limit form width for readability */
+  padding: 20px;
+  background-color: #fff; /* Form background color */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Center form content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Footer styles */
+footer {
+  background-color: #343b42; /* Bootstrap dark color */
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+  margin-top: auto; /* Push footer to the bottom */
+  width: 100%;
+}

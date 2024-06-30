@@ -1,50 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kutak dobre hrane</title>
-
-</head>
-<body>
-
-     <!-- Header -->
-     <header class="bg-primary text-white py-3">
-        <h1>Kutak dobre hrane</h1>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+      <h1>Kutak dobre hrane</h1>
     </header>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="nav justify-content-center">
-                  <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Active</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Link</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Link</a>
-                  </li>
-              </ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavAltMarkup"
+        >
+          <div class="navbar-nav">
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio1"
+            >
+              Profile
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio1"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="profile"
+              />
+            </label>
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio2"
+            >
+              Restaurants
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio2"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="restaurants"
+              />
+            </label>
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio3"
+            >
+              Reservations
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio3"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="reservations"              />
+            </label>
+            <label
+              class="nav-item btn btn-outline-primary ms-2"
+              for="btnradio4"
+            >
+              Order food
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio4"
+                autocomplete="off"
+                [(ngModel)]="selected_option"
+                value="food_order"
+              />
+            </label>
+            <button
+              type="button"
+              class="btn btn-outline-primary logout-btn ms-2"
+              (click)="logout()"
+            >
+              Log out
+            </button>
           </div>
+        </div>
       </div>
-  </nav>
+    </nav>
 
-  <!-- Main Content -->
-  <main class="container d-flex flex-column justify-content-center align-items-center">
+    <!-- Main Content -->
+    <main class="container">
       <div>
-          <h2>Main Content</h2>
-          <p>This is where your main content goes.</p>
+        <app-user-profile
+          *ngIf="selected_option === 'profile'"
+        ></app-user-profile>
+        <app-guest-dashboard-restaurants
+          *ngIf="selected_option === 'restaurants'"
+        ></app-guest-dashboard-restaurants>
+        <app-guest-dashboard-reservations
+          *ngIf="selected_option === 'reservations'"
+        ></app-guest-dashboard-reservations>
+        <app-guest-dashboard-food-order
+          *ngIf="selected_option === 'food_order'"
+        ></app-guest-dashboard-food-order>
       </div>
-  </main>
+    </main>
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white py-3 mt-4">
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3">
       <p>&copy; 2024 Marko Jovanovic</p>
-  </footer>
-
- 
-</body>
+    </footer>
+  </body>
 </html>

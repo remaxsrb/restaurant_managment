@@ -21,6 +21,10 @@ import { AskQuestionComponent } from './components/ask-question/ask-question.com
 import { AdminDashboardRestaurantsComponent } from './components/admin-dashboard-restaurants/admin-dashboard-restaurants.component';
 import { AdminDashboardWaitersComponent } from './components/admin-dashboard-waiters/admin-dashboard-waiters.component';
 import { AdminDashboardGuestsComponent } from './components/admin-dashboard-guests/admin-dashboard-guests.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard-restaurants/guest-dashboard-restaurants.component';
+import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
+import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
 
 
 @NgModule({
@@ -38,6 +42,10 @@ import { AdminDashboardGuestsComponent } from './components/admin-dashboard-gues
     AdminDashboardRestaurantsComponent,
     AdminDashboardWaitersComponent,
     AdminDashboardGuestsComponent,
+    UserProfileComponent,
+    GuestDashboardRestaurantsComponent,
+    GuestDashboardReservationsComponent,
+    GuestDashboardFoodOrderComponent,
 
   ],
   imports: [

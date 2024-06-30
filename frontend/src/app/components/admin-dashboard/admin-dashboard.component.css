@@ -1,0 +1,11 @@
+/* Ensure horizontal scrolling for the content on small screens */
+@media (max-width: 991px) {
+  .content-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+}
+
+
+

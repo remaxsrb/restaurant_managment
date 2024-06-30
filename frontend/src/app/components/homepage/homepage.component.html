@@ -13,28 +13,62 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="nav justify-content-center">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/login">Log in</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signup">Sign up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/change_password">Change password</a>
-            </li>
-          </ul>
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavAltMarkup"
+        >
+          <div class="navbar-nav">
+            <a class="nav-item btn btn-outline-primary ms-2" routerLink="/login"
+              >Log in</a
+            >
+            <a
+              class="nav-item btn btn-outline-primary ms-2"
+              routerLink="/signup"
+              >Sign up</a
+            >
+          </div>
         </div>
       </div>
     </nav>
 
     <!-- Main Content -->
-    <main
-      class="container d-flex flex-column justify-content-center align-items-center"
-    >
-      <div></div>
+    <main class="container-fluid d-flex flex-column justify-content-start">
+      <div class="container">
+        <!-- General data row -->
+        <div class="row">
+          <div class="col-md text-center ">
+            <p class="text-nowrap">Restaurants: </p>
+          </div>
+          <div class="col-md text-center ">
+            <p class="text-nowrap">Registered guests: </p>
+          </div>
+          <div class="col-md text-center ">
+            <p class="text-nowrap">Reservations in  past 24 hours: </p>
+          </div>
+          <div class="col-md text-center ">
+            <p class="text-nowrap">Reservations in  past week:</p>
+          </div>
+          <div class="col-md text-center ">
+            <p class="text-nowrap">Reservations in  past month: </p>
+          </div>
+        </div>
+        <!-- Table row -->
+         <div class="row">
+          
+         </div>
+      </div>
     </main>
 
     <!-- Footer -->
