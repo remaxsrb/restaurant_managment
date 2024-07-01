@@ -66,4 +66,67 @@ export class UserService {
     );
   }
 
+  update_firstname(firstname: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_firstname/`,
+      firstname
+    );
+  }
+  update_lastname(lastname: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_lastname/`,
+      lastname
+    );
+  }
+  update_username(username: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_username/`,
+      username
+    );
+  }
+  update_email(email: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_email/`,
+      email
+    );
+  }
+  update_address(address: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_address/`,
+      address
+    );
+  }
+  update_phone_number(phone_number: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_phone_number/`,
+      phone_number
+    );
+  }
+  update_credit_card_number(credit_card_number: string) {
+    return this.http.post<any>(
+      `${this.backendUrl}/update_credit_card_number/`,
+      credit_card_number
+    );
+  }
+  update_profile_photo(username: string, profile_photo: string) {
+
+    const data = {
+        username: username,
+        profile_photo: profile_photo
+    }
+
+    return this.http.post<any>(
+
+      `${this.backendUrl}/update_profile_photo/`,
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      })
+  }
+
+
+  count_role() {
+    return this.http.get<Number>(`${this.backendUrl}/count_role`);
+  }
+
 }

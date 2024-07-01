@@ -84,14 +84,16 @@ main {
 
 }
 
-
+label {
+  white-space: nowrap;
+}
 /* Ensure the table can stretch */
 table {
   width: 100%;
   max-width: none; /* Ensure the table can exceed the container width */
   white-space: nowrap; /* Prevent table content from wrapping */
   text-align: center;
-
+ 
 }
 
 th, td {
@@ -100,7 +102,7 @@ th, td {
 
 form {
   width: 100%; /* Ensure form takes full width */
-  max-width: 500px; /* Limit form width for readability */
+  max-width: 600px; /* Limit form width for readability */
   padding: 20px;
   background-color: #fff; /* Form background color */
   border-radius: 8px;
@@ -111,6 +113,7 @@ form {
   justify-content: center;
   align-items: center;
   text-align: center;
+
 }
 
 /* Footer styles */

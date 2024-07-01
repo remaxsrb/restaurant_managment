@@ -97,7 +97,7 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
       (item) => item.name === restourant_name
     )[0].floor_plan;
 
-    this.json_service.getData(this.selected_restaurant_floor_plan).subscribe({
+    this.json_service.get_flor_plan(this.selected_restaurant_floor_plan).subscribe({
       next: (data) => {
         this.renderRestaurantPlan(data);
       },

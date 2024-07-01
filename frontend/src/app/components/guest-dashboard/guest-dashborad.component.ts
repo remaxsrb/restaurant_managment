@@ -17,6 +17,7 @@ export class GuestDashBoardComponent {
   }
 
   logout() {
+    localStorage.removeItem('user')
     this.auth_service.logout();
   }
 

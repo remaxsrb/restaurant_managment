@@ -21,8 +21,21 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "*.json", "input": "src/app/restaurant_plans", "output": "./assets/restaurant_plans/" },
-              { "glob": "*.jpg|*.png", "input": "src/app/photos/", "output": "./assets/photos/" }
+              {
+                "glob": "*.json",
+                "input": "src/app/restaurant_plans",
+                "output": "./assets/restaurant_plans/"
+              },
+              {
+                "glob": "*.jpg",
+                "input": "src/app/photos",
+                "output": "./assets/photos/"
+              },
+              {
+                "glob": "*.png",
+                "input": "src/app/photos",
+                "output": "./assets/photos/"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -30,7 +43,6 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-              
             ]
           },
           "configurations": {

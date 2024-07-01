@@ -31,7 +31,6 @@ export class UserController {
   }
 
   register(req: express.Request, res: express.Response) {
-    console.log(req.body)
     this.checkExistingUser(req.body.username, req.body.email)
       .then(() => User.create(req.body))
       .then((user) => this.createShoppingCart(user.username))
@@ -50,9 +49,11 @@ export class UserController {
     User.findOne({ username: req.body.username })
       .then((user) => {
         if (user) {
-          if (user.password === req.body.password) { // Client-side hashed password comparison
+          if (user.password === req.body.password) {
+            // Client-side hashed password comparison
             const token = jwt_service.generate_token(user);
-            res.status(200).json({ token, role: user.role });
+            const { password, ...user_data } = user.toObject();
+            res.status(200).json({ token, user: user_data });
           } else {
             res.status(401).json({ message: "Invalid password" });
           }
@@ -74,21 +75,49 @@ export class UserController {
     successMessage: string,
     errorMessage: string
   ) {
-    const updateQuery = { username: req.body.username };
-    const update = { [fieldToUpdate]: updateValue };
 
-    User.updateOne(updateQuery, update)
-      .then((result) => {
-        if (result.modifiedCount > 0) {
-          res.json({ message: successMessage });
-        } else {
-          res.status(404).json({ message: "User not found or no changes made" });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: errorMessage });
-      });
+    //if a username or email are taken by another user return error codes and reject a promise otherwise proceed to updating
+
+    const checkQuery =
+      fieldToUpdate === "username"
+        ? User.findOne({ username: updateValue }).then((existingUser) => {
+            if (existingUser) {
+              return Promise.reject({
+                status: 408,
+                message: "Username is already taken",
+              });
+            }
+          })
+        : fieldToUpdate === "email"
+        ? User.findOne({ email: updateValue }).then((existingUser) => {
+            if (existingUser) {
+              return Promise.reject({
+                status: 409,
+                message: "Email is already taken",
+              });
+            }
+          })
+        : Promise.resolve();
+
+    checkQuery.then(() => {
+      const updateQuery = { username: req.body.username };
+      const update = { [fieldToUpdate]: updateValue };
+
+      User.updateOne(updateQuery, update)
+        .then((result) => {
+          if (result.modifiedCount > 0) {
+            res.json({ message: successMessage });
+          } else {
+            res
+              .status(404)
+              .json({ message: "User not found or no changes made" });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ message: errorMessage });
+        });
+    });
   }
 
   updateFirstname(req: express.Request, res: express.Response) {
@@ -135,6 +164,17 @@ export class UserController {
     );
   }
 
+  updateUsername(req: express.Request, res: express.Response) {
+    this.updateField(
+      req,
+      res,
+      "username",
+      req.body.username,
+      "Username updated",
+      "Error updating username"
+    );
+  }
+
   updateEmail(req: express.Request, res: express.Response) {
     this.updateField(
       req,
@@ -158,6 +198,7 @@ export class UserController {
   }
 
   updateProfilePhoto(req: express.Request, res: express.Response) {
+    console.log(req.body)
     this.updateField(
       req,
       res,
@@ -218,9 +259,23 @@ export class UserController {
   ) {
     User.find({ [field]: value })
       .then((users) => {
+        res.json(users);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ message: errorMessage });
+      });
+  }
 
-          res.json(users);
-
+  private countUsersByField(
+    field: string,
+    value: string,
+    errorMessage: string,
+    res: express.Response
+  ) {
+    User.countDocuments({ [field]: value })
+      .then((count) => {
+        res.json({ count });
       })
       .catch((err) => {
         console.error(err);
@@ -256,34 +311,48 @@ export class UserController {
 
     // First check if the user exists by username
     User.findOne({ username })
-        .then(existingUser => {
-            if (!existingUser) {
-                // User does not exist
-                return res.status(404).json({ message: "User not found" });
-            } 
-            
-            // User exists, now check if the security question matches
-            if (existingUser.security_question !== security_question) {
-                // Security question does not match
-                return res.status(400).json({ message: "Security question does not match" });
-            }
-            
-            // Security question matches, now check if the security question answer matches
-            if (existingUser.security_question_answer !== security_question_answer) {
-                // Security question answer does not match
-                return res.status(401).json({ message: "Security answer is incorrect" });
-            }
-            
-            // All checks passed
-            return res.status(200).json({ message: "Security check passed" });
-        })
-        .catch(err => {
-            console.error(err);
-            return res.status(500).json({ message: 'Internal Server Error' });
-        });
-}
+      .then((existingUser) => {
+        if (!existingUser) {
+          // User does not exist
+          return res.status(404).json({ message: "User not found" });
+        }
 
+        // User exists, now check if the security question matches
+        if (existingUser.security_question !== security_question) {
+          // Security question does not match
+          return res
+            .status(400)
+            .json({ message: "Security question does not match" });
+        }
 
+        // Security question matches, now check if the security question answer matches
+        if (
+          existingUser.security_question_answer !== security_question_answer
+        ) {
+          // Security question answer does not match
+          return res
+            .status(401)
+            .json({ message: "Security answer is incorrect" });
+        }
+
+        // All checks passed
+        return res.status(200).json({ message: "Security check passed" });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+      });
+  }
+
+  count(req: express.Request, res: express.Response) {
+    const { role } = req.params;
+    this.countUsersByField(
+      "role",
+      role,
+      `No users of role '${role}' found`,
+      res
+    );
+  }
 }
 
 export default new UserController();

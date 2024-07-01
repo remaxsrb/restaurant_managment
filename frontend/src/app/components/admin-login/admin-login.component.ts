@@ -37,7 +37,7 @@ export class AdminLoginComponent {
         next: (data) => {
           localStorage.setItem(this.TOKEN_KEY, data.token);
 
-          if (data.role === 'admin') {
+          if (data.user.role === 'admin') {
             this.router.navigate(['admin']);
           }
         },

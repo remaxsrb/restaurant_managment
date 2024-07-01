@@ -1,0 +1,203 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="container">
+      <div class="card" style="width: 10rem">
+        <img src="{{ user.profile_photo }}" class="img-fluid" alt="" />
+        <div class="card-body">
+          <form (ngSubmit)="update_photo()">
+            <input
+              type="file"
+              class="form-control"
+              id="inputGroupFile02"
+              (change)="onFileSelected($event)"
+            />
+            <div
+              class="alert alert-danger"
+              role="alert"
+              *ngIf="update_flags.invalid_picture_format"
+            >
+              Image should be either .png or .jpg
+            </div>
+            <button type="submit" class="btn btn-dark" id="update_picture" style="white-space: nowrap;">Update photo</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <form
+            (ngSubmit)="onSubmit(); updateForm.reset()"
+            #updateForm="ngForm"
+          >
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="firstname" class="form-label">First Name:</label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    class="form-control"
+                    [(ngModel)]="user_updates.firstname"
+                    name="firstname"
+                    placeholder="{{ user.firstname }}"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="lastname" class="form-label">Last Name:</label>
+                  <input
+                    type="text"
+                    id="lastname"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.lastname"
+                    name="lastname"
+                    placeholder="{{ user.lastname }}"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.username"
+                    name="username"
+                    placeholder="{{ user.username }}"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="update_flags.username_exists"
+                  >
+                    User with this username already exists
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.email"
+                    name="email"
+                    placeholder="{{ user.email }}"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="update_flags.invalid_email"
+                  >
+                    Invalid email
+                  </div>
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="update_flags.email_taken"
+                  >
+                    There is a user registered with this email
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address:</label>
+                  <input
+                    type="text"
+                    id="address"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.address"
+                    name="address"
+                    placeholder="{{ user.address }}"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="phone_number" class="form-label"
+                    >Phone number:</label
+                  >
+                  <input
+                    type="text"
+                    id="phone_number"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.phone_number"
+                    name="phone_number"
+                    placeholder="{{ user.phone_number }}"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="update_flags.invalid_phone_number"
+                  >
+                    Invalid phone number
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <label for="credit_card_number" class="form-label"
+                    >Credit card number:</label
+                  >
+                  <input
+                    type="text"
+                    id="credit_card_number"
+                    class="form-control"
+                    required
+                    [(ngModel)]="user_updates.credit_card_number"
+                    name="credit_card_number"
+                    placeholder="{{ user.credit_card_number }}"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="update_flags.invalid_credit_card_format"
+                  >
+                    Invalid credit card number format
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    id="invisible-input"
+                    class="form-control"
+                    style="visibility: hidden"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-dark">Update info</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

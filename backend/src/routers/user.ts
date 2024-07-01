@@ -43,8 +43,20 @@ userRouter.route('/update_password').post(
     (req, res) => new UserController().updatePassword(req, res)
 )
 
+userRouter.route('/update_username').post(
+    (req, res) => new UserController().updateUsername(req, res)
+)
+
+userRouter.route('/update_phone_number').post(
+    (req, res) => new UserController().updatePhoneNumber(req, res)
+)
+
 userRouter.route('/check_question').post(
     (req, res) => new UserController().check_question(req, res)
+)
+
+userRouter.route('/count_role').get(
+    (req, res) => new UserController().count(req, res)
 )
 
 

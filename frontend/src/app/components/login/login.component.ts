@@ -46,11 +46,12 @@ export class LoginComponent {
       .subscribe({
         next: (data) => {
           localStorage.setItem(this.TOKEN_KEY, data.token);
-          if (data.role === 'guest') {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          if (data.user.role === 'guest') {
             this.router.navigate(['guest']);
-          } else if (data.role === 'waiter') {
+          } else if (data.user.role === 'waiter') {
             this.router.navigate(['waiter']);
-          } else if (data.role === 'admin') {
+          } else if (data.user.role === 'admin') {
             this.router.navigate(['admin']);
           } else {
             this.login_form_flags.general_errors = true;
