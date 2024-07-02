@@ -11,7 +11,7 @@ export class Waiter {
     phone_number: string = ''
     email: string = ''
     profile_photo: string = ''
-    restourant: string = ''
+    restaurant: string = ''
 
 
 }

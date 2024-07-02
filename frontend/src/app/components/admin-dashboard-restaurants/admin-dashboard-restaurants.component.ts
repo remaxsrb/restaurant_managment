@@ -1,5 +1,5 @@
-import { withInterceptorsFromDi } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NewRestaurant } from 'src/app/models/interfaces/new_restaurant';
 import { Restaurant } from 'src/app/models/restaurant';
 import { RestaurantType } from 'src/app/models/restaurant_type';
 import { AdminService } from 'src/app/services/model_services/admin.service';
@@ -7,6 +7,7 @@ import { RestaurantTypeService } from 'src/app/services/model_services/restauran
 import { RestaurantService } from 'src/app/services/model_services/restaurant.service';
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RestaurantPlanService } from 'src/app/services/utility_services/restaurant-plan.service';
+import { TimeService } from 'src/app/services/utility_services/time.service';
 
 @Component({
   selector: 'app-admin-dashboard-restaurants',
@@ -19,7 +20,8 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
     private json_service: JsonService,
     private restaurant_plan_service: RestaurantPlanService,
     private admin_service: AdminService,
-    private restaurant_type_service: RestaurantTypeService
+    private restaurant_type_service: RestaurantTypeService,
+    private time_service: TimeService
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +40,7 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
   selected_restaurant: string | null = null;
   selected_restaurant_floor_plan: string = '';
 
-  newRestaurant = {
+  newRestaurant: NewRestaurant = {
     name: '',
     address: '',
     phone_number: '',
@@ -49,6 +51,7 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
     close: { hour: 0, minute: 0 },
     description: '',
     floor_plan: '',
+    rating: 0
   };
 
   restaurant_form_flags = {
@@ -74,6 +77,13 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
     if (this.selectedFile)
       this.newRestaurant.floor_plan = this.selectedFile.name;
 
+    this.newRestaurant.open = this.time_service.formatTimeTo24HourString(
+      this.newRestaurant.open
+    );
+    this.newRestaurant.close = this.time_service.formatTimeTo24HourString(
+      this.newRestaurant.close
+    );
+
     this.admin_service
       .add_restaurant(JSON.stringify(this.newRestaurant))
       .subscribe((data) => {
@@ -97,14 +107,16 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
       (item) => item.name === restourant_name
     )[0].floor_plan;
 
-    this.json_service.get_flor_plan(this.selected_restaurant_floor_plan).subscribe({
-      next: (data) => {
-        this.renderRestaurantPlan(data);
-      },
-      error: (err) => {
-        alert(err.message);
-      },
-    });
+    this.json_service
+      .get_flor_plan(this.selected_restaurant_floor_plan)
+      .subscribe({
+        next: (data) => {
+          this.renderRestaurantPlan(data);
+        },
+        error: (err) => {
+          alert(err.message);
+        },
+      });
   }
 
   renderRestaurantPlan(restaurant_plan: any): void {

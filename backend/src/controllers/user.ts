@@ -198,7 +198,6 @@ export class UserController {
   }
 
   updateProfilePhoto(req: express.Request, res: express.Response) {
-    console.log(req.body)
     this.updateField(
       req,
       res,

@@ -8,6 +8,8 @@ import { FormValidationService } from 'src/app/services/utility_services/form-va
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { RegexPatterns } from '../regex_patterns';
 import { Restaurant } from 'src/app/models/restaurant';
+import * as CryptoJS from 'crypto-js';
+
 
 @Component({
   selector: 'app-admin-dashboard-waiters',
@@ -127,12 +129,15 @@ export class AdminDashboardWaitersComponent implements OnInit {
   }
 
   private process_form_submission() {
+
     this.new_waiter.password = CryptoJS.MD5(
       this.new_waiter.password
     ).toString();
     this.new_waiter.security_question_answer = CryptoJS.MD5(
       this.new_waiter.security_question_answer
     ).toString();
+
+    
 
     if (this.selectedFile) {
       this.new_waiter.profile_photo = this.selectedFile.name;

@@ -132,16 +132,21 @@ export class UserProfileComponent implements OnInit {
   }
 
   processFormSubmission() {
-    if (this.selectedFile) {
-      this.user_updates.profile_photo = this.selectedFile.name;
-    }
 
     if (this.user_updates.firstname) {
-      this.user_service.update_firstname(this.user_updates.firstname);
+      const data = {
+        username: this.user.username,
+        firstname: this.user_updates.firstname
+      }
+      this.user_service.update_firstname(data);
     }
 
     if (this.user_updates.lastname) {
-      this.user_service.update_lastname(this.user_updates.lastname);
+      const data = {
+        username: this.user.username,
+        lastname: this.user_updates.lastname
+      }
+      this.user_service.update_lastname(data);
     }
 
     if (this.user_updates.username) {
@@ -171,16 +176,40 @@ export class UserProfileComponent implements OnInit {
       });
     }
     if (this.user_updates.address) {
-      this.user_service.update_address(this.user_updates.address);
+      const data = {
+        username: this.user.username,
+        address: this.user_updates.address
+      }
+      this.user_service.update_address(data);
     }
     if (this.user_updates.phone_number) {
-      this.user_service.update_phone_number(this.user_updates.phone_number);
+      const data = {
+        username: this.user.username,
+        phone_number: this.user_updates.phone_number
+      }
+      this.user_service.update_phone_number(data);
     }
     if (this.user_updates.credit_card_number) {
+      const data = {
+        username: this.user.username,
+        credit_card_number: this.user_updates.credit_card_number
+      }
       this.user_service.update_credit_card_number(
-        this.user_updates.credit_card_number
+        data
       );
     }
+
+    this.user_service.find_by_username(this.user.username) .subscribe(
+      {
+        next: (data) => {
+          localStorage.removeItem('user')
+          localStorage.setItem('user', JSON.stringify(data))
+          window.location.reload()
+
+        }
+      }
+    ) 
+
   }
 
   update_photo() {
@@ -198,8 +227,11 @@ export class UserProfileComponent implements OnInit {
 
     if (this.selectedFile) {
       this.user_updates.profile_photo = this.selectedFile.name;
-      this.user_service.update_profile_photo(this.user.username,
-        this.user_updates.profile_photo
+      const data = {
+        username: this.user_updates.username,
+        profile_photo: this.user_updates.profile_photo
+      }
+      this.user_service.update_profile_photo(data
       ).subscribe( 
         {
           next: () => {

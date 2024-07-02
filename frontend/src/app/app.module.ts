@@ -25,6 +25,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard-restaurants/guest-dashboard-restaurants.component';
 import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
 import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
+import { RestaurantComponent } from './components/restaurant/restaurant.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-f
     GuestDashboardRestaurantsComponent,
     GuestDashboardReservationsComponent,
     GuestDashboardFoodOrderComponent,
+    RestaurantComponent,
 
   ],
   imports: [

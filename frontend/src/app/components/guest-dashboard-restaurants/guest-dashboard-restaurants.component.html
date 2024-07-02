@@ -1,1 +1,55 @@
-<p>guest-dashboard-restaurants works!</p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Show</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Address</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let restaurant of restaurants; let i = index">
+          <tr>
+            <td>
+              <input
+                class="form-check-input"
+                type="radio"
+                id="flexCheckDefault{{ i }}"
+                name="radioGroup"
+                [checked]="isRestaurantChecked(restaurant.name)"
+                [value]="restaurant.name"
+                (change)="onRestaurantRadioChange(restaurant.name)"
+              />
+            </td>
+            <td>
+              <a routerLink="/guest/restaurant_info">{{ restaurant.name }}</a>
+            </td>
+            <td>{{ restaurant.type }}</td>
+            <td>{{ restaurant.address }}</td>
+            <td>
+              <ngb-rating
+                [(rate)]="restaurant.rating"
+                [readonly]="true"
+                [max]="5"
+              />  
+            </td>
+          </tr>
+          <tr *ngIf="selected_restaurant === restaurant.name">
+            <td colspan="12">
+              <ng-container *ngFor="let waiter of waiters">
+                <div *ngIf="restaurant.name === waiter.restaurant">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      {{ waiter.firstname }} {{ waiter.lastname }}
+                    </li>
+                  </ul>
+                </div>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+

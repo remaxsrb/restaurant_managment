@@ -102,8 +102,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container">
-      <div>
+    <main>
         <app-user-profile
           *ngIf="selected_option === 'profile'"
         ></app-user-profile>
@@ -116,7 +115,6 @@
         <app-guest-dashboard-food-order
           *ngIf="selected_option === 'food_order'"
         ></app-guest-dashboard-food-order>
-      </div>
     </main>
 
     <!-- Footer -->

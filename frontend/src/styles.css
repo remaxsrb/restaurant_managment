@@ -5,7 +5,6 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-
 }
 
 header {
@@ -23,8 +22,8 @@ nav {
 /* Ensure radios and links are centered */
 .navbar-nav {
   display: flex;
-  justify-content: center; /* Center items horizontally */
-  align-items: center; /* Center items vertically */
+  justify-content: center; 
+  align-items: center; 
   flex-wrap: nowrap; /* Ensure items stay in a single row */
 }
 
@@ -45,7 +44,7 @@ nav {
   main {
     width: 100%;
     max-width: 100%;
-    padding: 0 10px; /* Add padding to main content as necessary */
+    padding: 0 10px; 
   }
 
   /* Ensure footer spans full width */
@@ -61,10 +60,10 @@ main {
   align-items: center; /* Center align horizontally */
 }
 
-.container {
-  width: 100%; /* Ensure container takes full width */
+.custom-container {
+  width: 100%; 
   padding: 20px;
-  flex: 1; /* Ensure container takes remaining height */
+  flex: 1; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,47 +72,47 @@ main {
 /* Ensure components wrap and have space between them */
 .content-container {
   width: 100%;
-  flex: 1; /* Take remaining height */
+  flex: 1; 
   display: flex;
-  flex-direction: column; /* Ensure components stack vertically */
-  align-items: center; /* Center align horizontally */
+  flex-direction: column; 
+  align-items: center; 
 }
 
 .content-container > * { 
   width: 100%; 
-
 }
 
 label {
   white-space: nowrap;
 }
+
 /* Ensure the table can stretch */
-table {
+.table {
   width: 100%;
-  max-width: none; /* Ensure the table can exceed the container width */
-  white-space: nowrap; /* Prevent table content from wrapping */
+  max-width: 100%;
   text-align: center;
- 
 }
 
-th, td {
-  white-space: nowrap; /* Prevent text wrapping */
-}
+
 
 form {
   width: 100%; /* Ensure form takes full width */
-  max-width: 600px; /* Limit form width for readability */
+  max-width: 600px; 
   padding: 20px;
-  background-color: #fff; /* Form background color */
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
   /* Center form content */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+}
 
+form > * {
+  width: 100%;
 }
 
 /* Footer styles */

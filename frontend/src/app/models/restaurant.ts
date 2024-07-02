@@ -11,6 +11,7 @@ export class Restaurant {
   location: string = '';
   open: string = '';
   close: string = '';
+  rating: number = 0;
   description: string = '';
   floor_plan: string = '';
   tables: Table[] = [];

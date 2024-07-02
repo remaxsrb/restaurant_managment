@@ -1,6 +1,6 @@
 <div class="row">
   <div class="table-container col-lg-8">
-    <table class="table table-striped table-responsive-sm">
+    <table class="table table-striped ">
       <thead>
         <tr>
           <th>Show</th>
@@ -94,6 +94,7 @@
               required
               [(ngModel)]="newRestaurant.type"
               name="type"
+              
             >
               <option value="" disabled selected>Select a type</option>
               <option *ngFor="let type of restaurant_types" [value]="type.name">
@@ -154,37 +155,30 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 d-flex justify-content-center">
           <div class="mb-3">
-            <div class="d-inline-block-timepicker">
-              <label for="opening_hours" class="form-label"
-                >Opening Hours:</label
-              >
-              <ngb-timepicker
-                name="opening_hours"
-                [(ngModel)]="newRestaurant.open"
-                [spinners]="true"
-                required
-              ></ngb-timepicker>
-            </div>
+            <label for="opening_hours" class="form-label">Opening Hours:</label>
+            <ngb-timepicker
+              name="opening_hours"
+              [(ngModel)]="newRestaurant.open"
+              [spinners]="true"
+              required
+            ></ngb-timepicker>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 d-flex justify-content-center">
           <div class="mb-3">
-            <div class="d-inline-block-timepicker">
-              <label for="closing_hours" class="form-label"
-                >Closing Hours:</label
-              >
-              <ngb-timepicker
-                name="closing_hours"
-                [(ngModel)]="newRestaurant.close"
-                [spinners]="true"
-                required
-              ></ngb-timepicker>
-            </div>
+            <label for="closing_hours" class="form-label">Closing Hours:</label>
+            <ngb-timepicker
+              name="closing_hours"
+              [(ngModel)]="newRestaurant.close"
+              [spinners]="true"
+              required
+            ></ngb-timepicker>
           </div>
         </div>
       </div>
+      
 
       <div class="row">
         <div class="col-md-6">

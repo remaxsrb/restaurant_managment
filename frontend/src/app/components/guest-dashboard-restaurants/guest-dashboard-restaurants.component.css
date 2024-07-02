@@ -1,0 +1,20 @@
+.table-container, .form-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .table-container {
+    overflow-x: auto; /* Ensure horizontal scrolling on smaller screens */
+  }
+  
+  
+  
+  @media (max-width: 991px) {
+    .table-container {
+      width: 100%; /* Ensure the table container takes full width */
+      overflow-x: auto; /* Enable horizontal scrolling for the table */
+    }
+  }
+  

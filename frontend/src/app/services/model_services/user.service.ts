@@ -13,7 +13,6 @@ export class UserService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   register(user: any): Observable<any> {
-    // Send POST request with headers
     return this.http.post<any>(
       `${this.backendUrl}/register`,
       JSON.stringify(user),
@@ -66,54 +65,70 @@ export class UserService {
     );
   }
 
-  update_firstname(firstname: string) {
+  update_firstname(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_firstname/`,
-      firstname
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_lastname(lastname: string) {
+  update_lastname(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_lastname/`,
-      lastname
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_username(username: string) {
+  update_username(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_username/`,
-      username
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_email(email: string) {
+  update_email(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_email/`,
-      email
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_address(address: string) {
+  update_address(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_address/`,
-      address
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_phone_number(phone_number: string) {
+  update_phone_number(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_phone_number/`,
-      phone_number
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_credit_card_number(credit_card_number: string) {
+  update_credit_card_number(data: any) {
     return this.http.post<any>(
       `${this.backendUrl}/update_credit_card_number/`,
-      credit_card_number
+      JSON.stringify(data),
+      {
+        headers: this.headers,
+      }
     );
   }
-  update_profile_photo(username: string, profile_photo: string) {
-
-    const data = {
-        username: username,
-        profile_photo: profile_photo
-    }
+  update_profile_photo(data: any) {
 
     return this.http.post<any>(
 

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class AdminService {
   }
 
   register_waiter(waiter: any): Observable<any> {
-    return this.http.post<any>(`${this.backendUrl}/register_waiter`, waiter, { headers: this.headers });
+    return this.http.post<any>(`${this.backendUrl}/register_waiter`, JSON.stringify(waiter), { headers: this.headers });
   }
 
   add_restaurant(restaurant: any): Observable<any> {

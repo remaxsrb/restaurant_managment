@@ -42,6 +42,10 @@ const Restaurant = new Schema(
       type: String,
       required: true,
     },
+
+    //Time is stored in a HH:MM formar as a string and on frontend it will be converted for calulations
+
+
     open: {
       type: String,
       required: true,
@@ -52,7 +56,12 @@ const Restaurant = new Schema(
       required: true,
       match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
     },
-
+    rating: {
+      type:Number,
+      required: true,
+      default: 0
+    }
+    ,
     description: {
       type: String,
       required: true,
