@@ -11,27 +11,27 @@ restaurantRouter.route('/all').get(
 )
 
 restaurantRouter.route('/sort_by_name_asc').get(
-    (req, res) => new RestaurantController().sortByNameAsc(req, res)
+    (req, res) => new RestaurantController().sort_by_name_asc(req, res)
 )
 
 restaurantRouter.route('/sort_by_name_desc').get(
-    (req, res) => new RestaurantController().sortByNameDesc(req, res)
+    (req, res) => new RestaurantController().sort_by_name_desc(req, res)
 )
 
 restaurantRouter.route('/sort_by_address_asc').get(
-    (req, res) => new RestaurantController().sortByAddressAsc(req, res)
+    (req, res) => new RestaurantController().sort_by_address_asc(req, res)
 )
 
 restaurantRouter.route('/sort_by_address_desc').get(
-    (req, res) => new RestaurantController().sortByAddressDesc(req, res)
+    (req, res) => new RestaurantController().sort_by_address_desc(req, res)
 )
 
 restaurantRouter.route('/sort_by_type_asc').get(
-    (req, res) => new RestaurantController().sortByTypeAsc(req, res)
+    (req, res) => new RestaurantController().sort_by_type_asc(req, res)
 )
 
 restaurantRouter.route('/sort_by_type_desc').get(
-    (req, res) => new RestaurantController().sortByTypeDesc(req, res)
+    (req, res) => new RestaurantController().sort_by_type_desc(req, res)
 )
 
 restaurantRouter.route('/read_by_name/:name').get(

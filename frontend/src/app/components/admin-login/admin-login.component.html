@@ -1,73 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kutak dobre hrane</title>
-
-</head>
-<body>
-
-     <!-- Header -->
-     <header class="bg-primary text-white py-3">
-        <h1>Kutak dobre hrane</h1>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+      <h1>Kutak dobre hrane</h1>
     </header>
 
-  <!-- Main Content -->
-  <main class="container d-flex flex-column justify-content-center align-items-center">
+    <!-- Main Content -->
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
       <div>
         <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-md-12">
-                <form
-                  
-                  (ngSubmit)="onLogin(); adminLogin.reset()"
-                  #adminLogin="ngForm"
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+              <form
+                (ngSubmit)="onLogin(); adminLogin.reset()"
+                #adminLogin="ngForm"
+              >
+                <div class="mb-3">
+                  <label for="username" class="form-label">Userame:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    required
+                    [(ngModel)]="signInData.username"
+                    name="username"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    required
+                    [(ngModel)]="signInData.password"
+                    name="password"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-dark"
+                  [disabled]="!adminLogin.form.valid"
                 >
-                  <div class="mb-3">
-                    <label for="username" class="form-label">Userame:</label>
-                    <input
-                      type="text"
-                      id="username"
-                      class="form-control"
-                      required
-                      [(ngModel)]="signInData.username"
-                      name="username"
-                    />
-                  </div>
-                  
-                  <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      required
-                      [(ngModel)]="signInData.password"
-                      name="password"
-                    />
-                    
-                  </div>
-      
-                  <button
-                    type="submit"
-                    class="btn btn-dark"
-                    [disabled]="!adminLogin.form.valid"
-                  >
-                    Log in
-                  </button>
-                </form>
-              </div>
+                  Log in
+                </button>
+              </form>
             </div>
           </div>
+        </div>
       </div>
-  </main>
+    </main>
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white py-3 mt-4">
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
       <p>&copy; 2024 Marko Jovanovic</p>
-  </footer>
-
- 
-</body>
+    </footer>
+  </body>
 </html>

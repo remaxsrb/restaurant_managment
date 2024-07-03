@@ -1,50 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kutak dobre hrane</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Header -->
     <header class="bg-primary text-white py-3">
-        <h1>Kutak dobre hrane</h1>
+      <h1>Kutak dobre hrane</h1>
     </header>
 
     <!-- Main Content -->
-    <main>
-        <div class="container justify-content-center align-items-center">
-            <form (ngSubmit)="onLogin(); loginForm.reset()" #loginForm="ngForm" class="text-center">
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
+      <div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="com-md-12">
+              <form
+                (ngSubmit)="onLogin(); loginForm.reset()"
+                #loginForm="ngForm"
+                class="text-center"
+              >
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username:</label>
-                    <input type="text" id="username" class="form-control" required
-                        [(ngModel)]="signInData.username" name="username" />
-                    <div class="alert alert-danger" role="alert" *ngIf="login_form_flags.user_not_found">
-                        User with this username was not found
-                    </div>
+                  <label for="username" class="form-label">Username:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    required
+                    [(ngModel)]="signInData.username"
+                    name="username"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="login_form_flags.user_not_found"
+                  >
+                    User with this username was not found
+                  </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <input type="password" id="password" class="form-control" required
-                        [(ngModel)]="signInData.password" name="password" />
-                    <a class="nav-link" routerLink="/change_password">Forgot password?</a>
+                  <label for="password" class="form-label">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    required
+                    [(ngModel)]="signInData.password"
+                    name="password"
+                  />
+                  <a class="nav-link" routerLink="/change_password"
+                    >Forgot password?</a
+                  >
 
-                    <div class="alert alert-danger" role="alert" *ngIf="login_form_flags.invalid_password">
-                        Invalid password
-                    </div>
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="login_form_flags.invalid_password"
+                  >
+                    Invalid password
+                  </div>
                 </div>
 
-                <button type="submit" class="btn btn-dark" [disabled]="!loginForm.form.valid">Log in</button>
-            </form>
+                <button
+                  type="submit"
+                  class="btn btn-dark"
+                  [disabled]="!loginForm.form.valid"
+                >
+                  Log in
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-dark text-white">
-        <p>&copy; 2024 Marko Jovanovic</p>
+      <p>&copy; 2024 Marko Jovanovic</p>
     </footer>
-
-</body>
+  </body>
 </html>

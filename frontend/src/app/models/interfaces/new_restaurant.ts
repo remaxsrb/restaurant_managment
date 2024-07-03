@@ -1,4 +1,6 @@
+
 import { Time } from "../types/time";
+import { Table } from "./table";
 
 export interface NewRestaurant {
   name: string;
@@ -12,4 +14,6 @@ export interface NewRestaurant {
   description: string;
   floor_plan: string;
   rating: Number;
+  tables: Table[]
+  menu: []
 }

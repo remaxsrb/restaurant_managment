@@ -52,7 +52,7 @@
 
   <div class="form-container col-lg-4">
     <form
-      (ngSubmit)="onSubmitRestaurant(); restaurant_form.resetForm()"
+      (ngSubmit)="onSubmitRestaurant(restaurant_form)"
       #restaurant_form="ngForm"
     >
       <div class="row">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewRestaurant } from 'src/app/models/interfaces/new_restaurant';
+import { Table } from 'src/app/models/interfaces/table';
 import { Restaurant } from 'src/app/models/restaurant';
 import { RestaurantType } from 'src/app/models/restaurant_type';
 import { AdminService } from 'src/app/services/model_services/admin.service';
@@ -51,7 +52,9 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
     close: { hour: 0, minute: 0 },
     description: '',
     floor_plan: '',
-    rating: 0
+    rating: 0,
+    tables: [],
+    menu: [],
   };
 
   restaurant_form_flags = {
@@ -65,7 +68,7 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
     this.selectedFile = file;
   }
 
-  onSubmitRestaurant() {
+  onSubmitRestaurant(restaurant_form: any) {
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
     const isValidEmail = emailRegex.test(this.newRestaurant.email);
 
@@ -74,9 +77,6 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
       return; //not valid email abort submission
     }
 
-    if (this.selectedFile)
-      this.newRestaurant.floor_plan = this.selectedFile.name;
-
     this.newRestaurant.open = this.time_service.formatTimeTo24HourString(
       this.newRestaurant.open
     );
@@ -84,15 +84,40 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
       this.newRestaurant.close
     );
 
-    this.admin_service
-      .add_restaurant(JSON.stringify(this.newRestaurant))
-      .subscribe((data) => {
-        this.restaurants = [];
+    if (this.selectedFile) {
+      this.newRestaurant.floor_plan = this.selectedFile.name;
 
-        this.restaurant_service.all().subscribe((data) => {
-          this.restaurants = data;
-        });
+      this.json_service.get_flor_plan(this.newRestaurant.floor_plan).subscribe({
+        next: (data) => {
+          data.circles.forEach((circle: any) => {
+            const capacity: Number = Number(circle.label);
+            const id: String = circle.id;
+            const status: String = 'available';
+
+            const table: Table = {
+              id: id,
+              capacity: capacity,
+              status: status,
+            };
+            this.newRestaurant.tables.push(table);
+          });
+
+          this.admin_service
+            .add_restaurant(JSON.stringify(this.newRestaurant))
+            .subscribe((data) => {
+              this.restaurants = [];
+
+              this.restaurant_service.all().subscribe((data) => {
+                this.restaurants = data;
+                restaurant_form.reset();
+              });
+            });
+        },
+        error: (err) => {
+          alert(err.message);
+        },
       });
+    }
   }
 
   //Restaurant radios

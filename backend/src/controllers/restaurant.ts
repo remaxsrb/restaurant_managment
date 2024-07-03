@@ -4,7 +4,6 @@ import Restaurant from "../models/restaurant";
 export class RestaurantController {
   create(req: express.Request, res: express.Response) {
     const restaurant = req.body;
-
     new Restaurant(restaurant)
       .save()
       .then(() => {
@@ -108,27 +107,27 @@ export class RestaurantController {
       });
   }
 
-  sortByNameAsc(req: express.Request, res: express.Response) {
+  sort_by_name_asc(req: express.Request, res: express.Response) {
     this.sortByFieldAsc(req, res, "name", "Internal server error");
   }
 
-  sortByAddressAsc(req: express.Request, res: express.Response) {
-    this.sortByFieldAsc(req, res, "address", "Internal server error");
-  }
-
-  sortByTypeAsc(req: express.Request, res: express.Response) {
-    this.sortByFieldAsc(req, res, "type", "Internal server error");
-  }
-
-  sortByNameDesc(req: express.Request, res: express.Response) {
+  sort_by_name_desc(req: express.Request, res: express.Response) {
     this.sortByFieldDesc(req, res, "name", "Internal server error");
   }
 
-  sortByAddressDesc(req: express.Request, res: express.Response) {
+  sort_by_address_asc(req: express.Request, res: express.Response) {
+    this.sortByFieldAsc(req, res, "address", "Internal server error");
+  }
+
+  sort_by_address_desc(req: express.Request, res: express.Response) {
     this.sortByFieldDesc(req, res, "address", "Internal server error");
   }
 
-  sortByTypeDesc(req: express.Request, res: express.Response) {
+  sort_by_type_asc(req: express.Request, res: express.Response) {
+    this.sortByFieldAsc(req, res, "type", "Internal server error");
+  }
+
+  sort_by_type_desc(req: express.Request, res: express.Response) {
     this.sortByFieldDesc(req, res, "type", "Internal server error");
   }
 

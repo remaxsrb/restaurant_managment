@@ -1,5 +1,6 @@
 import { Dish } from './dish';
-import { Table } from './table';
+import { Table } from './interfaces/table';
+
 
 export class Restaurant {
   _id: string = '';
