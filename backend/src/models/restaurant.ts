@@ -10,27 +10,33 @@ const Restaurant = new Schema(
       required: true,
       unique: true, // not interested in a case when restaurant is a franchize
     },
-    address: {
-      type: String,
-      required: true,
-    },
+    address: { type: String, ref: "Address" },
     phone_number: {
       type: String,
       required: true,
+      match: /^06\d{8}$/
     },
     email: {
       type: String,
       required: true,
+      match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/
     },
     type: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
+      type: Schema.Types.ObjectId, 
+      ref: "RestaurantType",
       required: true,
     },
 
+    longitude: {
+      type: Number,
+      required: true
+    },
+    latidute: {
+      type: Number,
+      required: true
+    },
+
+    
     //Time is stored in a HH:MM formar as a string and on frontend it will be converted for calulations
 
     open: {
@@ -47,6 +53,7 @@ const Restaurant = new Schema(
       type: Number,
       required: true,
       default: 0,
+      max: 5
     },
     description: {
       type: String,
@@ -55,6 +62,7 @@ const Restaurant = new Schema(
     floor_plan: {
       type: String,
       required: true,
+      match: /\.json$/i
     },
     tables: [{id: String, capacity: Number, status: String}],
 

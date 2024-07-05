@@ -50,6 +50,9 @@ export class UserController {
       .then((user) => {
         if (user) {
           if (user.password === req.body.password) {
+
+            //!!add check if user is approved
+            
             // Client-side hashed password comparison
             const token = jwt_service.generate_token(user);
             const { password, ...user_data } = user.toObject();

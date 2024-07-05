@@ -1,11 +1,12 @@
 import { Dish } from './dish';
+import { Address } from './interfaces/address';
 import { Table } from './interfaces/table';
 
 
 export class Restaurant {
   _id: string = '';
   name: string = '';
-  address: string = '';
+  address: Address = {street: '', street_number: 0, city: ''}
   phone_number: string = '';
   email: string = '';
   type: string = '';

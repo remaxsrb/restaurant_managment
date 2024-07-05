@@ -1,0 +1,166 @@
+[{
+  "_id": {
+    "$oid": "6685452313f34dbda000a542"
+  },
+  "name": "Maximilian",
+  "address": "Beogradskog bataljona 23",
+  "phone_number": "0621111111",
+  "email": "maximilian@gmail.com",
+  "type": "Serbian",
+  "location": "Beograd",
+  "open": "08:00",
+  "close": "23:00",
+  "rating": 0,
+  "description": "Brdo",
+  "floor_plan": "restaurant_plan_1.json",
+  "tables": [
+    {
+      "id": "1",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a543"
+      }
+    },
+    {
+      "id": "2",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a544"
+      }
+    },
+    {
+      "id": "3",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a545"
+      }
+    },
+    {
+      "id": "4",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a546"
+      }
+    },
+    {
+      "id": "5",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a547"
+      }
+    },
+    {
+      "id": "6",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a548"
+      }
+    },
+    {
+      "id": "7",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a549"
+      }
+    },
+    {
+      "id": "8",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685452313f34dbda000a54a"
+      }
+    }
+  ],
+  "menu": []
+},
+{
+  "_id": {
+    "$oid": "6685469db8329ca8df47e445"
+  },
+  "name": "TwoGuys",
+  "address": "Pozeska 25",
+  "phone_number": "0641111111",
+  "email": "twoguys@gmail.com",
+  "type": "Italian",
+  "location": "Beograd",
+  "open": "08:00",
+  "close": "03:00",
+  "rating": 0,
+  "description": "Smash burgers",
+  "floor_plan": "restaurant_plan_1.json",
+  "tables": [
+    {
+      "id": "1",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e446"
+      }
+    },
+    {
+      "id": "2",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e447"
+      }
+    },
+    {
+      "id": "3",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e448"
+      }
+    },
+    {
+      "id": "4",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e449"
+      }
+    },
+    {
+      "id": "5",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e44a"
+      }
+    },
+    {
+      "id": "6",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e44b"
+      }
+    },
+    {
+      "id": "7",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e44c"
+      }
+    },
+    {
+      "id": "8",
+      "capacity": 4,
+      "status": "available",
+      "_id": {
+        "$oid": "6685469db8329ca8df47e44d"
+      }
+    }
+  ],
+  "menu": []
+}]

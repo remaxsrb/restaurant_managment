@@ -3,7 +3,7 @@
     "$oid": "6677fb7e0c3a4285c1ac7880"
   },
   "username": "remaxsrb",
-  "password": "cdb67a63d447bab6c83d81fe1b33599a",
+  "password": "279bc1ca6a753c27239836e104f3b3d4",
   "email": "remaxsrb@protonmail.com",
   "role": "guest",
   "security_question": "What city were you born in?",
@@ -14,8 +14,8 @@
   "address": "Praska 34",
   "phone_number": "0654340122",
   "credit_card_number": "1312131213121312",
-  "profile_photo": "default_male.png",
-  "status": "pending",
+  "profile_photo": "reflektor.jpg",
+  "status": "active",
   "late_for_reservation": 0
 },
 {
@@ -46,4 +46,24 @@
   "profile_photo": "default_female.png",
   "status": "pending",
   "late_for_reservation": 0
+},
+{
+  "_id": {
+    "$oid": "6683d9d7edebac72e3f12d93"
+  },
+  "username": "beoc420",
+  "password": "279bc1ca6a753c27239836e104f3b3d4",
+  "email": "beoc@irishpub.com",
+  "role": "waiter",
+  "security_question": "What city were you born in?",
+  "security_question_answer": "99c1489a65c2df04e5a647bf5e3f255a",
+  "firstname": "Vuk",
+  "lastname": "Beocanin",
+  "gender": "male",
+  "address": "Humska 1",
+  "phone_number": "0621111111",
+  "profile_photo": "default_male.png",
+  "status": "pending",
+  "late_for_reservation": 0,
+  "restaurant": "Maximilian"
 }]

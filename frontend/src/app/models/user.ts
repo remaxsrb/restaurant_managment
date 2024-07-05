@@ -1,3 +1,5 @@
+import { Address } from "./interfaces/address"
+
 export class User {
     _id: string = ''
     username: string = ''
@@ -8,7 +10,7 @@ export class User {
     firstname: string = ''
     lastname: string = ''
     gender: string = ''
-    address: string = ''
+    address: Address = {street: '', street_number: 0, city: ''}
     phone_number: string = ''
     credit_card_number: string = ''
     profile_photo: string = ''

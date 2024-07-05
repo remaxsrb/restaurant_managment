@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/model_services/user.service';
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
 import { RegexPatterns } from '../regex_patterns';
+import { NewGuset } from 'src/app/models/interfaces/new_guest';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +21,7 @@ export class SignupComponent {
     private router: Router
   ) {}
 
-  new_guest = {
+  new_guest: NewGuset = {
     username: '',
     password: '',
     email: '',
@@ -30,10 +31,12 @@ export class SignupComponent {
     firstname: '',
     lastname: '',
     gender: '',
-    address: '',
+    address: {street: '', street_number: 0, city: ''},
     phone_number: '',
     credit_card_number: '',
     profile_photo: '',
+    status: '',
+    late_for_reservation: ''
   };
 
   guest_form_flags = {

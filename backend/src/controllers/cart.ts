@@ -1,6 +1,6 @@
 import express from "express";
 import Cart from "../models/cart";
-import { CartItem } from "../models/cart_item";
+import { CartItem } from "../models/interfaces/cart_item";
 
 export class CartController {
   clear(req: express.Request, res: express.Response) {

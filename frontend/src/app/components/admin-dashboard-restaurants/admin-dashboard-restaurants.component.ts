@@ -43,7 +43,7 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
 
   newRestaurant: NewRestaurant = {
     name: '',
-    address: '',
+    address: {street: '', street_number: 0, city: ''},
     phone_number: '',
     email: '',
     type: '',
