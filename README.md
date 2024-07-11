@@ -15,9 +15,11 @@ This project is configured to use https instead of http and for that you should 
     }
 
 To run angular application use this command:
+
     ng serve --ssl --ssl-key ../certificates/server-key.pem --ssl-cert ../certificates/server-cert.pem -o
 
 As for backend configuration, due to existance of JWT in the project, you should replace sample code with your secret code in src/utilities/jwt.ts:
+
     const secretKey = 'Sample_secret_key'; 
 
 With all of that setup, you should be able to go and test out the web application.
