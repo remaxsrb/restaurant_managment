@@ -16,7 +16,7 @@ export class AdminLoginComponent {
     private router: Router
   ) {}
 
-  private readonly TOKEN_KEY = 'authToken';
+  private readonly TOKEN_KEY = 'Naruto_D_Kurosaki';
 
 
   signInData = {

@@ -23,8 +23,6 @@ export class UserController {
   }
 
   async register(req: express.Request, res: express.Response) {
-console.log(req.body);
-
     try {
       await this.checkExistingUser(req.body.username, req.body.email);
 
@@ -35,7 +33,6 @@ console.log(req.body);
 
       const user = await User.create(req.body);
       await this.createShoppingCart(user.username);
-      console.log(user);
       return res.json({ message: "User and shopping cart created" });
     } catch (err: any) {
       const statusCode = err.status || 500;
@@ -56,7 +53,8 @@ console.log(req.body);
 
       const isMatch = bcrypt.compareSync(password, user.password);
 
-      if (!isMatch) return res.status(401).json({ message: "Invalid password" });
+      if (!isMatch)
+        return res.status(401).json({ message: "Invalid password" });
 
       const token = jwt_service.generate_token(user);
       const { password: _, ...user_data } = user.toObject();
@@ -95,7 +93,9 @@ console.log(req.body);
       if (result.modifiedCount > 0) {
         return res.json({ message: successMessage });
       } else {
-        return res.status(404).json({ message: "User not found or no changes made" });
+        return res
+          .status(404)
+          .json({ message: "User not found or no changes made" });
       }
     } catch (err: any) {
       const statusCode = err.status || 500;
@@ -248,20 +248,6 @@ console.log(req.body);
     }
   }
 
-  private async countUsersByField(
-    field: string,
-    value: string,
-    errorMessage: string,
-    res: express.Response
-  ) {
-    try {
-      const count = await User.countDocuments({ [field]: value });
-      return res.json({ count });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: errorMessage });
-    }
-  }
 
   readByUsername(req: express.Request, res: express.Response) {
     this.readUserByField(
@@ -311,10 +297,26 @@ console.log(req.body);
     }
   }
 
-  count(req: express.Request, res: express.Response) {
+  private async countUsersByField(
+    field: string,
+    value: string,
+    errorMessage: string,
+    res: express.Response
+  ) {
+    try {
+      const count = await User.countDocuments({ [field]: value });
+      return res.json({ count });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: errorMessage });
+    }
+  }
+
+
+  count_by_role(req: express.Request, res: express.Response) {
     const { role } = req.params;
     this.countUsersByField(
-      "guests",
+      "role",
       role,
       `No users of role '${role}' found`,
       res

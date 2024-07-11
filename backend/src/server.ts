@@ -43,6 +43,9 @@ const privateKey = fs.readFileSync(path.join(certDir, 'server-key.pem'), 'utf8')
 const certificate = fs.readFileSync(path.join(certDir, 'server-cert.pem'), 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
+
+
+
 // Routers
 const router = express.Router();
 router.use("/user", userRouter);

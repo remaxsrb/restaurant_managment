@@ -4,7 +4,7 @@ import { RegexPatterns } from '../../components/regex_patterns';
   providedIn: 'root',
 })
 export class FormValidationService {
-  validate_user_form(new_user: any, selectedFile: File | null): boolean {
+  validate_user_form(new_user: any, new_user_address:any ,selectedFile: File | null): boolean {
     const isValidPassword = RegexPatterns.PASSWORD.test(new_user.password);
     const isValidEmail = RegexPatterns.EMAIL.test(new_user.email);
     const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(
@@ -19,7 +19,7 @@ export class FormValidationService {
     const isPngOrJpg = selectedFile
       ? RegexPatterns.FILE_FORMAT.test(selectedFile.name)
       : true;
-      const isValidAddress = RegexPatterns.ADDRESS.test(new_user.address.street);
+      const isValidAddress = RegexPatterns.ADDRESS.test(new_user_address.street);
 
 
     return (

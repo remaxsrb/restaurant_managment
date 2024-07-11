@@ -14,7 +14,7 @@ export class LoginComponent {
     public jwtHelper: JwtHelperService
   ) {}
 
-  private readonly TOKEN_KEY = 'authToken';
+  private readonly TOKEN_KEY = 'Naruto_D_Kurosaki';
 
   signInData = {
     username: '',
@@ -25,13 +25,16 @@ export class LoginComponent {
   login_form_flags = {
     invalid_password: false,
     user_not_found: false,
+    user_not_approved: false,
     general_errors: false,
   };
 
   private reset_form_flags() {
     this.login_form_flags.invalid_password = false;
-    this.login_form_flags.invalid_password = false;
-    this.login_form_flags.invalid_password = false;
+    this.login_form_flags.user_not_found = false;
+    this.login_form_flags.user_not_approved = false;
+    this.login_form_flags.general_errors = false;
+
   }
 
   onLogin() {
@@ -58,6 +61,8 @@ export class LoginComponent {
           if (error.status === 401) {
             this.login_form_flags.invalid_password = true;
           } else if (error.status === 402) {
+            this.login_form_flags.user_not_approved = true;
+          }else if (error.status === 404) {
             this.login_form_flags.user_not_found = true;
           } else {
             this.login_form_flags.general_errors = true;

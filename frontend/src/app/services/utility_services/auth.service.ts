@@ -8,7 +8,7 @@ import { UserService } from '../model_services/user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'authToken';
+  private readonly TOKEN_KEY = 'Naruto_D_Kurosaki';
 
   constructor(
     private http: HttpClient,

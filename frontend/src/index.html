@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kutak dobre hrane</title>
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <base href="https://localhost:4200/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kutak dobre hrane</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://127.0.0.1:4000;"
+    />
+
+    <!-- Replace 'self' with your specific origins as needed -->
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

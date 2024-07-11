@@ -18,11 +18,13 @@ export class HomepageComponent implements OnInit {
 
   restaurants: Restaurant[] = []
   waiters: Waiter[] = []
-  number_of_guests: Number = 0
+  number_of_guests: number = 0
+  number_of_restaurants: number = 0;
 
   ngOnInit(): void {
     this.restaurant_service.all().subscribe((data) => {
       this.restaurants = data;
+      this.number_of_restaurants = this.restaurants.length;
     });
 
     this.user_service.find_by_role('waiter').subscribe((data) => {
@@ -30,7 +32,7 @@ export class HomepageComponent implements OnInit {
     });
 
     this.user_service.count_guests().subscribe((data) => {
-      this.number_of_guests = data;
+      this.number_of_guests = data.count;
     });
       
   }

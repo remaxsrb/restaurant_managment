@@ -8,6 +8,7 @@ import { FormValidationService } from 'src/app/services/utility_services/form-va
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { RegexPatterns } from '../regex_patterns';
 import { Restaurant } from 'src/app/models/restaurant';
+import { Address } from 'src/app/models/interfaces/address';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class AdminDashboardWaitersComponent implements OnInit {
 
   waiter_form_flags = {
     invalid_password: false,
+    invalid_address: false,
     invalid_email: false,
     invalid_phone_number: false,
     invalid_picture_format: false,
@@ -37,6 +39,10 @@ export class AdminDashboardWaitersComponent implements OnInit {
     invalid_picture_dimensions: false,
     general_errors: false,
   };
+
+
+  new_waiter_address: Address = {street: '', street_number: 0, city: ''};
+
 
   new_waiter = {
     username: '',
@@ -85,6 +91,7 @@ export class AdminDashboardWaitersComponent implements OnInit {
   private validate_waiter_form(): boolean {
     const isValid = this.form_validation_service.validate_user_form(
       this.new_waiter,
+      this.new_waiter_address,
       this.selectedFile
     );
 
@@ -101,6 +108,11 @@ export class AdminDashboardWaitersComponent implements OnInit {
     const isValidPassword = RegexPatterns.PASSWORD.test(
       this.new_waiter.password
     );
+
+    const is_valid_address= RegexPatterns.ADDRESS.test(
+      this.new_waiter_address.street
+    );
+
     const isValidEmail = RegexPatterns.EMAIL.test(this.new_waiter.email);
     const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(
       this.new_waiter.phone_number
@@ -138,6 +150,13 @@ export class AdminDashboardWaitersComponent implements OnInit {
           ? 'default_male.png'
           : 'default_female.png';
     }
+
+    const street_data = this.new_waiter_address.street.split(' ', 2)
+
+    this.new_waiter_address.street = street_data[0];
+    this.new_waiter_address.street_number = parseInt(street_data[1]);
+
+    this.new_waiter.address = JSON.stringify(this.new_waiter_address);
 
     this.admin_service.register_waiter(this.new_waiter).subscribe({
       next: (data) => {

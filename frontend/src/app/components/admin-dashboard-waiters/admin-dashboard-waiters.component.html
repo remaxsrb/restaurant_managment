@@ -179,9 +179,16 @@
               id="address"
               class="form-control"
               required
-              [(ngModel)]="new_waiter.address"
+              [(ngModel)]="new_waiter_address.street"
               name="address"
             />
+            <div
+                      class="alert alert-danger"
+                      role="alert"
+                      *ngIf="waiter_form_flags.invalid_address"
+                    >
+                      Invalid address
+                    </div>
           </div>
         </div>
       </div>

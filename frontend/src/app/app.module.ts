@@ -26,6 +26,7 @@ import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard
 import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
 import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
 import { RestaurantComponent } from './components/restaurant/restaurant.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 
 @NgModule({
@@ -61,7 +62,7 @@ import { RestaurantComponent } from './components/restaurant/restaurant.componen
         tokenGetter: () => {
           return localStorage.getItem('access_token');
         },
-        allowedDomains: ["http://127.0.0.1:4000/"],
+        allowedDomains: ["https://127.0.0.1:4000/"],
         //disallowedRoutes: ["http://example.com/examplebadroute/"],
       },
     }),
@@ -73,7 +74,7 @@ import { RestaurantComponent } from './components/restaurant/restaurant.componen
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

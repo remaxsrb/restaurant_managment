@@ -6,6 +6,7 @@ import { ImageDimensionValidationService } from 'src/app/services/utility_servic
 import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
 import { RegexPatterns } from '../regex_patterns';
 import { NewGuset } from 'src/app/models/interfaces/new_guest';
+import { Address } from 'src/app/models/interfaces/address';
 
 @Component({
   selector: 'app-signup',
@@ -20,6 +21,8 @@ export class SignupComponent {
     private router: Router
   ) {}
 
+  new_guest_address: Address = {street: '', street_number: 0, city: ''};
+
   new_guest: NewGuset = {
     username: '',
     password: '',
@@ -30,7 +33,7 @@ export class SignupComponent {
     firstname: '',
     lastname: '',
     gender: '',
-    address: {street: '', street_number: 0, city: ''},
+    address: '',
     phone_number: '',
     credit_card_number: '',
     profile_photo: '',
@@ -75,6 +78,7 @@ export class SignupComponent {
   validate_form(): boolean {
     const isValid = this.form_validation_service.validate_user_form(
       this.new_guest,
+      this.new_guest_address,
       this.selectedFile
     );
 
@@ -101,7 +105,7 @@ export class SignupComponent {
     );
 
     const is_valid_address= RegexPatterns.ADDRESS.test(
-      this.new_guest.address.street
+      this.new_guest_address.street
     );
 
     const is_valid_email = RegexPatterns.EMAIL.test(this.new_guest.email);
@@ -155,10 +159,14 @@ export class SignupComponent {
     // this part is a bit messy but since I have bound string streetname streetnumber
     //  to street property of address on form I have to split hem into two parts
 
-    const street_data = this.new_guest.address.street.split(' ', 2)
+    const street_data = this.new_guest_address.street.split(' ', 2)
 
-    this.new_guest.address.street = street_data[0];
-    this.new_guest.address.street_number = parseInt(street_data[1]);
+    this.new_guest_address.street = street_data[0];
+    this.new_guest_address.street_number = parseInt(street_data[1]);
+
+    this.new_guest.address = this.new_guest_address;
+
+    console.log(this.new_guest)
 
     this.user_service.register(this.new_guest).subscribe({
       next: (data) => {

@@ -10,7 +10,7 @@ export interface NewGuset {
     firstname: string
     lastname: string
     gender: string
-    address: Address 
+    address: string | Address
     phone_number: string
     credit_card_number: string
     profile_photo: string

@@ -25,10 +25,7 @@ const routes: Routes = [
   { path: 'change_password', component: ChangePasswordComponent },
   { path: 'ask_question', component: AskQuestionComponent },
   { path: 'guest/restaurant_info', component: RestaurantComponent, canActivate: [AuthGuard, RoleGuard], data: { expected_role: 'guest' } },
-
-
-
-
+  { path: '**', redirectTo: '404', pathMatch: 'full' } //Error route
 ];
 
 @NgModule({

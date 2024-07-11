@@ -143,8 +143,8 @@ export class UserService {
   }
 
 
-  count_guests() {
-    return this.http.get<Number>(`${this.backendUrl}/count_guests`);
+  count_guests() : Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.backendUrl}/count/guest`);
   }
 
 }

@@ -11,6 +11,7 @@
       "prefix": "app",
       "architect": {
         "build": {
+          
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/frontend",
@@ -77,8 +78,8 @@
           "options": {
             "ssl": true,
             "sslKey": "../certificates/server-key.pem",
-            "sslCert": "../certificates/server-cert.pem",
-            "proxyConfig": "proxy.conf.json"
+            "sslCert": "../certificates/server-cert.pem"
+            
           },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {

@@ -23,7 +23,7 @@ const User = new Schema(
     password: {
       type: String,
       required: true,
-      match: /^(?=.*[A-Z])(?=.*[a-z]{3,})(?=.*\d)(?=.*[\W_]).{6,10}$/,
+      //no regex matching because password will be hased 
     },
     email: {
       type: String,
@@ -37,8 +37,8 @@ const User = new Schema(
     firstname: { type: String },
     lastname: { type: String },
     gender: { type: String, enum: ["male", "female"] },
-    address: { type: String, ref: "Address" },
-    phone_number: { Address },
+    address: { type: Address, required: true },
+    phone_number: { type: String, match: /^06\d{8}$/},
     credit_card_number: { type: String, match: /^\d{16}$/ },
     profile_photo: { type: String, match: /\.(png|jpg)$/i },
     status: {
