@@ -16,7 +16,7 @@ export class AdminLoginComponent {
     private router: Router
   ) {}
 
-  private readonly TOKEN_KEY = 'Naruto_D_Kurosaki';
+  private readonly TOKEN_KEY = 'authToken';
 
 
   signInData = {
@@ -39,9 +39,9 @@ export class AdminLoginComponent {
           console.error('Error logging in:', error);
           // Handle specific errors or show a general message
           if (error.status === 404) {
-            alert('Invalid credentials'); // Conflict error
+            console.log('Invalid credentials'); // Conflict error
           } else {
-            alert('Error logging in'); // General error
+            console.log('Error logging in'); // General error
           }
         },
       });

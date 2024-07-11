@@ -14,7 +14,7 @@ export class LoginComponent {
     public jwtHelper: JwtHelperService
   ) {}
 
-  private readonly TOKEN_KEY = 'Naruto_D_Kurosaki';
+  private readonly TOKEN_KEY = 'authToken';
 
   signInData = {
     username: '',

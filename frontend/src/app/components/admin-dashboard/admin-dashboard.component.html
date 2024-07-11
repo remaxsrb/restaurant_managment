@@ -33,51 +33,10 @@
           id="navbarNavAltMarkup"
         >
           <div class="navbar-nav">
-            <label
-              class="nav-item btn btn-outline-primary ms-2"
-              for="btnradio1"
-            >
-              Restaurants
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio1"
-                autocomplete="off"
-                [(ngModel)]="selected_option"
-                value="restaurants"
-              />
-            </label>
-            <label
-              class="nav-item btn btn-outline-primary ms-2"
-              for="btnradio2"
-            >
-              Waiters
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio2"
-                autocomplete="off"
-                [(ngModel)]="selected_option"
-                value="waiters"
-              />
-            </label>
-            <label
-              class="nav-item btn btn-outline-primary ms-2"
-              for="btnradio3"
-            >
-              Guests
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio3"
-                autocomplete="off"
-                [(ngModel)]="selected_option"
-                value="guests"
-              />
-            </label>
+            <a routerLink="/admin/restaurants" class="nav-item btn btn-outline-primary ms-2">Restaurants</a>
+            <a routerLink="/admin/waiters" class="nav-item btn btn-outline-primary ms-2">Waiters</a>
+            <a routerLink="/admin/guests" class="nav-item btn btn-outline-primary ms-2">Guests</a>
+            
             <button
               type="button"
               class="btn btn-outline-primary logout-btn ms-2"
@@ -96,15 +55,7 @@
     >
 
     <div class="content-container">
-      <app-admin-dashboard-restaurants
-      *ngIf="selected_option === 'restaurants'"
-    ></app-admin-dashboard-restaurants>
-    <app-admin-dashboard-waiters
-      *ngIf="selected_option === 'waiters'"
-    ></app-admin-dashboard-waiters>
-    <app-admin-dashboard-guests
-      *ngIf="selected_option === 'guests'"
-    ></app-admin-dashboard-guests>
+      <router-outlet></router-outlet>
     </div>
 
         
