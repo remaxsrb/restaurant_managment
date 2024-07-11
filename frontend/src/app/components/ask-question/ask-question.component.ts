@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/model_services/user.service';
 import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
-import * as CryptoJS from 'crypto-js';
 import { RegexPatterns } from '../regex_patterns';
 
 @Component({
@@ -38,9 +37,6 @@ export class AskQuestionComponent {
   onAnswerSubmit() {
     this.reset_ask_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
 
-    this.component_data.security_question_answer = CryptoJS.MD5(
-      this.component_data.security_question_answer
-    ).toString();
     localStorage.setItem('username', this.component_data.username);
 
     this.user_service.check_question(this.component_data).subscribe({
@@ -84,7 +80,6 @@ export class AskQuestionComponent {
   }
 
   private process_new_password_submission() {
-    this.password = CryptoJS.MD5(this.password).toString();
 
     let data = {
       username: localStorage.getItem('username'),

@@ -55,7 +55,7 @@ userRouter.route('/check_question').post(
     (req, res) => new UserController().check_question(req, res)
 )
 
-userRouter.route('/count_role').get(
+userRouter.route('/count_guests').get(
     (req, res) => new UserController().count(req, res)
 )
 

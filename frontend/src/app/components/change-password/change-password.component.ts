@@ -47,10 +47,6 @@ export class ChangePasswordComponent {
 
   process_form_submission() {
 
-    this.component_data.new_password = CryptoJS.MD5(
-      this.component_data.new_password
-    ).toString();
-
     let data = {
       username: this.component_data.username,
       password: this.component_data.new_password,

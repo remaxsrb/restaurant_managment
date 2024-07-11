@@ -21,6 +21,11 @@ const Dish = new Schema({
         type: Number,
         required: true
     },
+    image: {
+        type: String,
+        required: true,
+        match: /\.(png|jpg)$/i 
+    },
     ingredients: [Ingredient] // Array of IngredientSchema
 }, { versionKey: false });
 

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'src/app/services/utility_services/auth.service';
 @Component({
@@ -38,9 +37,6 @@ export class LoginComponent {
   onLogin() {
     this.reset_form_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
 
-    this.signInData.password = CryptoJS.MD5(
-      this.signInData.password
-    ).toString();
     this.auth_service
       .login(this.signInData.username, this.signInData.password)
       .subscribe({

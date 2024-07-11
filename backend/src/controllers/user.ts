@@ -1,76 +1,73 @@
 import express from "express";
 import User from "../models/user";
 import Cart from "../models/cart";
+
 import jwt_service from "../utilities/jwt";
+import bcrypt from "bcryptjs";
 
 export class UserController {
-  private checkExistingUser(username: string, email: string) {
-    return User.findOne({ $or: [{ username }, { email }] }).then(
-      (existingUser) => {
-        if (existingUser) {
-          if (existingUser.username === username) {
-            return Promise.reject({
-              status: 408,
-              message: "Username already taken",
-            });
-          } else if (existingUser.email === email) {
-            return Promise.reject({
-              status: 409,
-              message: "Email already taken",
-            });
-          }
-        }
-        return Promise.resolve();
+  private async checkExistingUser(username: string, email: string) {
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    if (existingUser) {
+      if (existingUser.username === username) {
+        throw { status: 408, message: "Username already taken" };
+      } else if (existingUser.email === email) {
+        throw { status: 409, message: "Email already taken" };
       }
-    );
+    }
   }
 
-  private createShoppingCart(username: string) {
+  private async createShoppingCart(username: string) {
     const shoppingCart = new Cart({ username, items: [] });
-    return shoppingCart.save();
+    await shoppingCart.save();
   }
 
-  register(req: express.Request, res: express.Response) {
-    this.checkExistingUser(req.body.username, req.body.email)
-      .then(() => User.create(req.body))
-      .then((user) => this.createShoppingCart(user.username))
-      .then(() => {
-        res.json({ message: "User and shopping cart created" });
-      })
-      .catch((err) => {
-        console.error(err);
-        const statusCode = err.status || 500; // Default to 500 Internal Server Error
-        const message = err.message || "Error creating user";
-        res.status(statusCode).json({ message });
-      });
+  async register(req: express.Request, res: express.Response) {
+console.log(req.body);
+
+    try {
+      await this.checkExistingUser(req.body.username, req.body.email);
+
+      const salt = bcrypt.genSaltSync(10);
+      const hashed_password = bcrypt.hashSync(req.body.password, salt);
+
+      req.body.password = hashed_password;
+
+      const user = await User.create(req.body);
+      await this.createShoppingCart(user.username);
+      console.log(user);
+      return res.json({ message: "User and shopping cart created" });
+    } catch (err: any) {
+      const statusCode = err.status || 500;
+      const message = err.message || "Error creating user";
+      return res.status(statusCode).json({ message });
+    }
   }
 
-  login(req: express.Request, res: express.Response) {
-    User.findOne({ username: req.body.username })
-      .then((user) => {
-        if (user) {
-          if (user.password === req.body.password) {
+  async login(req: express.Request, res: express.Response) {
+    const { username, password } = req.body;
+    try {
+      const user = await User.findOne({ username: username });
 
-            //!!add check if user is approved
-            
-            // Client-side hashed password comparison
-            const token = jwt_service.generate_token(user);
-            const { password, ...user_data } = user.toObject();
-            res.status(200).json({ token, user: user_data });
-          } else {
-            res.status(401).json({ message: "Invalid password" });
-          }
-        } else {
-          res.status(404).json({ message: "User not found" });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: "Error logging in" });
-      });
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      if (user.status !== "approved")
+        return res.status(402).json({ message: "User is not approved" });
+
+      const isMatch = bcrypt.compareSync(password, user.password);
+
+      if (!isMatch) return res.status(401).json({ message: "Invalid password" });
+
+      const token = jwt_service.generate_token(user);
+      const { password: _, ...user_data } = user.toObject();
+      return res.status(200).json({ token, user: user_data });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error logging in" });
+    }
   }
 
-  private updateField(
+  private async updateField(
     req: express.Request,
     res: express.Response,
     fieldToUpdate: string,
@@ -78,49 +75,33 @@ export class UserController {
     successMessage: string,
     errorMessage: string
   ) {
+    try {
+      if (fieldToUpdate === "username") {
+        const existingUser = await User.findOne({ username: updateValue });
+        if (existingUser) {
+          throw { status: 408, message: "Username is already taken" };
+        }
+      } else if (fieldToUpdate === "email") {
+        const existingUser = await User.findOne({ email: updateValue });
+        if (existingUser) {
+          throw { status: 409, message: "Email is already taken" };
+        }
+      }
 
-    //if a username or email are taken by another user return error codes and reject a promise otherwise proceed to updating
-
-    const checkQuery =
-      fieldToUpdate === "username"
-        ? User.findOne({ username: updateValue }).then((existingUser) => {
-            if (existingUser) {
-              return Promise.reject({
-                status: 408,
-                message: "Username is already taken",
-              });
-            }
-          })
-        : fieldToUpdate === "email"
-        ? User.findOne({ email: updateValue }).then((existingUser) => {
-            if (existingUser) {
-              return Promise.reject({
-                status: 409,
-                message: "Email is already taken",
-              });
-            }
-          })
-        : Promise.resolve();
-
-    checkQuery.then(() => {
       const updateQuery = { username: req.body.username };
       const update = { [fieldToUpdate]: updateValue };
 
-      User.updateOne(updateQuery, update)
-        .then((result) => {
-          if (result.modifiedCount > 0) {
-            res.json({ message: successMessage });
-          } else {
-            res
-              .status(404)
-              .json({ message: "User not found or no changes made" });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).json({ message: errorMessage });
-        });
-    });
+      const result = await User.updateOne(updateQuery, update);
+      if (result.modifiedCount > 0) {
+        return res.json({ message: successMessage });
+      } else {
+        return res.status(404).json({ message: "User not found or no changes made" });
+      }
+    } catch (err: any) {
+      const statusCode = err.status || 500;
+      const message = err.message || "Error creating user";
+      return res.status(statusCode).json({ message });
+    }
   }
 
   updateFirstname(req: express.Request, res: express.Response) {
@@ -233,56 +214,53 @@ export class UserController {
     );
   }
 
-  private readUserByField(
+  private async readUserByField(
     field: string,
     value: string,
     errorMessage: string,
     res: express.Response
   ) {
-    User.findOne({ [field]: value })
-      .then((user) => {
-        if (user) {
-          res.json(user);
-        } else {
-          res.status(404).json({ message: errorMessage });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: errorMessage });
-      });
+    try {
+      const user = await User.findOne({ [field]: value });
+      if (user) {
+        return res.json(user);
+      } else {
+        return res.status(404).json({ message: errorMessage });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: errorMessage });
+    }
   }
 
-  private readUsersByField(
+  private async readUsersByField(
     field: string,
     value: string,
     errorMessage: string,
     res: express.Response
   ) {
-    User.find({ [field]: value })
-      .then((users) => {
-        res.json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: errorMessage });
-      });
+    try {
+      const users = await User.find({ [field]: value });
+      return res.json(users);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: errorMessage });
+    }
   }
 
-  private countUsersByField(
+  private async countUsersByField(
     field: string,
     value: string,
     errorMessage: string,
     res: express.Response
   ) {
-    User.countDocuments({ [field]: value })
-      .then((count) => {
-        res.json({ count });
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: errorMessage });
-      });
+    try {
+      const count = await User.countDocuments({ [field]: value });
+      return res.json({ count });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: errorMessage });
+    }
   }
 
   readByUsername(req: express.Request, res: express.Response) {
@@ -307,49 +285,36 @@ export class UserController {
       res
     );
   }
-  check_question(req: express.Request, res: express.Response) {
-    console.log(req.body);
-    const { username, security_question, security_question_answer } = req.body;
 
-    // First check if the user exists by username
-    User.findOne({ username })
-      .then((existingUser) => {
-        if (!existingUser) {
-          // User does not exist
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        // User exists, now check if the security question matches
-        if (existingUser.security_question !== security_question) {
-          // Security question does not match
-          return res
-            .status(400)
-            .json({ message: "Security question does not match" });
-        }
-
-        // Security question matches, now check if the security question answer matches
-        if (
-          existingUser.security_question_answer !== security_question_answer
-        ) {
-          // Security question answer does not match
-          return res
-            .status(401)
-            .json({ message: "Security answer is incorrect" });
-        }
-
-        // All checks passed
-        return res.status(200).json({ message: "Security check passed" });
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(500).json({ message: "Internal Server Error" });
-      });
+  async check_question(req: express.Request, res: express.Response) {
+    try {
+      const { username, security_question, security_question_answer } =
+        req.body;
+      const existingUser = await User.findOne({ username });
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      if (existingUser.security_question !== security_question) {
+        return res
+          .status(400)
+          .json({ message: "Security question does not match" });
+      }
+      if (existingUser.security_question_answer !== security_question_answer) {
+        return res
+          .status(401)
+          .json({ message: "Security answer is incorrect" });
+      }
+      return res.status(200).json({ message: "Security check passed" });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 
   count(req: express.Request, res: express.Response) {
     const { role } = req.params;
     this.countUsersByField(
-      "role",
+      "guests",
       role,
       `No users of role '${role}' found`,
       res

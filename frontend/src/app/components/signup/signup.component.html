@@ -12,17 +12,24 @@
     </header>
 
     <!-- Main Content -->
-     
-    <main class="container d-flex flex-column justify-content-center align-items-center">
+
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
       <div>
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-md-12">
-              <form (ngSubmit)="onSubmit(); signUpForm.reset()" #signUpForm="ngForm">
+              <form
+                (ngSubmit)="onSubmit(); signUpForm.reset()"
+                #signUpForm="ngForm"
+              >
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
-                      <label for="firstname" class="form-label">First Name:</label>
+                      <label for="firstname" class="form-label"
+                        >First Name:</label
+                      >
                       <input
                         type="text"
                         id="firstname"
@@ -35,7 +42,9 @@
                   </div>
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
-                      <label for="lastname" class="form-label">Last Name:</label>
+                      <label for="lastname" class="form-label"
+                        >Last Name:</label
+                      >
                       <input
                         type="text"
                         id="lastname"
@@ -47,7 +56,7 @@
                     </div>
                   </div>
                 </div>
-    
+
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
@@ -90,11 +99,13 @@
                     </div>
                   </div>
                 </div>
-    
+
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
-                      <label for="securityQuestion" class="form-label">Security question:</label>
+                      <label for="securityQuestion" class="form-label"
+                        >Security question:</label
+                      >
                       <select
                         id="securityQuestion"
                         class="form-select"
@@ -102,18 +113,26 @@
                         [(ngModel)]="new_guest.security_question"
                         name="securityQuestion"
                       >
-                        <option value="" disabled selected>Select a security question</option>
+                        <option value="" disabled selected>
+                          Select a security question
+                        </option>
                         <option value="What is your mother's maiden name?">
                           What is your mother's maiden name?
                         </option>
-                        <option value="What city were you born in?">What city were you born in?</option>
-                        <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                        <option value="What city were you born in?">
+                          What city were you born in?
+                        </option>
+                        <option value="What is the name of your first pet?">
+                          What is the name of your first pet?
+                        </option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
-                      <label for="security_question_answer" class="form-label">Answer:</label>
+                      <label for="security_question_answer" class="form-label"
+                        >Answer:</label
+                      >
                       <input
                         type="text"
                         id="security_question_answer"
@@ -125,8 +144,66 @@
                     </div>
                   </div>
                 </div>
-    
+
                 <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address:</label>
+                      <input
+                        type="text"
+                        id="address"
+                        class="form-control"
+                        required
+                        [(ngModel)]="new_guest.address.street"
+                        name="address"
+                      />
+                      <div
+                      class="alert alert-danger"
+                      role="alert"
+                      *ngIf="guest_form_flags.invalid_address"
+                    >
+                      Invalid address
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label for="city" class="form-label">City:</label>
+                      <input
+                        type="text"
+                        id="city"
+                        class="form-control"
+                        required
+                        [(ngModel)]="new_guest.address.city"
+                        name="city"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label for="phone_number" class="form-label"
+                        >Phone number:</label
+                      >
+                      <input
+                        type="text"
+                        id="phone_number"
+                        class="form-control"
+                        required
+                        [(ngModel)]="new_guest.phone_number"
+                        name="phone_number"
+                      />
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        *ngIf="guest_form_flags.invalid_phone_number"
+                      >
+                        Invalid phone number
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
                       <label for="email" class="form-label">Email:</label>
@@ -154,45 +231,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6 col-12">
-                    <div class="mb-3">
-                      <label for="address" class="form-label">Address:</label>
-                      <input
-                        type="text"
-                        id="address"
-                        class="form-control"
-                        required
-                        [(ngModel)]="new_guest.address.street"
-                        name="address"
-                      />
-                    </div>
-                  </div>
                 </div>
-    
+
                 <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
-                      <label for="phone_number" class="form-label">Phone number:</label>
-                      <input
-                        type="text"
-                        id="phone_number"
-                        class="form-control"
-                        required
-                        [(ngModel)]="new_guest.phone_number"
-                        name="phone_number"
-                      />
-                      <div
-                        class="alert alert-danger"
-                        role="alert"
-                        *ngIf="guest_form_flags.invalid_phone_number"
+                      <label for="credit_card_number" class="form-label"
+                        >Credit card number:</label
                       >
-                        Invalid phone number
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-12">
-                    <div class="mb-3">
-                      <label for="credit_card_number" class="form-label">Credit card number:</label>
                       <input
                         type="text"
                         id="credit_card_number"
@@ -204,15 +250,14 @@
                       <div
                         class="alert alert-danger"
                         role="alert"
-                        *ngIf="guest_form_flags.invalid_picture_credit_card_format"
+                        *ngIf="
+                          guest_form_flags.invalid_picture_credit_card_format
+                        "
                       >
                         Invalid credit card number format
                       </div>
                     </div>
                   </div>
-                </div>
-    
-                <div class="row">
                   <div class="col-md-6 col-12">
                     <div class="mb-3">
                       <label for="inputGroupFile02">Profile photo</label>
@@ -231,7 +276,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6 col-12">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="mb-3">
                       <label class="form-label">Gender:</label><br />
                       <div class="form-check form-check-inline">
@@ -256,15 +304,21 @@
                           value="female"
                           required
                         />
-                        <label for="female" class="form-check-label">Female</label>
+                        <label for="female" class="form-check-label"
+                          >Female</label
+                        >
                       </div>
                     </div>
                   </div>
                 </div>
-    
+
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="submit" class="btn btn-dark" [disabled]="!signUpForm.form.valid">
+                    <button
+                      type="submit"
+                      class="btn btn-dark"
+                      [disabled]="!signUpForm.form.valid"
+                    >
                       Sign up
                     </button>
                   </div>
@@ -275,7 +329,6 @@
         </div>
       </div>
     </main>
-    
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-3 mt-4">

@@ -3,5 +3,9 @@ dist/
 .vscode/
 .editorconfig
 .angular/
-frontend/README.md
-
+certificates/ca-cert.pem
+certificates/ca-key.pem
+certificates/server-cert.pem
+certificates/ca-cert.srl
+certificates/server-csr.pem
+certificates/server-key.pem

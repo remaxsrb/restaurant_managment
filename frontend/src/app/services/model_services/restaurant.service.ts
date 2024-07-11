@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Restaurant } from '../../models/restaurant';
+import { environment } from 'enivroment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +9,9 @@ import { Restaurant } from '../../models/restaurant';
 export class RestaurantService {
   constructor(private http: HttpClient) {}
 
-  backendUrl = 'http://127.0.0.1:4000/restaurant';
-
+  private apiUrl = environment.apiUrl;
+  
+  private backendUrl = `${this.apiUrl}/restaurant`;
   all() {
     return this.http.get<Restaurant[]>(`${this.backendUrl}/all`);
   }

@@ -4,27 +4,25 @@ const Schema = mongoose.Schema;
 
 const Reservation = new Schema ({
 
-    restaurant_name: {
-        type: String,
-        required: true,
-    },
-    username: {
-        type: String,
-        required: true
-    },
+    restaurant: { type: Schema.Types.ObjectId, ref: "Restaurant", required: true },
+    guest: { type: Schema.Types.ObjectId, ref: "User", required: true },
     status: {
         type: String,
         required: true,
+        enum: ["active", "expired"]
     },
     date: {
         type: Date,
         required: true,
     },
     time: {
-        type: String,
+        type: Date,
+        required: true
+    },
+    showed_up: {
+        type: Boolean,
         required: true,
-        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 
-        //Time is stored in a HH:MM formar as a string and on frontend it will be converted for calulations
+        default: false //its logical to set showed_up to false until user shows up
     }
 
 }, { versionKey: false })

@@ -9,5 +9,5 @@ import { Observable, catchError, throwError } from 'rxjs';
 export class GuestService {
   constructor(private http: HttpClient) {}
 
-  backendUrl = 'http://127.0.0.1:4000/guest';
+  backendUrl = 'https://127.0.0.1:4000/guest';
 }

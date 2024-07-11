@@ -21,4 +21,16 @@
     "$oid": "6672268117759c1782eade36"
   },
   "name": "Indian"
+},
+{
+  "_id": {
+    "$oid": "668ea7373d3ac6a898b1ad9d"
+  },
+  "name": "Mexican"
+},
+{
+  "_id": {
+    "$oid": "668ea73c3d3ac6a898b1ad9f"
+  },
+  "name": "Burgers"
 }]

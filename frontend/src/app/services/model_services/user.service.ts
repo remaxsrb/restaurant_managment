@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'enivroment';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -8,7 +9,9 @@ import { Observable } from 'rxjs/internal/Observable';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  backendUrl = 'http://127.0.0.1:4000/user';
+  private apiUrl = environment.apiUrl;
+  
+  backendUrl = `${this.apiUrl}/user`;
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -140,8 +143,8 @@ export class UserService {
   }
 
 
-  count_role() {
-    return this.http.get<Number>(`${this.backendUrl}/count_role`);
+  count_guests() {
+    return this.http.get<Number>(`${this.backendUrl}/count_guests`);
   }
 
 }

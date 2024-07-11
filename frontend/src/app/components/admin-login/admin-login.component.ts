@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
-import { UserService } from 'src/app/services/model_services/user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'src/app/services/utility_services/auth.service';
 
@@ -27,10 +25,6 @@ export class AdminLoginComponent {
   };
 
   onLogin() {
-    this.signInData.password = CryptoJS.MD5(
-      this.signInData.password
-    ).toString();
-
     this.auth_service
       .login(this.signInData.username, this.signInData.password)
       .subscribe({

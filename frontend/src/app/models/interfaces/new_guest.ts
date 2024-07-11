@@ -15,5 +15,5 @@ export interface NewGuset {
     credit_card_number: string
     profile_photo: string
     status: string 
-    late_for_reservation: string
+    late_for_reservation: Number
 }

@@ -29,7 +29,7 @@ export class HomepageComponent implements OnInit {
       this.waiters = data;
     });
 
-    this.user_service.count_role().subscribe((data) => {
+    this.user_service.count_guests().subscribe((data) => {
       this.number_of_guests = data;
     });
       

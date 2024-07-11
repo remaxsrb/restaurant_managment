@@ -2,38 +2,30 @@ import express from "express";
 import Dish from "../models/dish";
 
 export class DishController {
-  create(req: express.Request, res: express.Response) {
-    let dish = {
-      name: req.body.name,
-      price: req.body.price,
-      ingredients: req.body.ingredients,
-    };
+  async create(req: express.Request, res: express.Response): Promise<express.Response> {
 
-    new Dish(dish)
-      .save()
-      .then(() => {
-        res.json({ message: "Dish created" });
-      })
-      .catch((err) => {
-        console.error(err);
-        res
-          .status(400)
-          .json({ message: "Dish with given name already exists" });
-      });
+    const {new_dish} = req.body
+
+    try {
+      await new Dish(new_dish).save();
+      return res.json({ message: "Dish created" });
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ message: "Dish with given name already exists" });
+    }
   }
 
-  readByName(req: express.Request, res: express.Response) {
-    Dish.findOne({ name: req.body.name })
-      .then((dish) => {
-        if (dish) {
-          res.json(dish);
-        } else {
-          res.status(404).json({ message: "No such dish" });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(400).json({ message: "Error finding dish" });
-      });
+  async readByName(req: express.Request, res: express.Response): Promise<express.Response> {
+    try {
+      const dish = await Dish.findOne({ name: req.body.name });
+      if (dish) {
+        return res.json(dish);
+      } else {
+        return res.status(404).json({ message: "No such dish" });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ message: "Error finding dish" });
+    }
   }
 }

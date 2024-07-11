@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/model_services/user.service';
@@ -35,12 +34,13 @@ export class SignupComponent {
     phone_number: '',
     credit_card_number: '',
     profile_photo: '',
-    status: '',
-    late_for_reservation: ''
+    status: 'pending',
+    late_for_reservation: 0
   };
 
   guest_form_flags = {
     invalid_password: false,
+    invalid_address: false,
     invalid_email: false,
     invalid_phone_number: false,
     invalid_picture_format: false,
@@ -86,6 +86,7 @@ export class SignupComponent {
   private reset_form_flags() {
     // Reset flags
     this.guest_form_flags.invalid_password = false;
+    this.guest_form_flags.invalid_address = false;
     this.guest_form_flags.invalid_email = false;
     this.guest_form_flags.invalid_phone_number = false;
     this.guest_form_flags.invalid_picture_format = false;
@@ -98,7 +99,13 @@ export class SignupComponent {
     const is_valid_password = RegexPatterns.PASSWORD.test(
       this.new_guest.password
     );
+
+    const is_valid_address= RegexPatterns.ADDRESS.test(
+      this.new_guest.address.street
+    );
+
     const is_valid_email = RegexPatterns.EMAIL.test(this.new_guest.email);
+    
     const is_valid_phone_number = RegexPatterns.PHONE_NUMBER.test(
       this.new_guest.phone_number
     );
@@ -111,6 +118,10 @@ export class SignupComponent {
 
     if (!is_valid_password) {
       this.guest_form_flags.invalid_password = true;
+    }
+
+    if (!is_valid_address) {
+      this.guest_form_flags.invalid_address = true;
     }
 
     if (!is_valid_email) {
@@ -131,11 +142,6 @@ export class SignupComponent {
   }
 
   processFormSubmission() {
-    this.new_guest.password = CryptoJS.MD5(this.new_guest.password).toString();
-    this.new_guest.security_question_answer = CryptoJS.MD5(
-      this.new_guest.security_question_answer
-    ).toString();
-
     if (this.selectedFile) {
       this.new_guest.profile_photo = this.selectedFile.name;
     } else {
@@ -145,6 +151,14 @@ export class SignupComponent {
           ? 'default_male.png'
           : 'default_female.png';
     }
+
+    // this part is a bit messy but since I have bound string streetname streetnumber
+    //  to street property of address on form I have to split hem into two parts
+
+    const street_data = this.new_guest.address.street.split(' ', 2)
+
+    this.new_guest.address.street = street_data[0];
+    this.new_guest.address.street_number = parseInt(street_data[1]);
 
     this.user_service.register(this.new_guest).subscribe({
       next: (data) => {

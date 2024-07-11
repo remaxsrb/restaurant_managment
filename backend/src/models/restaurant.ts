@@ -1,16 +1,34 @@
 import mongoose from "mongoose";
-import Dish from "./dish";
 
 const Schema = mongoose.Schema;
+
+const Table = new Schema({
+
+  id: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    required: true,
+    enum:['available', 'reserved'],
+
+  },
+  capacity: {
+    type: Number,
+    required: true,
+    min: 2 
+  }
+
+}) 
 
 const Restaurant = new Schema(
   {
     name: {
       type: String,
       required: true,
-      unique: true, // not interested in a case when restaurant is a franchize
+      unique: true, // not interested in a case when restaurant is a franchize so I am using restaurant name as primary key
     },
-    address: { type: String, ref: "Address" },
     phone_number: {
       type: String,
       required: true,
@@ -53,6 +71,7 @@ const Restaurant = new Schema(
       type: Number,
       required: true,
       default: 0,
+      min:0,
       max: 5
     },
     description: {
@@ -64,7 +83,7 @@ const Restaurant = new Schema(
       required: true,
       match: /\.json$/i
     },
-    tables: [{id: String, capacity: Number, status: String}],
+    tables: [Table],
 
     menu: [{ type: Schema.Types.ObjectId, ref: "Dish" }],
   },
