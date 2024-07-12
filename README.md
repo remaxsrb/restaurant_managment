@@ -1,8 +1,21 @@
 ## Instructions for running this application
 
+Clone this repostiory:
+
+    git clone git@github.com:remaxsrb/restaurant_managment.git
+
+Install all dependencies on both frontend and backend with:
+
+    npm install
+
 This project is configured to use https instead of http and for that you should do the following to enable smooth communication between client and server:
 
-    1. Run the generate_sertificates.sh script to generate necesary certificates to enable https communication.
+    1. Run  generate_sertificates.sh script to generate necesary certificates to enable https communication.
+
+        cd certificates/
+        chmod +x generate_sertificates.sh
+        ./generate_sertificates.sh
+
     2. In order for firefox or any other browser to trust your application you should import previous created and self signed ca-cert.pem to trusted  firefox certificates
 
 To run angular application use this command:
