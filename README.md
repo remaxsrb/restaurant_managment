@@ -25,9 +25,6 @@ To run angular application use this command:
 As for backend configuration, due to existance of JWT in the project, you should replace sample code with your secret code in src/utilities/jwt.ts:
 
     const secretKey = 'Sample_secret_key'; 
-Also, in login.ts and admin-login.ts you should do the same:
-
-    private readonly TOKEN_KEY = 'sample_secret_key';
 
 With all of that setup, you should be able to go and test out the web application.
 
