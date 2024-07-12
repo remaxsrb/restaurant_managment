@@ -1,12 +1,11 @@
 // src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './services/utility_services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
@@ -26,56 +25,47 @@ import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard
 import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
 import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
 import { RestaurantComponent } from './components/restaurant/restaurant.component';
-import { APP_BASE_HREF } from '@angular/common';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomepageComponent,
-    LoginComponent,
-    SignupComponent,
-    AdminLoginComponent,
-    GuestDashBoardComponent, 
-    WaiterDashboardComponent,
-    AdminDashboardComponent,
-    ChangePasswordComponent,
-    AskQuestionComponent,
-    AdminDashboardRestaurantsComponent,
-    AdminDashboardWaitersComponent,
-    AdminDashboardGuestsComponent,
-    UserProfileComponent,
-    GuestDashboardRestaurantsComponent,
-    GuestDashboardReservationsComponent,
-    GuestDashboardFoodOrderComponent,
-    RestaurantComponent,
-
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem('access_token');
+@NgModule({ declarations: [
+        AppComponent,
+        HomepageComponent,
+        LoginComponent,
+        SignupComponent,
+        AdminLoginComponent,
+        GuestDashBoardComponent,
+        WaiterDashboardComponent,
+        AdminDashboardComponent,
+        ChangePasswordComponent,
+        AskQuestionComponent,
+        AdminDashboardRestaurantsComponent,
+        AdminDashboardWaitersComponent,
+        AdminDashboardGuestsComponent,
+        UserProfileComponent,
+        GuestDashboardRestaurantsComponent,
+        GuestDashboardReservationsComponent,
+        GuestDashboardFoodOrderComponent,
+        RestaurantComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => {
+                    return localStorage.getItem('access_token');
+                },
+                allowedDomains: ["https://127.0.0.1:4000/"],
+                //disallowedRoutes: ["http://example.com/examplebadroute/"],
+            },
+        })], providers: [
+        AuthService,
+        JwtHelperService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
         },
-        allowedDomains: ["https://127.0.0.1:4000/"],
-        //disallowedRoutes: ["http://example.com/examplebadroute/"],
-      },
-    }),
-  ],
-  providers: [
-    AuthService,
-    JwtHelperService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-  ],
-  bootstrap: [AppComponent]
-})
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }

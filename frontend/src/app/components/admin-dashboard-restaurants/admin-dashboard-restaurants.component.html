@@ -158,26 +158,25 @@
         <div class="col-md-6 d-flex justify-content-center">
           <div class="mb-3">
             <label for="opening_hours" class="form-label">Opening Hours:</label>
-            <ngb-timepicker
+            <timepicker
               name="opening_hours"
               [(ngModel)]="newRestaurant.open"
-              [spinners]="true"
               required
-            ></ngb-timepicker>
+            ></timepicker>
           </div>
         </div>
         <div class="col-md-6 d-flex justify-content-center">
           <div class="mb-3">
             <label for="closing_hours" class="form-label">Closing Hours:</label>
-            <ngb-timepicker
+            <timepicker
               name="closing_hours"
               [(ngModel)]="newRestaurant.close"
-              [spinners]="true"
               required
-            ></ngb-timepicker>
+            ></timepicker>
           </div>
         </div>
       </div>
+      
       
 
       <div class="row">

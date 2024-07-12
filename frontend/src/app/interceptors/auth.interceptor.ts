@@ -1,11 +1,6 @@
 // src/app/interceptors/auth.interceptor.ts
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { AuthService } from '../services/utility_services/auth.service';
 import { Observable } from 'rxjs';
 

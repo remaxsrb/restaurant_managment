@@ -55,11 +55,8 @@
         <td>{{ restaurant.type }}</td>
         <td>{{ restaurant.address }}</td>
         <td>
-          <ngb-rating
-            [(rate)]="restaurant.rating"
-            [readonly]="true"
-            [max]="5"
-          />
+          <rating [(ngModel)]="restaurant.rating" max="5" readonly="true"></rating>
+
         </td>
       </tr>
       <tr *ngIf="selected_restaurant === restaurant.name">
