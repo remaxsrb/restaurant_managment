@@ -10,10 +10,8 @@ export class TimeService {
 
   formatTimeTo24HourString(time: any) {
     // Extract hour and minute
-    const hour = time.hour.toString().padStart(2, '0');
-    const minute = time.minute.toString().padStart(2, '0');
-    
-    // Return the formatted string
-    return `${hour}:${minute}`;
+    const hours = time.getUTCHours().toString().padStart(2, '0');
+    const minutes = time.getUTCMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
 }
 }

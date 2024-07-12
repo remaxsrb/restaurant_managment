@@ -1,1 +1,1 @@
-export type Time = { hour: number; minute: number } | string;
+export type Time = { hour: number; minute: number } | Date | String;

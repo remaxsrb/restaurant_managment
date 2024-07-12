@@ -1,5 +1,6 @@
 import express from "express";
 import Restaurant from "../models/restaurant";
+import RestaurantType from "../models/restaurant_type";
 
 export class RestaurantController {
   async create(req: express.Request, res: express.Response) {
@@ -9,15 +10,29 @@ export class RestaurantController {
       console.log("Restaurant created");
     } catch (err) {
       console.error(err);
-      return res
-        .status(400)
-        .json({ message: "Restaurant with given name already exists" });
+      return res.status(400).json({ message: "Error creating restaurant" });
     }
   }
 
   async all(req: express.Request, res: express.Response) {
     try {
-      const restaurants = await Restaurant.find({}).sort({ name: 1 });
+      var restaurants = await Restaurant.find({});
+
+      //!! modify return values to not return restaurant type id but its name to avoid confusion on front
+
+      const restaurant_types = await RestaurantType.find({});
+
+      // Create a map of restaurant types for quick lookup
+      const restaurantTypeMap = new Map(
+        restaurant_types.map((type) => [type._id.toString(), type.name])
+      );
+
+      restaurants.forEach((restaurant) => {
+        const type_ID = restaurant.type.toString(); // Convert to string for comparison
+        const foundTypeName = restaurantTypeMap.get(type_ID);
+        restaurant.type = foundTypeName ? foundTypeName : "";
+      });
+
       return res.json(restaurants);
     } catch (err) {
       console.error(err);

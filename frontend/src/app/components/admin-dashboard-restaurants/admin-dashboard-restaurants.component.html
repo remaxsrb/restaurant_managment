@@ -1,6 +1,6 @@
 <div class="row">
   <div class="table-container col-lg-8">
-    <table class="table table-striped ">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Show</th>
@@ -8,7 +8,7 @@
           <th>Type</th>
           <th>Phone number</th>
           <th>Address</th>
-          <th>Location</th>
+          <th>City</th>
           <th>Open</th>
           <th>Closed</th>
         </tr>
@@ -30,8 +30,8 @@
             <td>{{ row.name }}</td>
             <td>{{ row.type }}</td>
             <td>{{ row.phone_number }}</td>
-            <td>{{ row.address }}</td>
-            <td>{{ row.location }}</td>
+            <td>{{ row.address.street}}  {{ row.address.street_number }}</td>
+            <td>{{ row.address.city}}</td>
             <td>{{ row.open }}</td>
             <td>{{ row.close }}</td>
           </tr>
@@ -64,11 +64,31 @@
               id="name"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.name"
+              [(ngModel)]="new_restaurant.name"
               name="name"
             />
           </div>
         </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="type" class="form-label">Type:</label>
+            <select
+              id="type"
+              class="form-select"
+              required
+              [(ngModel)]="new_restaurant.type"
+              name="type"
+            >
+              <option value="" disabled selected>Select a type</option>
+              <option *ngFor="let type of restaurant_types" [value]="type._id">
+                {{ type.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
             <label for="address" class="form-label">Address:</label>
@@ -77,42 +97,21 @@
               id="address"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.address"
+              [(ngModel)]="new_restaurant_address.street"
               name="address"
             />
           </div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="type" class="form-label">Type:</label>
-            <select
-              id="type"
-              class="form-select"
-              required
-              [(ngModel)]="newRestaurant.type"
-              name="type"
-              
-            >
-              <option value="" disabled selected>Select a type</option>
-              <option *ngFor="let type of restaurant_types" [value]="type.name">
-                {{ type.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="phone_number" class="form-label">Phone number:</label>
+            <label for="city" class="form-label">City:</label>
             <input
               type="text"
-              id="phone_number"
+              id="city"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.phone_number"
-              name="phone_number"
+              [(ngModel)]="new_restaurant_address.city"
+              name="city"
             />
           </div>
         </div>
@@ -127,7 +126,7 @@
               id="email"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.email"
+              [(ngModel)]="new_restaurant.email"
               name="email"
             />
             <div
@@ -141,14 +140,15 @@
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="location" class="form-label">Location:</label>
+
+            <label for="phone_number" class="form-label">Phone number:</label>
             <input
               type="text"
-              id="location"
+              id="phone_number"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.location"
-              name="location"
+              [(ngModel)]="new_restaurant.phone_number"
+              name="phone_number"
             />
           </div>
         </div>
@@ -160,7 +160,11 @@
             <label for="opening_hours" class="form-label">Opening Hours:</label>
             <timepicker
               name="opening_hours"
-              [(ngModel)]="newRestaurant.open"
+              [(ngModel)]="new_restaurant.open"
+              [showMeridian]="isMeridian"
+              [minuteStep]="mstep"
+              [hoursPlaceholder]="hoursPlaceholder"
+              [minutesPlaceholder]="minutesPlaceholder"
               required
             ></timepicker>
           </div>
@@ -170,14 +174,16 @@
             <label for="closing_hours" class="form-label">Closing Hours:</label>
             <timepicker
               name="closing_hours"
-              [(ngModel)]="newRestaurant.close"
+              [(ngModel)]="new_restaurant.close"
+              [showMeridian]="isMeridian"
+              [minuteStep]="mstep"
+              [hoursPlaceholder]="hoursPlaceholder"
+              [minutesPlaceholder]="minutesPlaceholder"
               required
             ></timepicker>
           </div>
         </div>
       </div>
-      
-      
 
       <div class="row">
         <div class="col-md-6">
@@ -196,7 +202,7 @@
               id="description"
               class="form-control"
               required
-              [(ngModel)]="newRestaurant.description"
+              [(ngModel)]="new_restaurant.description"
               name="description"
               rows="1"
             ></textarea>

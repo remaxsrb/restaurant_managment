@@ -33,6 +33,9 @@ export class GuestDashboardRestaurantsComponent implements OnInit {
   current_sort_column: string = '';
   current_sort_direction: SortDirection = '';
 
+  max: number = 5;
+  isReadonly: boolean = true;
+
   ngOnInit(): void {
     this.restaurant_service.all().subscribe((data) => {
       this.restaurants = data;
@@ -96,8 +99,11 @@ export class GuestDashboardRestaurantsComponent implements OnInit {
         this.sortable_table_service.get_default_direction();
     }
 
-
     this.get_sorted_restaurants();
-
   }
+
+  onLinkClick(restaurant: Restaurant) {
+    localStorage.setItem('restaurant', JSON.stringify(restaurant));
+  }
+
 }

@@ -1,21 +1,7 @@
 import mongoose from "mongoose";
+import { Address } from "./address";
 
 const Schema = mongoose.Schema;
-
-const Address = new Schema({
-  street: {
-    type: String,
-    required: true,
-  },
-  street_number: {
-    type: Number,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-});
 
 const User = new Schema(
   {
@@ -37,14 +23,14 @@ const User = new Schema(
     firstname: { type: String },
     lastname: { type: String },
     gender: { type: String, enum: ["male", "female"] },
-    address: { type: Address, required: true },
+    address: { type: Address},
     phone_number: { type: String, match: /^06\d{8}$/},
     credit_card_number: { type: String, match: /^\d{16}$/ },
     profile_photo: { type: String, match: /\.(png|jpg)$/i },
     status: {
       type: String,
       default: "pending",
-      enum: ["pending", "approved", "blocked", "banned"],
+      enum: ["pending", "active", "blocked", "banned"],
     },
     late_for_reservation: { type: Number, default: 0, min: 0, max: 3 },
     restaurant: { type: String, ref: "Restaurant" },

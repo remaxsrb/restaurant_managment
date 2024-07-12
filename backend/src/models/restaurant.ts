@@ -1,26 +1,24 @@
 import mongoose from "mongoose";
+import { Address } from "./address";
 
 const Schema = mongoose.Schema;
 
 const Table = new Schema({
-
   id: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
     required: true,
-    enum:['available', 'reserved'],
-
+    enum: ["available", "reserved"],
   },
   capacity: {
     type: Number,
     required: true,
-    min: 2 
-  }
-
-}) 
+    min: 2,
+  },
+});
 
 const Restaurant = new Schema(
   {
@@ -32,29 +30,21 @@ const Restaurant = new Schema(
     phone_number: {
       type: String,
       required: true,
-      match: /^06\d{8}$/
+      match: /^06\d{8}$/,
     },
     email: {
       type: String,
       required: true,
-      match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/
+      match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
     },
     type: {
-      type: Schema.Types.ObjectId, 
+      type: Schema.Types.Mixed,
       ref: "RestaurantType",
       required: true,
     },
 
-    longitude: {
-      type: Number,
-      required: true
-    },
-    latidute: {
-      type: Number,
-      required: true
-    },
+    address: { type: Address, required: true },
 
-    
     //Time is stored in a HH:MM formar as a string and on frontend it will be converted for calulations
 
     open: {
@@ -71,8 +61,8 @@ const Restaurant = new Schema(
       type: Number,
       required: true,
       default: 0,
-      min:0,
-      max: 5
+      min: 0,
+      max: 5,
     },
     description: {
       type: String,
@@ -81,7 +71,7 @@ const Restaurant = new Schema(
     floor_plan: {
       type: String,
       required: true,
-      match: /\.json$/i
+      match: /\.json$/i,
     },
     tables: [Table],
 

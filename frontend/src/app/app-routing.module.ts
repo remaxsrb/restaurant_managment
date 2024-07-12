@@ -15,6 +15,10 @@ import { RestaurantComponent } from './components/restaurant/restaurant.componen
 import { AdminDashboardRestaurantsComponent } from './components/admin-dashboard-restaurants/admin-dashboard-restaurants.component';
 import { AdminDashboardWaitersComponent } from './components/admin-dashboard-waiters/admin-dashboard-waiters.component';
 import { AdminDashboardGuestsComponent } from './components/admin-dashboard-guests/admin-dashboard-guests.component';
+import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard-restaurants/guest-dashboard-restaurants.component';
+import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
+import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -26,7 +30,16 @@ const routes: Routes = [
     component: GuestDashBoardComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { expected_role: 'guest' },
+    children: [
+      { path: 'restaurants', component: GuestDashboardRestaurantsComponent},
+      { path: 'reservations', component: GuestDashboardReservationsComponent },
+      { path: 'orders', component: GuestDashboardFoodOrderComponent },
+      { path: 'profile', component: UserProfileComponent },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' }, 
+    ]
   },
+  { path: 'restaurant_info', component: RestaurantComponent},
+
   {
     path: 'waiter',
     component: WaiterDashboardComponent,

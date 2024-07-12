@@ -10,7 +10,7 @@
             'fa fa-caret-up': current_sort_direction === 'asc',
             'fa fa-caret-down': current_sort_direction === 'desc'
           }"
-        ></i> 
+        ></i>
       </th>
       <th scope="col" (click)="on_sort('type')">
         Type
@@ -50,13 +50,19 @@
           />
         </td>
         <td>
-          <a routerLink="/guest/restaurant_info">{{ restaurant.name }}</a>
+          <a routerLink="/restaurant_info" (click)="onLinkClick(restaurant)"> {{ restaurant.name }}</a>
+
         </td>
         <td>{{ restaurant.type }}</td>
-        <td>{{ restaurant.address }}</td>
         <td>
-          <rating [(ngModel)]="restaurant.rating" max="5" readonly="true"></rating>
-
+          {{ restaurant.address.street }} {{ restaurant.address.street_number }}
+        </td>
+        <td>
+          <rating
+            [(ngModel)]="restaurant.rating"
+            [max]="max"
+            [readonly]="isReadonly"
+          ></rating>
         </td>
       </tr>
       <tr *ngIf="selected_restaurant === restaurant.name">

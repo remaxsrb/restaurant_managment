@@ -1,7 +1,11 @@
 // src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './services/utility_services/auth.service';
@@ -25,47 +29,55 @@ import { GuestDashboardRestaurantsComponent } from './components/guest-dashboard
 import { GuestDashboardReservationsComponent } from './components/guest-dashboard-reservations/guest-dashboard-reservations.component';
 import { GuestDashboardFoodOrderComponent } from './components/guest-dashboard-food-order/guest-dashboard-food-order.component';
 import { RestaurantComponent } from './components/restaurant/restaurant.component';
-
-
-@NgModule({ declarations: [
-        AppComponent,
-        HomepageComponent,
-        LoginComponent,
-        SignupComponent,
-        AdminLoginComponent,
-        GuestDashBoardComponent,
-        WaiterDashboardComponent,
-        AdminDashboardComponent,
-        ChangePasswordComponent,
-        AskQuestionComponent,
-        AdminDashboardRestaurantsComponent,
-        AdminDashboardWaitersComponent,
-        AdminDashboardGuestsComponent,
-        UserProfileComponent,
-        GuestDashboardRestaurantsComponent,
-        GuestDashboardReservationsComponent,
-        GuestDashboardFoodOrderComponent,
-        RestaurantComponent,
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: () => {
-                    return localStorage.getItem('access_token');
-                },
-                allowedDomains: ["https://127.0.0.1:4000/"],
-                //disallowedRoutes: ["http://example.com/examplebadroute/"],
-            },
-        })], providers: [
-        AuthService,
-        JwtHelperService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { RatingModule } from 'ngx-bootstrap/rating';
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomepageComponent,
+    LoginComponent,
+    SignupComponent,
+    AdminLoginComponent,
+    GuestDashBoardComponent,
+    WaiterDashboardComponent,
+    AdminDashboardComponent,
+    ChangePasswordComponent,
+    AskQuestionComponent,
+    AdminDashboardRestaurantsComponent,
+    AdminDashboardWaitersComponent,
+    AdminDashboardGuestsComponent,
+    UserProfileComponent,
+    GuestDashboardRestaurantsComponent,
+    GuestDashboardReservationsComponent,
+    GuestDashboardFoodOrderComponent,
+    RestaurantComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    TimepickerModule,
+    RatingModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
         },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
-export class AppModule { }
+        allowedDomains: ['https://127.0.0.1:4000/'],
+        //disallowedRoutes: ["http://example.com/examplebadroute/"],
+      },
+    }),
+  ],
+  providers: [
+    AuthService,
+    JwtHelperService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+})
+export class AppModule {}

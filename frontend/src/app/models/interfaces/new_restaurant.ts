@@ -5,13 +5,12 @@ import { Table } from "./table";
 
 export interface NewRestaurant {
   name: string;
-  address: Address;
+  address: string | Address;
   phone_number: string;
   email: string;
   type: string;
-  location: string;
-  open: Time;
-  close: Time;
+  open?: Time;
+  close?: Time;
   description: string;
   floor_plan: string;
   rating: Number;

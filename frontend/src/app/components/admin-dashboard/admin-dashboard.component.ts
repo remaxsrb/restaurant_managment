@@ -10,12 +10,6 @@ import { AuthService } from 'src/app/services/utility_services/auth.service';
 export class AdminDashboardComponent {
   constructor(private auth_service: AuthService) {}
 
-  selected_option = 'restaurants';
-
-  onNavRadioChange() {
-    this.selected_option = '';
-  }
-
 
   logout() {
     this.auth_service.logout();

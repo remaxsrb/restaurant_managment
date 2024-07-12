@@ -159,14 +159,15 @@ export class SignupComponent {
     // this part is a bit messy but since I have bound string streetname streetnumber
     //  to street property of address on form I have to split hem into two parts
 
-    const street_data = this.new_guest_address.street.split(' ', 2)
+    const street_data = this.new_guest_address.street.match(RegexPatterns.ADDRESS)
 
-    this.new_guest_address.street = street_data[0];
-    this.new_guest_address.street_number = parseInt(street_data[1]);
+    if(!street_data)
+      return;
+
+    this.new_guest_address.street = street_data[1].trim();;
+    this.new_guest_address.street_number = parseInt(street_data[2]);
 
     this.new_guest.address = this.new_guest_address;
-
-    console.log(this.new_guest)
 
     this.user_service.register(this.new_guest).subscribe({
       next: (data) => {

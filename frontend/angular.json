@@ -11,7 +11,6 @@
       "prefix": "app",
       "architect": {
         "build": {
-          
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
@@ -41,10 +40,13 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
             "scripts": [
-            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet-providers/leaflet-providers.js"
             ],
             "browser": "src/main.ts"
           },
@@ -78,7 +80,6 @@
             "ssl": true,
             "sslKey": "../certificates/server-key.pem",
             "sslCert": "../certificates/server-cert.pem"
-            
           },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {

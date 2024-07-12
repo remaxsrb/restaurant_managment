@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Address } from 'src/app/models/interfaces/address';
 import { NewRestaurant } from 'src/app/models/interfaces/new_restaurant';
 import { Table } from 'src/app/models/interfaces/table';
 import { Restaurant } from 'src/app/models/restaurant';
@@ -9,6 +10,7 @@ import { RestaurantService } from 'src/app/services/model_services/restaurant.se
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RestaurantPlanService } from 'src/app/services/utility_services/restaurant-plan.service';
 import { TimeService } from 'src/app/services/utility_services/time.service';
+import { RegexPatterns } from '../regex_patterns';
 
 @Component({
   selector: 'app-admin-dashboard-restaurants',
@@ -41,15 +43,22 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
   selected_restaurant: string | null = null;
   selected_restaurant_floor_plan: string = '';
 
-  newRestaurant: NewRestaurant = {
+  isMeridian: boolean = false;
+  hoursPlaceholder: string = 'HH';
+  minutesPlaceholder: string = 'MM';
+  mstep: number = 1;
+  allowEmptyTime: boolean = true;
+
+  new_restaurant_address: Address = { street: '', street_number: 0, city: '' };
+
+  new_restaurant: NewRestaurant = {
     name: '',
-    address: {street: '', street_number: 0, city: ''},
+    address: '',
     phone_number: '',
     email: '',
     type: '',
-    location: '',
-    open: { hour: 0, minute: 0 },
-    close: { hour: 0, minute: 0 },
+    open: void 0,
+    close: void 0,
     description: '',
     floor_plan: '',
     rating: 0,
@@ -70,53 +79,73 @@ export class AdminDashboardRestaurantsComponent implements OnInit {
 
   onSubmitRestaurant(restaurant_form: any) {
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-    const isValidEmail = emailRegex.test(this.newRestaurant.email);
+    const isValidEmail = emailRegex.test(this.new_restaurant.email);
 
     if (!isValidEmail) {
       this.restaurant_form_flags.invalid_email = true;
       return; //not valid email abort submission
     }
 
-    this.newRestaurant.open = this.time_service.formatTimeTo24HourString(
-      this.newRestaurant.open
+    this.new_restaurant.open = this.time_service.formatTimeTo24HourString(
+      this.new_restaurant.open
     );
-    this.newRestaurant.close = this.time_service.formatTimeTo24HourString(
-      this.newRestaurant.close
+    this.new_restaurant.close = this.time_service.formatTimeTo24HourString(
+      this.new_restaurant.close
     );
 
     if (this.selectedFile) {
-      this.newRestaurant.floor_plan = this.selectedFile.name;
+      this.new_restaurant.floor_plan = this.selectedFile.name;
 
-      this.json_service.get_flor_plan(this.newRestaurant.floor_plan).subscribe({
-        next: (data) => {
-          data.circles.forEach((circle: any) => {
-            const capacity: Number = Number(circle.label);
-            const id: String = circle.id;
-            const status: String = 'available';
+      this.json_service
+        .get_flor_plan(this.new_restaurant.floor_plan)
+        .subscribe({
+          next: (data) => {
+            data.circles.forEach((circle: any) => {
+              const capacity: Number = Number(circle.label);
+              const id: String = circle.id;
+              const status: String = 'available';
 
-            const table: Table = {
-              id: id,
-              capacity: capacity,
-              status: status,
-            };
-            this.newRestaurant.tables.push(table);
-          });
-
-          this.admin_service
-            .add_restaurant(JSON.stringify(this.newRestaurant))
-            .subscribe((data) => {
-              this.restaurants = [];
-
-              this.restaurant_service.all().subscribe((data) => {
-                this.restaurants = data;
-                restaurant_form.reset();
-              });
+              const table: Table = {
+                id: id,
+                capacity: capacity,
+                status: status,
+              };
+              this.new_restaurant.tables.push(table);
             });
-        },
-        error: (err) => {
-          alert(err.message);
-        },
-      });
+
+            // this part is a bit messy but since I have bound string streetname streetnumber
+            //  to street property of address on form I have to split hem into two parts
+
+            const street_data = this.new_restaurant_address.street.match(
+              RegexPatterns.ADDRESS
+            );
+
+            if (!street_data) return;
+
+            this.new_restaurant_address.street = street_data[1].trim();
+            this.new_restaurant_address.street_number = parseInt(
+              street_data[2]
+            );
+
+            this.new_restaurant.address = this.new_restaurant_address;
+
+            console.log(this.new_restaurant.address);
+
+            this.admin_service
+              .add_restaurant(JSON.stringify(this.new_restaurant))
+              .subscribe((data) => {
+                this.restaurants = [];
+
+                this.restaurant_service.all().subscribe((data) => {
+                  this.restaurants = data;
+                  restaurant_form.reset();
+                });
+              });
+          },
+          error: (err) => {
+            alert(err.message);
+          },
+        });
     }
   }
 

@@ -10,12 +10,6 @@ export class GuestDashBoardComponent {
 
   constructor(private auth_service: AuthService) {}
 
-  selected_option: String = 'profile';
-
-  onNavRadioChange() {
-    this.selected_option = '';
-  }
-
   logout() {
     localStorage.removeItem('user')
     this.auth_service.logout();

@@ -48,7 +48,7 @@ export class UserController {
 
       if (!user) return res.status(404).json({ message: "User not found" });
 
-      if (user.role==="guest" && user.status !== "approved")
+      if (user.role==="guest" && user.status !== "active")
         return res.status(402).json({ message: "Guest is not approved" });
 
       const isMatch = bcrypt.compareSync(password, user.password);
