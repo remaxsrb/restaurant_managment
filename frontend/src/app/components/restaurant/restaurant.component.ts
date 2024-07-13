@@ -14,6 +14,11 @@ import 'leaflet/dist/images/marker-icon.png';
 import 'leaflet/dist/images/marker-icon-2x.png';
 import 'leaflet/dist/images/marker-shadow.png';
 
+import { OSMSrbija, tileLayerOSMSrbija } from 'src/app/OSMSerbia/leaflet_OSMSerbia_layer'; 
+
+
+
+
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
@@ -25,12 +30,15 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
 
   constructor(private geocodingService: GeocodingService) {}
 
+
   ngOnInit(): void {
     const restaurant_data = localStorage.getItem('restaurant');
     if (restaurant_data) {
       this.restaurant = JSON.parse(restaurant_data);
       //localStorage.removeItem('restaurant');
     }
+
+    
   }
 
   ngAfterViewInit(): void {
@@ -43,8 +51,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map').setView([44.788744, 20.459097], 13); // Example coordinates (Humska 1)
-    L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(this.map);
+    this.map = L.map('map').setView([44.788744, 20.459097], 75); // Example coordinates (Humska 1)
+    tileLayerOSMSrbija().addTo(this.map);
   }
 
   private geocodeRestaurantAddress(address: string): void {
@@ -57,7 +65,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
 
           console.log('Geocoding result:', lat, lon);
 
-          this.map.setView([lat, lon], 13);
+          this.map.setView([lat, lon], 75);
           L.marker([lat, lon]).addTo(this.map);
         } else {
           console.error('No geocoding results found for address:', address);

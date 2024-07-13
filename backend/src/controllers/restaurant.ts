@@ -18,8 +18,6 @@ export class RestaurantController {
     try {
       var restaurants = await Restaurant.find({});
 
-      //!! modify return values to not return restaurant type id but its name to avoid confusion on front
-
       const restaurant_types = await RestaurantType.find({});
 
       // Create a map of restaurant types for quick lookup
