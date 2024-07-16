@@ -1,70 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <title>Kutak dobre hrane</title>
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="bg-primary text-white py-3">
-      <h1>Kutak dobre hrane</h1>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kutak dobre hrane</title>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-primary text-white py-3">
+    <h1>Kutak dobre hrane</h1>
+  </header>
 
-    <!-- Main Content -->
-    <main
-      class="container d-flex flex-column justify-content-center align-items-center"
-    >
-      <div>
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-md-12">
-              <form
-                (ngSubmit)="onLogin(); adminLogin.reset()"
-                #adminLogin="ngForm"
-              >
-                <div class="mb-3">
-                  <label for="username" class="form-label">Userame:</label>
+  <!-- Main Content -->
+  <main class="container d-flex flex-column justify-content-center align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <form [formGroup]="logInForm" (ngSubmit)="onLogin()">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="p-float-label">
                   <input
-                    type="text"
                     id="username"
-                    class="form-control"
-                    required
-                    [(ngModel)]="signInData.username"
-                    name="username"
+                    type="text"
+                    pInputText
+                    formControlName="username"
+                    placeholder=" "
                   />
-                </div>
-
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password:</label>
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-control"
-                    required
-                    [(ngModel)]="signInData.password"
-                    name="password"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  class="btn btn-dark"
-                  [disabled]="!adminLogin.form.valid"
-                >
-                  Log in
-                </button>
-              </form>
+                  <label for="username" *ngIf="!username?.invalid || !username?.touched">Username</label>
+                  <small class="p-error" *ngIf="username?.invalid && username?.touched">Username is required.</small>
+                </span>
+              </div>
             </div>
-          </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <span class="p-float-label">
+                  <input
+                    id="password"
+                    type="password"
+                    
+                    formControlName="password"
+                    placeholder=" "
+                  />
+                  <label for="password" *ngIf="!password?.invalid || !password?.touched">Password</label>
+                  <small class="p-error" *ngIf="password?.invalid && password?.touched">Password is required.</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <button pButton type="submit" label="Login" severity="contrast" [disabled]="logInForm.invalid"></button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-3 mt-4">
-      <p>&copy; 2024 Marko Jovanovic</p>
-    </footer>
-  </body>
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-3 mt-4">
+    <p>&copy; 2024 Marko Jovanovic</p>
+  </footer>
+</body>
 </html>

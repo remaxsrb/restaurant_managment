@@ -1,7 +1,12 @@
 <div class="row">
   <div class="table-container col-lg-8">
-    <table class="table table-striped">
-      <thead>
+    <p-table
+      [value]="restaurants"
+      [paginator]="true"
+      [rows]="10"
+      [responsive]="true"
+    >
+      <ng-template pTemplate="header">
         <tr>
           <th>Show</th>
           <th>Name</th>
@@ -12,215 +17,39 @@
           <th>Open</th>
           <th>Closed</th>
         </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let row of restaurants; let i = index">
-          <tr>
-            <td>
-              <input
-                class="form-check-input"
-                type="radio"
-                id="flexCheckDefault{{ i }}"
-                name="radioGroup"
-                [checked]="isRestaurantChecked(row.name)"
-                [value]="row.name"
-                (change)="onRestaurantRadioChange(row.name)"
-              />
-            </td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.type }}</td>
-            <td>{{ row.phone_number }}</td>
-            <td>{{ row.address.street}}  {{ row.address.street_number }}</td>
-            <td>{{ row.address.city}}</td>
-            <td>{{ row.open }}</td>
-            <td>{{ row.close }}</td>
-          </tr>
-          <tr *ngIf="selected_restaurant === row.name">
-            <td colspan="8">
-              <canvas
-                id="restaurantPlanCanvas"
-                width="500"
-                height="400"
-                style="border: 1px solid #000000"
-              ></canvas>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr>
+          <td>
+            <p-radioButton
+              [value]="row.name"
+              name="restaurantRadio"
+              (onClick)="onRestaurantRadioChange(row.name)"
+            ></p-radioButton>
+          </td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.type }}</td>
+          <td>{{ row.phone_number }}</td>
+          <td>{{ row.address.street }} {{ row.address.street_number }}</td>
+          <td>{{ row.address.city }}</td>
+          <td>{{ row.open }}</td>
+          <td>{{ row.close }}</td>
+        </tr>
+        <tr *ngIf="selected_restaurant === row.name">
+          <td colspan="8">
+            <canvas
+              id="restaurantPlanCanvas"
+              width="500"
+              height="400"
+              style="border: 1px solid #000000"
+            ></canvas>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 
   <div class="form-container col-lg-4">
-    <form
-      (ngSubmit)="onSubmitRestaurant(restaurant_form)"
-      #restaurant_form="ngForm"
-    >
-      <div class="row">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="name" class="form-label">Name:</label>
-            <input
-              type="text"
-              id="name"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant.name"
-              name="name"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="type" class="form-label">Type:</label>
-            <select
-              id="type"
-              class="form-select"
-              required
-              [(ngModel)]="new_restaurant.type"
-              name="type"
-            >
-              <option value="" disabled selected>Select a type</option>
-              <option *ngFor="let type of restaurant_types" [value]="type._id">
-                {{ type.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="address" class="form-label">Address:</label>
-            <input
-              type="text"
-              id="address"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant_address.street"
-              name="address"
-            />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="city" class="form-label">City:</label>
-            <input
-              type="text"
-              id="city"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant_address.city"
-              name="city"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input
-              type="email"
-              id="email"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant.email"
-              name="email"
-            />
-            <div
-              class="alert alert-danger"
-              role="alert"
-              *ngIf="restaurant_form_flags.invalid_email"
-            >
-              Invalid email
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-
-            <label for="phone_number" class="form-label">Phone number:</label>
-            <input
-              type="text"
-              id="phone_number"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant.phone_number"
-              name="phone_number"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 d-flex justify-content-center">
-          <div class="mb-3">
-            <label for="opening_hours" class="form-label">Opening Hours:</label>
-            <timepicker
-              name="opening_hours"
-              [(ngModel)]="new_restaurant.open"
-              [showMeridian]="isMeridian"
-              [minuteStep]="mstep"
-              [hoursPlaceholder]="hoursPlaceholder"
-              [minutesPlaceholder]="minutesPlaceholder"
-              required
-            ></timepicker>
-          </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center">
-          <div class="mb-3">
-            <label for="closing_hours" class="form-label">Closing Hours:</label>
-            <timepicker
-              name="closing_hours"
-              [(ngModel)]="new_restaurant.close"
-              [showMeridian]="isMeridian"
-              [minuteStep]="mstep"
-              [hoursPlaceholder]="hoursPlaceholder"
-              [minutesPlaceholder]="minutesPlaceholder"
-              required
-            ></timepicker>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <label for="inputGroupFile02">Floor plan:</label>
-          <input
-            type="file"
-            class="form-control"
-            id="inputGroupFile02"
-            (change)="onFileSelected($event)"
-          />
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="description" class="form-label">Description:</label>
-            <textarea
-              id="description"
-              class="form-control"
-              required
-              [(ngModel)]="new_restaurant.description"
-              name="description"
-              rows="1"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <button
-            type="submit"
-            class="btn btn-dark"
-            [disabled]="!restaurant_form.form.valid"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </form>
+      <app-new-restaurant-form> </app-new-restaurant-form>
   </div>
 </div>

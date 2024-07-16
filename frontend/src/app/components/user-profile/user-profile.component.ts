@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/model_services/user.service';
@@ -7,6 +6,7 @@ import { FormValidationService } from 'src/app/services/utility_services/form-va
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RegexPatterns } from '../regex_patterns';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,27 +18,16 @@ export class UserProfileComponent implements OnInit {
     private json_service: JsonService,
     private user_service: UserService,
     private image_dim: ImageDimensionValidationService,
-    private form_validation_service: FormValidationService,
-    private router: Router
+    private fb: FormBuilder,
+
   ) {}
   user: User = new User();
+  addressForm!: FormGroup;
+  userUpdateForm!: FormGroup;
+  selectedFile: File | null = null;
 
-  user_updates = {
-    username: '',
-    email: '',
-    firstname: '',
-    lastname: '',
-    address: '',
-    phone_number: '',
-    credit_card_number: '',
-    profile_photo: '',
-  };
 
   update_flags = {
-    invalid_email: false,
-    invalid_phone_number: false,
-    invalid_picture_format: false,
-    invalid_credit_card_format: false,
     invalid_picture_dimensions: false,
     email_taken: false,
     username_exists: false,
@@ -50,13 +39,83 @@ export class UserProfileComponent implements OnInit {
     if (user_data) {
       this.user = JSON.parse(user_data);
     }
-
+    this.initAddressForm();
+    this.initUserUpdateForm();
     this.json_service.get_photo(this.user.profile_photo).subscribe((data) => {
       this.user.profile_photo = URL.createObjectURL(data);
     });
   }
 
-  selectedFile: File | null = null;
+
+  initAddressForm(): void {
+    this.addressForm = this.fb.group({
+      street: [
+        '',
+        [Validators.pattern(RegexPatterns.STREET_NAME)],
+      ],
+      number: [
+        '',
+        [Validators.pattern(RegexPatterns.STREET_NUMBER)],
+      ],
+      city: [''],
+    });
+  }
+
+
+  initUserUpdateForm(): void {
+    this.userUpdateForm = this.fb.group({
+      username: [''],
+      email: ['', Validators.email],
+      firstname: [''],
+      lastname: [''],
+      address: this.addressForm,
+      phone_number: [
+        '',
+        [Validators.pattern(RegexPatterns.PHONE_NUMBER)],
+      ],
+      credit_card_number: [
+        '',
+        [
+          
+          Validators.pattern(RegexPatterns.CREDIT_CARD_NUMBER),
+        ],
+      ]
+    });
+  }
+
+  get username() {
+    return this.userUpdateForm.get('username');
+  }
+
+  get email() {
+    return this.userUpdateForm.get('email');
+  }
+  get firstname() {
+    return this.userUpdateForm.get('firstname');
+  }
+  get lastname() {
+    return this.userUpdateForm.get('lastname');
+  }
+  get phone_number() {
+    return this.userUpdateForm.get('phone_number');
+  }
+  get credit_card_number() {
+    return this.userUpdateForm.get('credit_card_number');
+  }
+  get profile_photo() {
+    return this.userUpdateForm.get('profile_photo');
+  }
+
+  get street() {
+    return this.addressForm.get('street');
+  }
+  get number() {
+    return this.addressForm.get('number');
+  }
+  get city() {
+    return this.addressForm.get('city');
+  }
+
 
   validDimensions(image: File): Observable<boolean> {
     return this.image_dim.validateImageDimensions(image);
@@ -68,89 +127,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    this.reset_form_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
-
-    if (!this.validate_form()) {
-      return; // Validation failed, stop submission
-    }
-
-    this.processFormSubmission();
-  }
-
-  validate_form(): boolean {
-    var isValid = this.form_validation_service.validate_email(
-      this.user_updates.email
-    );
-    isValid = this.form_validation_service.validate_phone_number(
-      this.user_updates.phone_number
-    );
-    isValid = this.form_validation_service.validate_credit_card_number(
-      this.user_updates.credit_card_number
-    );
-
-    if (!isValid) this.set_form_flags();
-
-    return isValid;
-  }
-
-  private reset_form_flags() {
-    // Reset flags
-    this.update_flags.invalid_email = false;
-    this.update_flags.invalid_phone_number = false;
-    this.update_flags.invalid_picture_format = false;
-
-  }
-
-  private set_form_flags() {
-    // Set flags based on validation errors
-    const is_valid_email = RegexPatterns.EMAIL.test(this.user_updates.email);
-    const is_valid_phone_number = RegexPatterns.PHONE_NUMBER.test(
-      this.user_updates.phone_number
-    );
-    const is_valid_credit_card_number = RegexPatterns.CREDIT_CARD_NUMBER.test(
-      this.user_updates.credit_card_number
-    );
-    const is_valid_png_or_jpg = this.selectedFile
-      ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name)
-      : true;
-
-    if (!is_valid_email) {
-      this.update_flags.invalid_email = true;
-    }
-
-    if (!is_valid_phone_number) {
-      this.update_flags.invalid_phone_number = true;
-    }
-
-    if (!is_valid_credit_card_number) {
-      this.update_flags.invalid_credit_card_format = true;
-    }
-
-    if (!is_valid_png_or_jpg) {
-      this.update_flags.invalid_picture_format = true;
-    }
-  }
-
-  processFormSubmission() {
-
-    if (this.user_updates.firstname) {
+    if (this.firstname!.value) {
       const data = {
         username: this.user.username,
-        firstname: this.user_updates.firstname
+        firstname: this.firstname!.value
       }
       this.user_service.update_firstname(data);
     }
 
-    if (this.user_updates.lastname) {
+    if (this.lastname!.value) {
       const data = {
         username: this.user.username,
-        lastname: this.user_updates.lastname
+        lastname: this.lastname!.value
       }
       this.user_service.update_lastname(data);
     }
 
-    if (this.user_updates.username) {
-      this.user_service.update_username(this.user_updates.username).subscribe({
+    if (this.username!.value) {
+      this.user_service.update_username(this.username!.value).subscribe({
         error: (error) => {
           // Handle specific errors or show a general message
           if (error.status === 408) {
@@ -162,8 +156,8 @@ export class UserProfileComponent implements OnInit {
         },
       });
     }
-    if (this.user_updates.email) {
-      this.user_service.update_email(this.user_updates.email).subscribe({
+    if (this.email!.value) {
+      this.user_service.update_email(this.email!.value).subscribe({
         error: (error) => {
           // Handle specific errors or show a general message
           if (error.status === 409) {
@@ -175,24 +169,24 @@ export class UserProfileComponent implements OnInit {
         },
       });
     }
-    if (this.user_updates.address) {
+    if (this.addressForm!.value) {
       const data = {
         username: this.user.username,
-        address: this.user_updates.address
+        address: this.addressForm!.value
       }
       this.user_service.update_address(data);
     }
-    if (this.user_updates.phone_number) {
+    if (this.phone_number!.value) {
       const data = {
         username: this.user.username,
-        phone_number: this.user_updates.phone_number
+        phone_number: this.phone_number!.value
       }
       this.user_service.update_phone_number(data);
     }
-    if (this.user_updates.credit_card_number) {
+    if (this.credit_card_number!.value) {
       const data = {
         username: this.user.username,
-        credit_card_number: this.user_updates.credit_card_number
+        credit_card_number: this.credit_card_number!.value
       }
       this.user_service.update_credit_card_number(
         data
@@ -209,27 +203,18 @@ export class UserProfileComponent implements OnInit {
         }
       }
     ) 
-
   }
 
   update_photo() {
-    this.update_flags.invalid_picture_format = false;
     this.update_flags.invalid_picture_dimensions = false;
 
-    const is_valid_png_or_jpg = this.selectedFile
-    ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name)
-    : true;
-
-    if (!is_valid_png_or_jpg) {
-      this.update_flags.invalid_picture_format = true;
-      return;
-    }
-
     if (this.selectedFile) {
-      this.user_updates.profile_photo = this.selectedFile.name;
+      this.userUpdateForm.patchValue({
+        profile_photo: this.selectedFile.name, // Assign file name to plan in form
+      });
       const data = {
-        username: this.user_updates.username,
-        profile_photo: this.user_updates.profile_photo
+        username: this.username!.value,
+        profile_photo: this.profile_photo!.value
       }
       this.user_service.update_profile_photo(data
       ).subscribe( 

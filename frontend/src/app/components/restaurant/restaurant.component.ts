@@ -25,7 +25,7 @@ import { OSMSrbija, tileLayerOSMSrbija } from 'src/app/OSMSerbia/leaflet_OSMSerb
   styleUrls: ['./restaurant.component.css'],
 })
 export class RestaurantComponent implements OnInit, AfterViewInit {
-  private restaurant: Restaurant = new Restaurant();
+  restaurant: Restaurant = new Restaurant();
   private map!: L.Map;
 
   constructor(private geocodingService: GeocodingService) {}
@@ -35,7 +35,6 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     const restaurant_data = localStorage.getItem('restaurant');
     if (restaurant_data) {
       this.restaurant = JSON.parse(restaurant_data);
-      //localStorage.removeItem('restaurant');
     }
 
     
@@ -44,7 +43,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     if (this.restaurant.address) {
-      const fullAddress = `${this.restaurant.address.street} ${this.restaurant.address.street_number}, ${this.restaurant.address.city}`;
+      const fullAddress = `${this.restaurant.address.street} ${this.restaurant.address.number}, ${this.restaurant.address.city}`;
       console.log(fullAddress)
       this.geocodeRestaurantAddress(fullAddress);
     }

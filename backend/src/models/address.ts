@@ -6,8 +6,8 @@ export const Address = new Schema({
       type: String,
       required: true,
     },
-    street_number: {
-      type: Number,
+    number: {
+      type: String,
       required: true,
     },
     city: {

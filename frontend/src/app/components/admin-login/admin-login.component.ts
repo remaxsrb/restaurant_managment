@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'src/app/services/utility_services/auth.service';
@@ -13,20 +15,35 @@ export class AdminLoginComponent {
   constructor(
     private auth_service: AuthService,
     public jwtHelper: JwtHelperService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+
   ) {}
 
   private readonly TOKEN_KEY = 'authToken';
 
+  logInForm! : FormGroup;
 
-  signInData = {
-    username: '',
-    password: '',
-  };
+
+  initLoginForm(): void {
+    this.logInForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      
+    });
+  }
+
+  get username() {
+    return this.logInForm.get('username');
+  }
+
+  get password() {
+    return this.logInForm.get('password');
+  }
 
   onLogin() {
     this.auth_service
-      .login(this.signInData.username, this.signInData.password)
+      .login(this.logInForm.value)
       .subscribe({
         next: (data) => {
           localStorage.setItem(this.TOKEN_KEY, data.token);

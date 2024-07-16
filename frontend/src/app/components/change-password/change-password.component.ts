@@ -1,78 +1,81 @@
-import { Component } from '@angular/core';
-import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegexPatterns } from '../regex_patterns';
 import { UserService } from 'src/app/services/model_services/user.service';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.css'],
 })
-export class ChangePasswordComponent {
-  component_data = { username: '', old_password: '', new_password: '' };
-  form_error_flags = {
+export class ChangePasswordComponent implements OnInit {
+  backend_error_flags = {
     user_non_existing: false,
-    invalid_password_format: false,
     general_errors: false,
   };
 
+  changePasswordForm!: FormGroup;
+
   constructor(
     private user_service: UserService,
-    private validation_service: FormValidationService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
-  private validate_form(): boolean {
-    const is_valid = this.validation_service.validate_change_password_form(
-      this.component_data.new_password
-    );
-
-    if (!is_valid) this.set_form_flags();
-
-    return is_valid;
+  ngOnInit(): void {
+    this.initchangePasswordForm();
   }
 
-  private set_form_flags() {
-
-    const is_valid_password = RegexPatterns.PASSWORD.test(
-      this.component_data.new_password
-    );
-
-    if (!is_valid_password) return false;
-
-    return true;
+  initchangePasswordForm(): void {
+    this.changePasswordForm = this.fb.group({
+      username: ['', Validators.required],
+      oldPassword: ['', Validators.required],
+      newPassword: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.PASSWORD)],
+      ],
+      newPasswordRepeat: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.PASSWORD)],
+      ],
+    });
   }
 
-  process_form_submission() {
+  get username() {
+    return this.changePasswordForm.get('username');
+  }
+  get oldPassword() {
+    return this.changePasswordForm.get('oldPassword');
+  }
+  get newPassword() {
+    return this.changePasswordForm.get('newPassword');
+  }
+  get newPasswordRepeat() {
+    return this.changePasswordForm.get('newPasswordRepeat');
+  }
 
-    let data = {
-      username: this.component_data.username,
-      password: this.component_data.new_password,
-    };
+  onSubmit() {
+    if (this.newPassword!.value !== this.newPasswordRepeat!.value) {
+      return;
+    }
 
-    this.user_service.change_password(data).subscribe({
+    this.changePasswordForm.removeControl('oldPassword');
+    this.changePasswordForm.removeControl('newPasswordRepeat');
+
+    this.user_service.change_password(this.changePasswordForm.value).subscribe({
       next: (data) => {
         this.router.navigate(['/']);
       },
       error: (error) => {
         // Handle specific errors or show a general message
         if (error.status === 404) {
-          this.form_error_flags.user_non_existing = true;
+          this.backend_error_flags.user_non_existing = true;
           // Not found error
         } else {
-          this.form_error_flags.general_errors = true; // General error
+          this.backend_error_flags.general_errors = true; // General error
         }
       },
     });
-  }
-
-  onSubmit() {
-    this.form_error_flags.invalid_password_format = false;
-
-    if (!this.validate_form()) return; // Validation failed, stop submission
-
-    this.process_form_submission();
   }
 }

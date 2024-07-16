@@ -10,7 +10,7 @@ export class User {
     firstname: string = ''
     lastname: string = ''
     gender: string = ''
-    address: Address = {street: '', street_number: 0, city: ''}
+    address: Address = {street: '', number: '', city: ''}
     phone_number: string = ''
     credit_card_number: string = ''
     profile_photo: string = ''

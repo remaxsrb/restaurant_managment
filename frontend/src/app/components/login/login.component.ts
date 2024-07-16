@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'src/app/services/utility_services/auth.service';
@@ -7,20 +9,22 @@ import { AuthService } from 'src/app/services/utility_services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   constructor(
     private auth_service: AuthService,
     private router: Router,
-    public jwtHelper: JwtHelperService
+    public jwtHelper: JwtHelperService,
+    private fb: FormBuilder,
+
   ) {}
+
+  ngOnInit() {
+    this.initLoginForm();
+  }
 
   private readonly TOKEN_KEY = 'authToken';
 
-  signInData = {
-    username: '',
-    password: '',
-    type: '',
-  };
+  logInForm! : FormGroup;
 
   login_form_flags = {
     invalid_password: false,
@@ -28,6 +32,21 @@ export class LoginComponent {
     user_not_approved: false,
     general_errors: false,
   };
+
+  initLoginForm(): void {
+    this.logInForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      
+    });
+  }
+
+  get name() {
+    return this.logInForm.get('username');
+  }
+  get password() {
+    return this.logInForm.get('password');
+  }
 
   private reset_form_flags() {
     this.login_form_flags.invalid_password = false;
@@ -41,7 +60,7 @@ export class LoginComponent {
     this.reset_form_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
 
     this.auth_service
-      .login(this.signInData.username, this.signInData.password)
+      .login(this.logInForm.value)
       .subscribe({
         next: (data) => {
           localStorage.setItem(this.TOKEN_KEY, data.token);

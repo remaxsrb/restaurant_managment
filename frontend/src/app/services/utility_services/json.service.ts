@@ -14,7 +14,7 @@ export class JsonService {
 
   constructor(private http: HttpClient) { }
 
-  get_flor_plan(file_name:string): Observable<any> {
+  get_restaurant_plan(file_name:string): Observable<any> {
     return this.http.get<any>(`${this.floor_plan_url}/${file_name}`);
   }
   get_photo(file_name:string): Observable<Blob> {

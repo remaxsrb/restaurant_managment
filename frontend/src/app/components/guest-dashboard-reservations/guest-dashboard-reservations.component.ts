@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./guest-dashboard-reservations.component.css']
 })
 export class GuestDashboardReservationsComponent {
-
 }

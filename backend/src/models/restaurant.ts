@@ -68,7 +68,7 @@ const Restaurant = new Schema(
       type: String,
       required: true,
     },
-    floor_plan: {
+    plan: {
       type: String,
       required: true,
       match: /\.json$/i,

@@ -16,119 +16,68 @@
     <!-- Main Content -->
     <main class="container d-flex flex-column justify-content-center align-items-center">
         <div class="container justify-content-center align-items-center">
-                    <form (ngSubmit)="onAnswerSubmit(); askQuestionUpForm.reset()" #askQuestionUpForm="ngForm" *ngIf="show_password_form===false">
-                        <!-- Username -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Username:</label>
-                                    <input
-                                        type="text"
-                                        id="username"
-                                        class="form-control"
-                                        required
-                                        [(ngModel)]="component_data.username"
-                                        name="username"
-                                    />
-                                    <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.username_not_found">
-                                        User with this username does not exist
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Security Question -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="securityQuestion" class="form-label">Security question:</label>
-                                    <select
-                                        id="securityQuestion"
-                                        class="form-select"
-                                        required
-                                        [(ngModel)]="component_data.security_question"
-                                        name="securityQuestion"
-                                    >
-                                        <option value="" disabled selected>Select a security question</option>
-                                        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-                                        <option value="What city were you born in?">What city were you born in?</option>
-                                        <option value="What is the name of your first pet?">What is the name of your first pet?</option>
-                                        <!-- Add more options as needed -->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Answer to Security Question -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="security_question_answer" class="form-label">Answer:</label>
-                                    <input
-                                        type="text"
-                                        id="security_question_answer"
-                                        class="form-control"
-                                        required
-                                        [(ngModel)]="component_data.security_question_answer"
-                                        name="security_question_answer"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Submit Button -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button
-                                    type="submit"
-                                    class="btn btn-dark"
-                                    [disabled]="!askQuestionUpForm.form.valid"
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                        <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.security_question_mismatch">
-                            User with this username is not using this question
-                        </div>
-                        <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.wrong_answer">
-                            Wrong answer
-                        </div>
-                    </form>
-                    <form (ngSubmit)="onPasswordSubmit(); passwordForm.reset()" #passwordForm="ngForm" *ngIf="show_password_form">
-                        <!-- Password -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password:</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        class="form-control"
-                                        required
-                                        [(ngModel)]="password"
-                                        name="password"
-                                    />
-                                    <div class="alert alert-danger" role="alert" *ngIf="ask_form_flags.invalid_password_format">
-                                        Invalid password format
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button
-                                    type="submit"
-                                    class="btn btn-dark"
-                                    [disabled]="!passwordForm.form.valid"
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            <form [formGroup]="askQuestionForm" (ngSubmit)="onAnswerSubmit()" class="container">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="p-float-label">
+                      <input id="username" pInputText formControlName="username" class="form-control" />
+                      <label for="username">Username</label>
+                    </div>
+                    <div *ngIf="username?.invalid && username?.touched" class="p-error">
+                      Username is required
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="p-float-label">
+                      <p-dropdown id="security_question" [options]="securityQuestions" optionLabel="label" formControlName="security_question" class="form-control"></p-dropdown>
+                      <label for="security_question">Security Question</label>
+                    </div>
+                    <div *ngIf="security_question?.invalid && security_question?.touched" class="p-error">
+                      Security question is required
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="p-float-label">
+                      <input id="security_question_answer" pInputText formControlName="security_question_answer" class="form-control" />
+                      <label for="security_question_answer">Security Question Answer</label>
+                    </div>
+                    <div *ngIf="security_question_answer?.invalid && security_question_answer?.touched" class="p-error">
+                      Security question answer is required
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-12">
+                    <button pButton type="submit" label="Submit" [disabled]="askQuestionForm.invalid"></button>
+                  </div>
+                </div>
+              </form>
+              <form [formGroup]="newPasswordForm" *ngIf="show_password_form" (ngSubmit)="onPasswordSubmit()">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="p-float-label">
+                      <input id="password" pPassword formControlName="password" class="form-control" />
+                      <label for="password">Password</label>
+                    </div>
+                    <div *ngIf="new_password?.invalid && new_password?.touched" class="p-error">
+                      Password is required and must match the specified pattern.
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-12">
+                    <button pButton type="submit" label="Submit" [disabled]="newPasswordForm.invalid"></button>
+                  </div>
+                </div>
+              </form>
                 </div>
 
     </main>

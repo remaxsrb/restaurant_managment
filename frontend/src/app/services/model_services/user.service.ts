@@ -10,7 +10,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   private apiUrl = environment.apiUrl;
-  
+
   backendUrl = `${this.apiUrl}/user`;
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -23,13 +23,8 @@ export class UserService {
     );
   }
 
-  login(username: String, password: String): Observable<any> {
-    const data = {
-      username: username,
-      password: password,
-    };
-
-    return this.http.post<any>(`${this.backendUrl}/login`, data, {
+  login(signInData: any): Observable<any> {
+    return this.http.post<any>(`${this.backendUrl}/login`, signInData, {
       headers: this.headers,
     });
   }
@@ -132,19 +127,16 @@ export class UserService {
     );
   }
   update_profile_photo(data: any) {
-
     return this.http.post<any>(
-
       `${this.backendUrl}/update_profile_photo/`,
       JSON.stringify(data),
       {
         headers: this.headers,
-      })
+      }
+    );
   }
 
-
-  count_guests() : Observable<{ count: number }> {
+  count_guests(): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(`${this.backendUrl}/count/guest`);
   }
-
 }

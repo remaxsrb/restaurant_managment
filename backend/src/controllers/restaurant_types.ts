@@ -29,7 +29,7 @@ export class RestaurantTypeController {
 
   async all(req: express.Request, res: express.Response) {
     try {
-      const restaurant_types = await RestaurantType.find({}).sort({ name: 1 });
+      const restaurant_types = await RestaurantType.find({});
       res.json(restaurant_types);
     } catch (err) {
       console.log(err);

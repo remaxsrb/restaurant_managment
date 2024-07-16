@@ -11,13 +11,13 @@
               id="inputGroupFile02"
               (change)="onFileSelected($event)"
             />
-            <div
+            <!-- <div
               class="alert alert-danger"
               role="alert"
               *ngIf="update_flags.invalid_picture_format"
             >
               Image should be either .png or .jpg
-            </div>
+            </div> -->
             <button type="submit" class="btn btn-dark" id="update_picture" style="white-space: nowrap;">Update photo</button>
           </form>
         </div>
@@ -28,36 +28,45 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-12">
-          <form
-            (ngSubmit)="onSubmit(); updateForm.reset()"
-            #updateForm="ngForm"
-          >
+          <form [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
+
             <div class="row">
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="firstname" class="form-label">First Name:</label>
-                  <input
-                    type="text"
-                    id="firstname"
-                    class="form-control"
-                    [(ngModel)]="user_updates.firstname"
-                    name="firstname"
-                    placeholder="{{ user.firstname }}"
-                  />
+                  <span class="p-float-label">
+                    <input
+                      id="firstname"
+                      type="text"
+                      pInputText
+                      formControlName="firstname"
+                      placeholder=" "
+                    />
+                    <label
+                      for="firstname"
+          
+                      >Firstname</label
+                    >
+                  </span>
+
                 </div>
               </div>
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="lastname" class="form-label">Last Name:</label>
-                  <input
-                    type="text"
-                    id="lastname"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.lastname"
-                    name="lastname"
-                    placeholder="{{ user.lastname }}"
-                  />
+                  <span class="p-float-label">
+                    <input
+                      id="lastname"
+                      type="text"
+                      pInputText
+                      formControlName="lastname"
+                      placeholder=" "
+                    />
+                    <label
+                      for="lastname"
+          
+                      >Lastname</label
+                    >
+                  </span>
+
                 </div>
               </div>
             </div>
@@ -65,51 +74,124 @@
             <div class="row">
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username:</label>
-                  <input
-                    type="text"
-                    id="username"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.username"
-                    name="username"
-                    placeholder="{{ user.username }}"
-                  />
-                  <div
+                  <span class="p-float-label">
+                    <input
+                      id="username"
+                      type="text"
+                      pInputText
+                      formControlName="username"
+                      placeholder=" "
+                    />
+                    <label
+                      for="username"
+          
+                      >Username</label
+                    >
+                  </span>
+
+                  <!-- <div
                     class="alert alert-danger"
                     role="alert"
                     *ngIf="update_flags.username_exists"
                   >
                     User with this username already exists
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email:</label>
-                  <input
-                    type="email"
-                    id="email"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.email"
-                    name="email"
-                    placeholder="{{ user.email }}"
-                  />
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="update_flags.invalid_email"
+                  <span class="p-float-label">
+                    <input
+                      id="username"
+                      type="text"
+                      pInputText
+                      formControlName="username"
+                      placeholder=" "
+                    />
+                    <label
+                      for="username"
+          
+                      >Username</label
+                    >
+                    <small
+                    class="p-error"
+                    *ngIf="email?.invalid && email?.touched"
+                    >E-mail needs to be valid.</small
                   >
-                    Invalid email
-                  </div>
-                  <div
+                </span>
+
+                  <!-- <div
                     class="alert alert-danger"
                     role="alert"
                     *ngIf="update_flags.email_taken"
                   >
                     There is a user registered with this email
-                  </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+
+            <div formGroupName="address">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="street"
+                      type="text"
+                      pInputText
+                      formControlName="street"
+                      placeholder=" "
+                    />
+                    <label
+                      for="street"
+                      *ngIf="!street?.invalid || !street?.touched"
+                      >Street</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="street?.invalid"
+                      >Street should match the
+                      pattern.</small
+                    >
+                  </span>
+                </div>
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="number"
+                      type="text"
+                      pInputText
+                      formControlName="number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="number"
+                      *ngIf="!number?.invalid || !number?.touched"
+                      >Number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="number?.invalid "
+                      >Number should match the
+                      pattern.</small
+                    >
+                  </span>
+                </div>
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="city"
+                      type="text"
+                      pInputText
+                      formControlName="city"
+                      placeholder=" "
+                    />
+                    <label
+                      for="city"
+                      *ngIf="!city?.invalid || !city?.touched"
+                      >City</label
+                    >
+                  </span>
                 </div>
               </div>
             </div>
@@ -117,82 +199,75 @@
             <div class="row">
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="address" class="form-label">Address:</label>
-                  <input
-                    type="text"
-                    id="address"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.address"
-                    name="address"
-                    placeholder="{{ user.address.street }} {{ user.address.street_number}}"
-                  />
+                  
                 </div>
               </div>
               <div class="col-md-6 col-12">
                 <div class="mb-3">
-                  <label for="phone_number" class="form-label"
-                    >Phone number:</label
-                  >
-                  <input
-                    type="text"
-                    id="phone_number"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.phone_number"
-                    name="phone_number"
-                    placeholder="{{ user.phone_number }}"
-                  />
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="update_flags.invalid_phone_number"
-                  >
-                    Invalid phone number
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 col-12">
-                <div class="mb-3">
-                  <label for="credit_card_number" class="form-label"
-                    >Credit card number:</label
-                  >
-                  <input
-                    type="text"
-                    id="credit_card_number"
-                    class="form-control"
-                    required
-                    [(ngModel)]="user_updates.credit_card_number"
-                    name="credit_card_number"
-                    placeholder="{{ user.credit_card_number }}"
-                  />
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="update_flags.invalid_credit_card_format"
-                  >
-                    Invalid credit card number format
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 col-12">
-                <div class="mb-3">
-                  <input
-                    type="text"
-                    id="invisible-input"
-                    class="form-control"
-                    style="visibility: hidden"
-                  />
+                  <span class="p-float-label">
+                    <input
+                      id="phone_number"
+                      type="text"
+                      pInputText
+                      formControlName="phone_number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="phone_number"
+                      *ngIf="!phone_number?.invalid || !phone_number?.touched"
+                      >Phone number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="phone_number?.invalid && phone_number?.touched"
+                      >Phone number should be in format 06xxxxxxxx.</small
+                    >
+                  </span>
                 </div>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12">
-                <button type="submit" class="btn btn-dark">Update info</button>
+                <div class="mb-3">
+                  <span class="p-float-label">
+                    <input
+                      id="credit_card_number"
+                      type="text"
+                      pInputText
+                      formControlName="credit_card_number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="username"
+                      *ngIf="
+                        !credit_card_number?.invalid ||
+                        !credit_card_number?.touched
+                      "
+                      >Credit card number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="
+                        credit_card_number?.invalid &&
+                        credit_card_number?.touched
+                      "
+                      >Credit card number is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row"> 
+              <div class="col-md-12">
+                <button
+                  pButton
+                  type="submit"
+                  label="Update data"
+                  severity="contrast"
+                  [disabled]="userUpdateForm.invalid"
+                ></button>
               </div>
             </div>
           </form>

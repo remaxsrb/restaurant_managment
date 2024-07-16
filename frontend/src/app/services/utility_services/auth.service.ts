@@ -17,8 +17,8 @@ export class AuthService {
     public jwtHelper: JwtHelperService
   ) {}
 
-  login(username: string, password: string) {
-    return this.userService.login(username, password)
+  login(signInData: any) {
+    return this.userService.login(signInData)
   }
 
   logout() {

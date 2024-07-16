@@ -6,17 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kutak dobre hrane</title>
     <meta
-    http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self'; 
-      img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://tiles.openstreetmap.rs; 
-      script-src 'self' 'unsafe-inline'; 
-      style-src 'self' 'unsafe-inline'; 
-      connect-src 'self' https://127.0.0.1:4000 https://nominatim.openstreetmap.org;"
-  />
-  
-
-    <!-- Replace 'self' with your specific origins as needed -->
+      http-equiv="Content-Security-Policy"
+      content="
+    default-src 'self'; 
+    img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://tiles.openstreetmap.rs; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline'; 
+    connect-src 'self' https://127.0.0.1:4000 https://nominatim.openstreetmap.org;
+    font-src 'self' https://fonts.gstatic.com;"
+    />
   </head>
   <body>
     <app-root></app-root>

@@ -1,30 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/model_services/user.service';
-import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { RegexPatterns } from '../regex_patterns';
+import { securityQuestions } from 'src/app/securityQuestions';
 
 @Component({
   selector: 'app-ask-question',
   templateUrl: './ask-question.component.html',
   styleUrls: ['./ask-question.component.css'],
 })
-export class AskQuestionComponent {
+export class AskQuestionComponent implements OnInit {
   constructor(
     private user_service: UserService,
-    private validation_service: FormValidationService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
   show_password_form = false;
+  askQuestionForm!: FormGroup;
+  newPasswordForm!: FormGroup;
 
-  component_data = {
-    username: '',
-    security_question: '',
-    security_question_answer: '',
-  };
-
-  password = '';
+  securityQuestions = securityQuestions;
 
   ask_form_flags = {
     username_not_found: false,
@@ -34,26 +32,62 @@ export class AskQuestionComponent {
     general_errors: false,
   };
 
+  ngOnInit() {
+    this.initAskQuestionForm();
+    this.initNewPasswordForm();
+  }
+
+  initAskQuestionForm(): void {
+    this.askQuestionForm = this.fb.group({
+      username: ['', Validators.required],
+      security_question: ['', Validators.required],
+      security_question_answer: ['', Validators.required],
+    });
+  }
+
+  initNewPasswordForm(): void {
+    this.newPasswordForm = this.fb.group({
+      password: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.PASSWORD)],
+      ],
+    });
+  }
+
+
+  get username() {
+    return this.askQuestionForm.get('username');
+  }
+
+  get security_question() {
+    return this.askQuestionForm.get('security_question');
+  }
+
+  get security_question_answer() {
+    return this.askQuestionForm.get('security_question_answer');
+  }
+
+  get new_password() {
+    return this.newPasswordForm.get('password');
+  }
+
   onAnswerSubmit() {
-    this.reset_ask_flags(); //Incase someone does not reload after bad submission, reset flags as to not confuse the user
+    localStorage.setItem('username', this.username!.value);
 
-    localStorage.setItem('username', this.component_data.username);
-
-    this.user_service.check_question(this.component_data).subscribe({
+    this.user_service.check_question(this.askQuestionForm.value).subscribe({
       next: (data) => {
         this.show_password_form = true;
       },
       error: (error) => {
-
         // Handle specific errors or show a general message
         if (error.status === 404) {
           this.ask_form_flags.username_not_found = true;
           // Not found error
         } else if (error.status === 400) {
           this.ask_form_flags.security_question_mismatch = true;
-          // Mismatch quesiton error
+          // Mismatch question error
         } else if (error.status === 401) {
-          this.ask_form_flags.username_not_found = true;
+          this.ask_form_flags.wrong_answer = true;
           // Wrong answer error
         } else {
           this.ask_form_flags.general_errors = true; // General error
@@ -62,28 +96,16 @@ export class AskQuestionComponent {
     });
   }
 
-  private validate_password() {
-    const is_valid = this.validation_service.validate_change_password_form(
-      this.password
-    );
-
-    if (!is_valid) this.set_form_flag();
-
-    return is_valid;
+  private reset_ask_flags() {
+    this.ask_form_flags.username_not_found = false;
+    this.ask_form_flags.security_question_mismatch = false;
+    this.ask_form_flags.wrong_answer = false;
   }
 
-  private set_form_flag() {
-
-    const is_valid_password = RegexPatterns.PASSWORD.test(this.password);
-
-    if (!is_valid_password) this.ask_form_flags.invalid_password_format = true;
-  }
-
-  private process_new_password_submission() {
-
+  onPasswordSubmit() {
     let data = {
       username: localStorage.getItem('username'),
-      password: this.password,
+      password: this.new_password!.value,
     };
 
     localStorage.removeItem('username');
@@ -98,19 +120,5 @@ export class AskQuestionComponent {
         this.ask_form_flags.general_errors = true; // General error
       },
     });
-  }
-
-  private reset_ask_flags() {
-    this.ask_form_flags.username_not_found = false;
-    this.ask_form_flags.security_question_mismatch = false;
-    this.ask_form_flags.wrong_answer = false;
-  }
-
-  onPasswordSubmit() {
-    this.ask_form_flags.invalid_password_format = false; 
-
-    if (!this.validate_password()) return; // Validation failed, stop submission
-
-    this.process_new_password_submission();
   }
 }

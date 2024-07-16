@@ -4,11 +4,11 @@ import { Waiter } from 'src/app/models/waiter';
 import { AdminService } from 'src/app/services/model_services/admin.service';
 import { RestaurantService } from 'src/app/services/model_services/restaurant.service';
 import { UserService } from 'src/app/services/model_services/user.service';
-import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { RegexPatterns } from '../regex_patterns';
 import { Restaurant } from 'src/app/models/restaurant';
-import { Address } from 'src/app/models/interfaces/address';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 
 @Component({
@@ -22,18 +22,15 @@ export class AdminDashboardWaitersComponent implements OnInit {
     private user_service: UserService,
     private admin_service: AdminService,
     private image_dim: ImageDimensionValidationService,
-    private form_validation_service: FormValidationService
+    private fb: FormBuilder
+
   ) {}
 
   waiters: Waiter[] = [];
   restaurants: Restaurant[] = [];
 
   waiter_form_flags = {
-    invalid_password: false,
-    invalid_address: false,
-    invalid_email: false,
-    invalid_phone_number: false,
-    invalid_picture_format: false,
+   
     username_taken: false,
     email_taken: false,
     invalid_picture_dimensions: false,
@@ -41,26 +38,50 @@ export class AdminDashboardWaitersComponent implements OnInit {
   };
 
 
-  new_waiter_address: Address = {street: '', street_number: 0, city: ''};
 
 
-  new_waiter = {
-    username: '',
-    password: '',
-    security_question: '',
-    security_question_answer: '',
-    firstname: '',
-    lastname: '',
-    gender: '',
-    address: '',
-    phone_number: '',
-    email: '',
-    profile_photo: '',
-    restaurant: '',
-    role: 'waiter',
-  };
+
+  waiterForm!: FormGroup;
+  addressForm!: FormGroup;
 
   selectedFile: File | null = null;
+
+
+  initAddressForm(): void {
+    this.addressForm = this.fb.group({
+      street: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.STREET_NAME)],
+      ],
+      number: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.STREET_NUMBER)],
+      ],
+      city: ['', Validators.required],
+    });
+  }
+
+  initWaiterForm(): void {
+    this.waiterForm = this.fb.group({
+      username: ['', Validators.required],
+      password: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.PASSWORD)],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['waiter'],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      gender: ['', Validators.required],
+      address: this.addressForm,
+      phone_number: [
+        '',
+        [Validators.required, Validators.pattern(RegexPatterns.PHONE_NUMBER)],
+      ],
+      profile_photo: [''],
+      restaurant: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.user_service.find_by_role('waiter').subscribe((data) => {
@@ -71,94 +92,85 @@ export class AdminDashboardWaitersComponent implements OnInit {
     });
   }
 
+  get username() {
+    return this.waiterForm.get('username');
+  }
+
+  get password() {
+    return this.waiterForm.get('password');
+  }
+
+  get email() {
+    return this.waiterForm.get('email');
+  }
+
+  get firstname() {
+    return this.waiterForm.get('firstname');
+  }
+
+  get lastname() {
+    return this.waiterForm.get('lastname');
+  }
+
+  get gender() {
+    return this.waiterForm.get('gender');
+  }
+
+  get address() {
+    return this.waiterForm.get('address');
+  }
+
+  get street() {
+    return this.addressForm.get('street');
+  }
+
+  get number() {
+    return this.addressForm.get('number');
+  }
+
+  get city() {
+    return this.addressForm.get('city');
+  }
+
+  get phone_number() {
+    return this.waiterForm.get('phone_number');
+  }
+
+  get profile_photo() {
+    return this.waiterForm.get('profile_photo');
+  }
+
+  get restaurant() {
+    return this.waiterForm.get('restaurant');
+  }
+
   validDimensions(image: File): Observable<boolean> {
     return this.image_dim.validateImageDimensions(image);
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.selectedFile = file;
+    this.selectedFile = event.files[0].name;
   }
 
-  onSubmitWaiter() {
-    if (!this.validate_waiter_form()) {
-      return; // Validation failed, stop submission
-    }
-
-    this.process_form_submission();
-  }
-
-  private validate_waiter_form(): boolean {
-    const isValid = this.form_validation_service.validate_user_form(
-      this.new_waiter,
-      this.new_waiter_address,
-      this.selectedFile
-    );
-
-    if (!isValid) {
-      // Set form flags based on validation results
-      this.set_form_flags();
-    }
-
-    return isValid;
-  }
-
-  private set_form_flags() {
-    // Set flags based on validation errors
-    const isValidPassword = RegexPatterns.PASSWORD.test(
-      this.new_waiter.password
-    );
-
-    const is_valid_address= RegexPatterns.ADDRESS.test(
-      this.new_waiter_address.street
-    );
-
-    const isValidEmail = RegexPatterns.EMAIL.test(this.new_waiter.email);
-    const isValidPhoneNumber = RegexPatterns.PHONE_NUMBER.test(
-      this.new_waiter.phone_number
-    );
-
-    const isPngOrJpg = this.selectedFile
-      ? RegexPatterns.FILE_FORMAT.test(this.selectedFile.name)
-      : true;
-
-    if (!isValidPassword) {
-      this.waiter_form_flags.invalid_password = true;
-    }
-
-    if (!isValidEmail) {
-      this.waiter_form_flags.invalid_email = true;
-    }
-
-    if (!isValidPhoneNumber) {
-      this.waiter_form_flags.invalid_phone_number = true;
-    }
-
-    if (!isPngOrJpg) {
-      this.waiter_form_flags.invalid_picture_format = true;
-    }
-  }
-
-  private process_form_submission() {
+  onSubmit() {
+    
 
     if (this.selectedFile) {
-      this.new_waiter.profile_photo = this.selectedFile.name;
+      this.waiterForm.patchValue({
+        profile_photo: this.selectedFile.name, // Assign file name to plan in form
+      });
     } else {
       // Set default profile photo based on gender
-      this.new_waiter.profile_photo =
-        this.new_waiter.gender === 'male'
-          ? 'default_male.png'
-          : 'default_female.png';
+      this.waiterForm.patchValue({
+        profile_photo:
+          this.gender?.value === 'male'
+            ? 'default_male.png'
+            : 'default_female.png',
+      });
     }
 
-    const street_data = this.new_waiter_address.street.split(' ', 2)
-
-    this.new_waiter_address.street = street_data[0];
-    this.new_waiter_address.street_number = parseInt(street_data[1]);
-
-    this.new_waiter.address = JSON.stringify(this.new_waiter_address);
-
-    this.admin_service.register_waiter(this.new_waiter).subscribe({
+    
+    this.admin_service.register_waiter(this.waiterForm.value).subscribe({
       next: (data) => {
         this.waiters = [];
 
@@ -181,4 +193,7 @@ export class AdminDashboardWaitersComponent implements OnInit {
       },
     });
   }
+
+  
+
 }

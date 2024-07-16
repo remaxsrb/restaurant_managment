@@ -1,0 +1,225 @@
+{{ restaurantForm.value | json }}
+
+<form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="p-float-label">
+        <input
+          id="name"
+          type="text"
+          pInputText
+          formControlName="name"
+          placeholder=" "
+        />
+        <label for="name" *ngIf="!name?.invalid || !name?.touched">Name</label>
+        <small class="p-error" *ngIf="name?.invalid && name?.touched"
+          >Name is required.</small
+        >
+      </span>
+    </div>
+    <div class="col-md-6">
+      <span class="p-float-label">
+        <p-dropdown
+          [options]="restaurantTypes"
+          formControlName="type"
+          optionLabel="name"
+          (onChange)="onTypeSelectionChange($event.value)"
+          placeholder="Select restaurant type"
+        ></p-dropdown>
+
+        <label for="type" *ngIf="!type?.invalid || !type?.touched"
+          >Restaurant Type</label
+        >
+        <small class="p-error" *ngIf="type?.invalid && type?.touched"
+          >Type is required.</small
+        >
+      </span>
+    </div>
+  </div>
+
+  <div formGroupName="address">
+    <div class="row">
+      <div class="col-md-4">
+        <span class="p-float-label">
+          <input
+            id="street"
+            type="text"
+            pInputText
+            formControlName="street"
+            placeholder=" "
+          />
+          <label for="street" *ngIf="!street?.invalid || !street?.touched"
+            >Street</label
+          >
+          <small class="p-error" *ngIf="street?.invalid && street?.touched"
+            >Street is required and should match the pattern.</small
+          >
+        </span>
+      </div>
+      <div class="col-md-4">
+        <span class="p-float-label">
+          <input
+            id="number"
+            type="text"
+            pInputText
+            formControlName="number"
+            placeholder=" "
+          />
+          <label for="number" *ngIf="!number?.invalid || !number?.touched"
+            >Number</label
+          >
+          <small class="p-error" *ngIf="number?.invalid && number?.touched"
+            >Number is required and should match the pattern.</small
+          >
+        </span>
+      </div>
+      <div class="col-md-4">
+        <span class="p-float-label">
+          <input
+            id="city"
+            type="text"
+            pInputText
+            formControlName="city"
+            placeholder=" "
+          />
+          <label for="city" *ngIf="!city?.invalid || !city?.touched"
+            >City</label
+          >
+          <small class="p-error" *ngIf="city?.invalid && city?.touched"
+            >City is required.</small
+          >
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <span class="p-float-label">
+        <input
+          id="email"
+          type="email"
+          pInputText
+          formControlName="email"
+          placeholder=" "
+        />
+        <label for="email" *ngIf="!email?.invalid || !email?.touched"
+          >Email</label
+        >
+        <small class="p-error" *ngIf="email?.invalid && email?.touched"
+          >Valid email is required.</small
+        >
+      </span>
+    </div>
+    <div class="col-md-6">
+      <span class="p-float-label">
+        <input
+          id="phone_number"
+          type="text"
+          pInputText
+          formControlName="phone_number"
+          placeholder=" "
+        />
+        <label
+          for="phone_number"
+          *ngIf="!phone_number?.invalid || !phone_number?.touched"
+          >Phone Number</label
+        >
+        <small
+          class="p-error"
+          *ngIf="phone_number?.invalid && phone_number?.touched"
+          >Phone number is required.</small
+        >
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <label for="open">Open</label>
+      <p-calendar
+        id="open"
+        formControlName="open"
+        [timeOnly]="true"
+        [hourFormat]="'24'"
+        [showTime]="true"
+        [showIcon]="true"
+      ></p-calendar>
+      <div *ngIf="open?.invalid && open?.touched">
+        <small class="p-error">Opening time is required.</small>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label for="close">Close</label>
+      <p-calendar
+        id="close"
+        formControlName="close"
+        [timeOnly]="true"
+        [hourFormat]="'24'"
+        [showTime]="true"
+        [showIcon]="true"
+      ></p-calendar>
+      <div *ngIf="close?.invalid && close?.touched">
+        <small class="p-error">Closing time is required.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <span>
+        <label for="plan">Restaurant Plan</label>
+
+        <p-fileUpload
+          mode="basic"
+          id="fileID"
+          chooseLabel="Choose"
+          chooseIcon="pi pi-upload"
+          url="https://www.primefaces.org/cdn/api/upload.php"
+          accept=".json"
+          maxFileSize="1000000"
+          (onSelect)="onFileUpload($event)"
+        ></p-fileUpload>
+
+        <div *ngIf="plan?.invalid && plan?.touched">
+          <small class="p-error">Plan is required.</small>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <span class="p-float-label">
+        <textarea
+          id="description"
+          pInputTextarea
+          formControlName="description"
+          placeholder=" "
+        ></textarea>
+        <label
+          for="description"
+          *ngIf="!description?.invalid || !description?.touched"
+          >Description</label
+        >
+        <small
+          class="p-error"
+          *ngIf="description?.invalid && description?.touched"
+          >Description is required.</small
+        >
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        pButton
+        type="submit"
+        label="Add restaurant"
+        severity="contrast"
+        [disabled]="restaurantForm.invalid"
+      ></button>
+    </div>
+  </div>
+</form>
