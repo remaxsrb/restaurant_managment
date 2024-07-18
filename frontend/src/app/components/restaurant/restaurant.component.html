@@ -6,15 +6,26 @@
 
   <!-- Main Content -->
   <main class="content">
-    <div id="map" style="height: 500px; width: 100%;"></div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <p>{{restaurant.name}}</p>
         <p>{{restaurant.address.street}} {{restaurant.address.number}} </p>
         <p>{{restaurant.email}}</p>
         <p>{{restaurant.open}} - {{restaurant.close}}</p>
       </div>
+      <div class="col-md-6">
+        <canvas #restaurantPlanCanvas
+                id="restaurantPlanCanvas"
+                width="500"
+                height="400"
+                style="border: 1px solid #000000"
+                (mousemove)="onCanvasMouseMove($event)" 
+        (mouseleave)="onCanvasMouseLeave()">
+              ></canvas>
+      </div>
     </div>
+    
   </main>
 
   <!-- Footer -->

@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GuestDashboardReservationsComponent implements OnInit {
 
-  stateOptions: string[] = ["Form", "Graphic"]
-
-  reservationFromDisplay : string = 'Form'
+  stateOptions: any[] = [ { label: "Form", value: 0 },
+    { label: "Graphic", value: 1 }
+  ]
 
   ngOnInit(): void {
       

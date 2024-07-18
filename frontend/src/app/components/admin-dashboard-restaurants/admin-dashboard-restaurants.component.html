@@ -24,7 +24,7 @@
             <p-radioButton
               [value]="restaurant.name"
               name="restaurantRadio"
-              (onClick)="onRestaurantRadioChange(restaurant.name)"
+              (onClick)="onRestaurantRadioChange(restaurant)"
             ></p-radioButton>
           </td>
           <td>{{ restaurant.name }}</td>
@@ -37,7 +37,7 @@
         </tr>
         <tr *ngIf="selected_restaurant === restaurant.name">
           <td colspan="8">
-            <canvas
+            <canvas #restaurantPlanCanvas
               id="restaurantPlanCanvas"
               width="500"
               height="400"

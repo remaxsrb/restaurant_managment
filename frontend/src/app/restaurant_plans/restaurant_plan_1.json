@@ -10,7 +10,7 @@
       { "id": 8, "x": 410, "y": 240, "radius": 35, "color": "white", "label": "4" }
 
     ],
-    "rectangles": [
+    "rechtangles": [
       { "id": 1, "x": 10, "y": 310, "width": 150, "height": 80, "label": "Kitchen" },
       { "id": 2, "x": 390, "y": 10, "width": 100, "height": 80, "label": "Toilet" }
     ]
