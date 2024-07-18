@@ -16,6 +16,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
+import { SelectButtonModule } from 'primeng/selectbutton';
+
 
 // Third-party Modules
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
@@ -85,6 +87,7 @@ import { NewRestaurantFormComponent } from './components/new-restaurant-form/new
     MessageModule,
     MessagesModule,
     PasswordModule,
+    SelectButtonModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('access_token'),

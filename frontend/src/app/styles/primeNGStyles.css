@@ -1,3 +1,4 @@
+/* Base styles for floating labels */
 .p-float-label {
   position: relative;
   display: block;
@@ -11,11 +12,9 @@
   transition: 0.2s ease all;
 }
 
+/* Input and textarea styles */
 .p-float-label input,
-.p-float-label textarea,
-.p-dropdown,
-.p-fileupload,
-.p-calendar input {
+.p-float-label textarea {
   width: 100%;
   padding: 0.5em 0.75em;
   border: 1px solid #007bff;
@@ -25,6 +24,7 @@
   box-sizing: border-box; /* Ensure padding and border are included in height */
 }
 
+/* Label positioning based on input focus or content */
 .p-float-label input:focus + label,
 .p-float-label input:not(:placeholder-shown) + label,
 .p-float-label textarea:focus + label,
@@ -43,39 +43,56 @@
   color: #999; /* Customize the color as needed */
 }
 
+/* Error message styles */
 .p-error {
   color: red;
   font-size: 0.75em;
 }
 
-.ui-calendar, .p-dropdown, .p-float-label input, .p-float-label textarea {
-  height: 38px;
+/* Adjustments for PrimeNG components */
+.ui-calendar .ui-inputtext,
+.p-dropdown .p-inputtext,
+.p-fileupload .p-fileupload-button {
+  height: 38px; /* Match the height of other inputs */
 }
 
-.ui-calendar .ui-inputtext, .p-dropdown .p-inputtext, .p-float-label input, .p-float-label textarea {
-  padding: 8px;
+.p-fileupload .p-fileupload-button {
+  padding: 8px; /* Match padding to maintain uniformity */
 }
 
+/* Dropdown styles */
+.p-dropdown {
+  height: 38px; /* Ensure uniform height with other inputs */
+}
+
+.p-dropdown .p-dropdown-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.5em 0.75em; /* Adjust padding to match other inputs */
+  height: 100%; /* Ensure label fills the height */
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure dropdown options match select field dimensions */
+.p-dropdown-panel {
+  width: 100%; /* Match width of the dropdown */
+}
+
+.p-dropdown-item {
+  padding: 0.5em 0.75em; /* Match padding of the select field */
+  height: 38px; /* Match height of the select field */
+  display: flex;
+  align-items: center;
+}
+
+/* File upload button bar alignment */
 .p-fileupload-buttonbar {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .p-fileupload-buttonbar .p-button {
-    width: 100%;
-  }
-  
-  /* Ensure select text fits into select height */
-  .p-dropdown {
-    height: 38px; /* Ensure uniform height with other inputs */
-  }
-  
-  .p-dropdown .p-dropdown-label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0.5em 0.75em; /* Adjust padding to match other inputs */
-    height: 100%; /* Ensure label fills the height */
-    display: flex;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+}
+
+.p-fileupload-buttonbar .p-button {
+  width: 100%;
+}

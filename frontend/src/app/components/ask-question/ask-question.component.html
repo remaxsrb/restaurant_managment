@@ -1,91 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Kutak dobre hrane</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>Kutak dobre hrane</title>
+  </head>
+  <body>
     <!-- Header -->
     <header class="bg-primary text-white py-3">
-        <h1>Kutak dobre hrane</h1>
+      <h1>Kutak dobre hrane</h1>
     </header>
 
     <!-- Main Content -->
-    <main class="container d-flex flex-column justify-content-center align-items-center">
-        <div class="container justify-content-center align-items-center">
-            <form [formGroup]="askQuestionForm" (ngSubmit)="onAnswerSubmit()" class="container">
-                <div class="row">
-                  <div class="col-12 col-md-6">
-                    <div class="p-float-label">
-                      <input id="username" pInputText formControlName="username" class="form-control" />
-                      <label for="username">Username</label>
-                    </div>
-                    <div *ngIf="username?.invalid && username?.touched" class="p-error">
-                      Username is required
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-12 col-md-6">
-                    <div class="p-float-label">
-                      <p-dropdown id="security_question" [options]="securityQuestions" optionLabel="label" formControlName="security_question" class="form-control"></p-dropdown>
-                      <label for="security_question">Security Question</label>
-                    </div>
-                    <div *ngIf="security_question?.invalid && security_question?.touched" class="p-error">
-                      Security question is required
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-12 col-md-6">
-                    <div class="p-float-label">
-                      <input id="security_question_answer" pInputText formControlName="security_question_answer" class="form-control" />
-                      <label for="security_question_answer">Security Question Answer</label>
-                    </div>
-                    <div *ngIf="security_question_answer?.invalid && security_question_answer?.touched" class="p-error">
-                      Security question answer is required
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-12">
-                    <button pButton type="submit" label="Submit" [disabled]="askQuestionForm.invalid"></button>
-                  </div>
-                </div>
-              </form>
-              <form [formGroup]="newPasswordForm" *ngIf="show_password_form" (ngSubmit)="onPasswordSubmit()">
-                <div class="row">
-                  <div class="col-12 col-md-6">
-                    <div class="p-float-label">
-                      <input id="password" pPassword formControlName="password" class="form-control" />
-                      <label for="password">Password</label>
-                    </div>
-                    <div *ngIf="new_password?.invalid && new_password?.touched" class="p-error">
-                      Password is required and must match the specified pattern.
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-12">
-                    <button pButton type="submit" label="Submit" [disabled]="newPasswordForm.invalid"></button>
-                  </div>
-                </div>
-              </form>
-                </div>
+    <main
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="container justify-content-center align-items-center">
+        <form
+          [formGroup]="askQuestionForm"
+          (ngSubmit)="onAnswerSubmit()"
+          class="container"
+        >
+          <div class="row">
+            <div class="col-md-12">
+              <span class="p-float-label">
+                <input
+                  id="username"
+                  type="text"
+                  pInputText
+                  formControlName="username"
+                  placeholder=" "
+                />
+                <label for="username">Username</label>
+              </span>
+              <div
+                *ngIf="username?.invalid && username?.touched"
+                class="p-error"
+              >
+                Username is required
+              </div>
+            </div>
+          </div>
 
+          <div class="row">
+            <div class="col-md-12">
+              <span class="p-float-label">
+                <p-dropdown
+                  [options]="securityQuestions"
+                  formControlName="security_question"
+                  optionLabel="label"
+                  optionValue="value"
+
+                  placeholder="Select a Security Question"
+                ></p-dropdown>
+              </span>
+              <div
+                *ngIf="security_question?.invalid && security_question?.touched"
+                class="p-error"
+              >
+                Security question is required
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="p-float-label">
+                <span class="p-float-label">
+                  <input
+                    id="security_question_answer"
+                    type="text"
+                    pInputText
+                    formControlName="security_question_answer"
+                    placeholder=" "
+                  />
+                  <label for="security_question_answer">Answer</label>
+                </span>
+              </div>
+              <div
+                *ngIf="
+                  security_question_answer?.invalid &&
+                  security_question_answer?.touched
+                "
+                class="p-error"
+              >
+                Security question answer is required
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button
+                pButton
+                type="submit"
+                label="Submit"
+                [disabled]="askQuestionForm.invalid"
+              ></button>
+            </div>
+          </div>
+        </form>
+        <form
+          [formGroup]="newPasswordForm"
+          *ngIf="show_password_form"
+          (ngSubmit)="onPasswordSubmit()"
+        >
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="p-float-label">
+                <input
+                  id="password"
+                  pPassword
+                  formControlName="password"
+                  class="form-control"
+                />
+                <label for="password">Password</label>
+              </div>
+              <div
+                *ngIf="new_password?.invalid && new_password?.touched"
+                class="p-error"
+              >
+                Password is required and must match the specified pattern.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button
+                pButton
+                type="submit"
+                label="Submit"
+                [disabled]="askQuestionForm.invalid"
+              ></button>
+            </div>
+          </div>
+        </form>
+      </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-3 mt-4">
-        <p>&copy; 2024 Marko Jovanovic</p>
+      <p>&copy; 2024 Marko Jovanovic</p>
     </footer>
-
-</body>
+  </body>
 </html>

@@ -16,282 +16,364 @@
     <main
       class="container d-flex flex-column justify-content-center align-items-center"
     >
-      <div>
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-md-12">
-              {{ signUpForm.value | json }}
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <!-- {{ signUpForm.value | json }} -->
 
-              <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                  <div class="col-md-6">
-                    <span class="p-float-label">
-                      <input
-                        id="firstname"
-                        type="text"
-                        pInputText
-                        formControlName="firstname"
-                        placeholder=" "
-                      />
-                      <label
-                        for="firstname"
-                        *ngIf="!firstname?.invalid || !firstname?.touched"
-                        >Firstname</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="firstname?.invalid && firstname?.touched"
-                        >Firstname is required.</small
-                      >
-                    </span>
-                  </div>
-                  <div class="col-md-6">
-                    <span class="p-float-label">
-                      <input
-                        id="lastname"
-                        type="text"
-                        pInputText
-                        formControlName="lastname"
-                        placeholder=" "
-                      />
-                      <label
-                        for="lastname"
-                        *ngIf="!lastname?.invalid || !lastname?.touched"
-                        >Lastname</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="lastname?.invalid && lastname?.touched"
-                        >Lastname is required.</small
-                      >
-                    </span>
+            <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6">
+                  <span class="p-float-label">
+                    <input
+                      id="firstname"
+                      type="text"
+                      pInputText
+                      formControlName="firstname"
+                      placeholder=" "
+                    />
+                    <label
+                      for="firstname"
+                      *ngIf="!firstname?.invalid || !firstname?.touched"
+                      >Firstname</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="firstname?.invalid && firstname?.touched"
+                      >Firstname is required.</small
+                    >
+                  </span>
+                </div>
+                <div class="col-md-6">
+                  <span class="p-float-label">
+                    <input
+                      id="lastname"
+                      type="text"
+                      pInputText
+                      formControlName="lastname"
+                      placeholder=" "
+                    />
+                    <label
+                      for="lastname"
+                      *ngIf="!lastname?.invalid || !lastname?.touched"
+                      >Lastname</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="lastname?.invalid && lastname?.touched"
+                      >Lastname is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <input
+                      id="username"
+                      type="text"
+                      pInputText
+                      formControlName="username"
+                      placeholder=" "
+                    />
+                    <label
+                      for="username"
+                      *ngIf="!username?.invalid || !username?.touched"
+                      >Username</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="username?.invalid && username?.touched"
+                      >Username is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <input
+                      id="password"
+                      type="password"
+                      pPassword
+                      formControlName="password"
+                      placeholder=" "
+                    />
+                    <label
+                      for="password"
+                      *ngIf="!password?.invalid || !password?.touched"
+                      >Password</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="password?.invalid && password?.touched"
+                      >Password is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <p-dropdown
+                      [options]="securityQuestions"
+                      formControlName="security_question"
+                      optionLabel="label"
+                      optionValue="value"
+                      placeholder="Select a Security Question"
+                    ></p-dropdown>
+                  </span>
+                  <div
+                    *ngIf="
+                      security_question?.invalid && security_question?.touched
+                    "
+                    class="p-error"
+                  >
+                    Security question is required
                   </div>
                 </div>
+              </div>
 
-                <div class="row">
-                  <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="p-float-label">
                     <span class="p-float-label">
                       <input
-                        id="username"
+                        id="security_question_answer"
                         type="text"
                         pInputText
-                        formControlName="username"
+                        formControlName="security_question_answer"
                         placeholder=" "
                       />
-                      <label
-                        for="username"
-                        *ngIf="!username?.invalid || !username?.touched"
-                        >Username</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="username?.invalid && username?.touched"
-                        >Username is required.</small
-                      >
+                      <label for="security_question_answer">Answer</label>
                     </span>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <span class="p-float-label">
-                      <input
-                        id="password"
-                        type="password"
-                        pPassword
-                        formControlName="password"
-                        placeholder=" "
-                      />
-                      <label
-                        for="password"
-                        *ngIf="!password?.invalid || !password?.touched"
-                        >Password</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="password?.invalid && password?.touched"
-                        >Password is required.</small
-                      >
-                    </span>
+                  <div
+                    *ngIf="
+                      security_question_answer?.invalid &&
+                      security_question_answer?.touched
+                    "
+                    class="p-error"
+                  >
+                    Security question answer is required
                   </div>
                 </div>
+              </div>
+              <div formGroupName="address" class="row">
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="street"
+                      type="text"
+                      pInputText
+                      formControlName="street"
+                      placeholder=" "
+                    />
+                    <label
+                      for="street"
+                      *ngIf="!street?.invalid || !street?.touched"
+                      >Street</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="street?.invalid && street?.touched"
+                      >Street is required and should match the pattern.</small
+                    >
+                  </span>
+                </div>
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="number"
+                      type="text"
+                      pInputText
+                      formControlName="number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="number"
+                      *ngIf="!number?.invalid || !number?.touched"
+                      >Number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="number?.invalid && number?.touched"
+                      >Number is required and should match the pattern.</small
+                    >
+                  </span>
+                </div>
+                <div class="col-md-4">
+                  <span class="p-float-label">
+                    <input
+                      id="city"
+                      type="text"
+                      pInputText
+                      formControlName="city"
+                      placeholder=" "
+                    />
+                    <label for="city" *ngIf="!city?.invalid || !city?.touched"
+                      >City</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="city?.invalid && city?.touched"
+                      >City is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
 
-                <div formGroupName="address">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <span class="p-float-label">
-                        <input
-                          id="street"
-                          type="text"
-                          pInputText
-                          formControlName="street"
-                          placeholder=" "
-                        />
-                        <label
-                          for="street"
-                          *ngIf="!street?.invalid || !street?.touched"
-                          >Street</label
-                        >
-                        <small
-                          class="p-error"
-                          *ngIf="street?.invalid && street?.touched"
-                          >Street is required and should match the
-                          pattern.</small
-                        >
-                      </span>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <input
+                      id="email"
+                      type="email"
+                      pInputText
+                      formControlName="email"
+                      placeholder=" "
+                    />
+                    <label
+                      for="email"
+                      *ngIf="!email?.invalid || !email?.touched"
+                      >E-mail</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="email?.invalid && email?.touched"
+                      >E-mail is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <input
+                      id="phone_number"
+                      type="text"
+                      pInputText
+                      formControlName="phone_number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="phone_number"
+                      *ngIf="!phone_number?.invalid || !phone_number?.touched"
+                      >Phone number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="phone_number?.invalid && phone_number?.touched"
+                      >Phone number is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="p-float-label">
+                    <input
+                      id="credit_card_number"
+                      type="text"
+                      pInputText
+                      formControlName="credit_card_number"
+                      placeholder=" "
+                    />
+                    <label
+                      for="username"
+                      *ngIf="
+                        !credit_card_number?.invalid ||
+                        !credit_card_number?.touched
+                      "
+                      >Credit card number</label
+                    >
+                    <small
+                      class="p-error"
+                      *ngIf="
+                        credit_card_number?.invalid &&
+                        credit_card_number?.touched
+                      "
+                      >Credit card number is required.</small
+                    >
+                  </span>
+                </div>
+              </div>
+              <!-- Gender Selection -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Gender</label>
+                    <div
+                      class="d-flex align-items-center justify-content-center"
+                    >
+                      <div class="mr-3">
+                        <p-radioButton
+                          name="gender"
+                          value="male"
+                          formControlName="gender"
+                          inputId="genderMale"
+                        ></p-radioButton>
+                        <label for="genderMale">Male</label>
+                      </div>
+                      <div>
+                        <p-radioButton
+                          name="gender"
+                          value="female"
+                          formControlName="gender"
+                          inputId="genderFemale"
+                        ></p-radioButton>
+                        <label for="genderFemale">Female</label>
+                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <span class="p-float-label">
-                        <input
-                          id="number"
-                          type="text"
-                          pInputText
-                          formControlName="number"
-                          placeholder=" "
-                        />
-                        <label
-                          for="number"
-                          *ngIf="!number?.invalid || !number?.touched"
-                          >Number</label
-                        >
-                        <small
-                          class="p-error"
-                          *ngIf="number?.invalid && number?.touched"
-                          >Number is required and should match the
-                          pattern.</small
-                        >
-                      </span>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="p-float-label">
-                        <input
-                          id="city"
-                          type="text"
-                          pInputText
-                          formControlName="city"
-                          placeholder=" "
-                        />
-                        <label
-                          for="city"
-                          *ngIf="!city?.invalid || !city?.touched"
-                          >City</label
-                        >
-                        <small
-                          class="p-error"
-                          *ngIf="city?.invalid && city?.touched"
-                          >City is required.</small
-                        >
-                      </span>
-                    </div>
+                    <small
+                      class="p-error"
+                      *ngIf="gender?.invalid && gender?.touched"
+                    >
+                      Gender is required.
+                    </small>
                   </div>
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span>
+                    <label for="plan">Profile photo</label>
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <span class="p-float-label">
-                      <input
-                        id="email"
-                        type="email"
-                        pInputText
-                        formControlName="email"
-                        placeholder=" "
-                      />
-                      <label
-                        for="email"
-                        *ngIf="!email?.invalid || !email?.touched"
-                        >E-mail</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="email?.invalid && email?.touched"
-                        >E-mail is required.</small
-                      >
-                    </span>
-                  </div>
+                    <p-fileUpload
+                      mode="basic"
+                      name="demo[]"
+                      chooseLabel="Choose"
+                      chooseIcon="pi pi-upload"
+                      url="https://www.primefaces.org/cdn/api/upload.php"
+                      accept=".json"
+                      maxFileSize="1000000"
+                      (onSelect)="onFileSelected($event)"
+                    ></p-fileUpload>
+                  </span>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <span class="p-float-label">
-                      <input
-                        id="phone_number"
-                        type="text"
-                        pInputText
-                        formControlName="phone_number"
-                        placeholder=" "
-                      />
-                      <label
-                        for="phone_number"
-                        *ngIf="!phone_number?.invalid || !phone_number?.touched"
-                        >Phone number</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="phone_number?.invalid && phone_number?.touched"
-                        >Phone number is required.</small
-                      >
-                    </span>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    pButton
+                    type="submit"
+                    label="Sign up"
+                    severity="contrast"
+                    [disabled]="signUpForm.invalid"
+                  ></button>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <span class="p-float-label">
-                      <input
-                        id="credit_card_number"
-                        type="text"
-                        pInputText
-                        formControlName="credit_card_number"
-                        placeholder=" "
-                      />
-                      <label
-                        for="username"
-                        *ngIf="
-                          !credit_card_number?.invalid ||
-                          !credit_card_number?.touched
-                        "
-                        >Credit card number</label
-                      >
-                      <small
-                        class="p-error"
-                        *ngIf="
-                          credit_card_number?.invalid &&
-                          credit_card_number?.touched
-                        "
-                        >Credit card number is required.</small
-                      >
-                    </span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <span>
-                      <label for="plan">Profile photo</label>
-              
-                      <p-fileUpload
-                        mode="basic"
-                        name="demo[]"
-                        chooseLabel="Choose"
-                        chooseIcon="pi pi-upload"
-                        url="https://www.primefaces.org/cdn/api/upload.php"
-                        accept=".json"
-                        maxFileSize="1000000"
-                        (onSelect)="onFileSelected($event)"
-                      ></p-fileUpload>
-
-                    </span>
-                  </div>
-                </div>
-                <div class="row"> 
-                  <div class="col-md-12">
-                    <button
-                      pButton
-                      type="submit"
-                      label="Sign up"
-                      severity="contrast"
-                      [disabled]="signUpForm.invalid"
-                    ></button>
-                  </div>
-                </div>
-              </form>
-            </div>
+              </div>
+              <p-messages
+                *ngIf="
+                  signup_response_flags.email_or_username_taken ||
+                  signup_response_flags.general_errors
+                "
+                [(value)]="errorMessage"
+                [closable]="false"
+                severity="error"
+              />
+            </form>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ const User = new Schema(
       match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
     },
     role: { type: String, required: true, enum: ["admin", "waiter", "guest"] },
-    security_question: { type: String },
+    security_question: { type: Number }, //questions are mapped to integer values so that stroring in databse becomes easier
     security_question_answer: { type: String },
     firstname: { type: String },
     lastname: { type: String },
@@ -29,10 +29,9 @@ const User = new Schema(
     profile_photo: { type: String, match: /\.(png|jpg)$/i },
     status: {
       type: String,
-      default: "pending",
       enum: ["pending", "active", "blocked", "banned"],
     },
-    late_for_reservation: { type: Number, default: 0, min: 0, max: 3 },
+    late_for_reservation: { type: Number, min: 0, max: 3 },
     restaurant: { type: String, ref: "Restaurant" },
   },
   { versionKey: false }

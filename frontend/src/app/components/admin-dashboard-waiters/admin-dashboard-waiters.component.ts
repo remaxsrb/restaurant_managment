@@ -8,8 +8,7 @@ import { ImageDimensionValidationService } from 'src/app/services/utility_servic
 import { RegexPatterns } from '../regex_patterns';
 import { Restaurant } from 'src/app/models/restaurant';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-
+import { securityQuestions } from 'src/app/securityQuestions';
 
 @Component({
   selector: 'app-admin-dashboard-waiters',
@@ -23,29 +22,24 @@ export class AdminDashboardWaitersComponent implements OnInit {
     private admin_service: AdminService,
     private image_dim: ImageDimensionValidationService,
     private fb: FormBuilder
-
   ) {}
 
   waiters: Waiter[] = [];
   restaurants: Restaurant[] = [];
 
   waiter_form_flags = {
-   
     username_taken: false,
     email_taken: false,
     invalid_picture_dimensions: false,
     general_errors: false,
   };
 
-
-
-
+  securityQuestions = securityQuestions;
 
   waiterForm!: FormGroup;
   addressForm!: FormGroup;
 
   selectedFile: File | null = null;
-
 
   initAddressForm(): void {
     this.addressForm = this.fb.group({
@@ -70,6 +64,8 @@ export class AdminDashboardWaitersComponent implements OnInit {
       ],
       email: ['', [Validators.required, Validators.email]],
       role: ['waiter'],
+      security_question: ['', Validators.required],
+      security_question_answer: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       gender: ['', Validators.required],
@@ -79,7 +75,7 @@ export class AdminDashboardWaitersComponent implements OnInit {
         [Validators.required, Validators.pattern(RegexPatterns.PHONE_NUMBER)],
       ],
       profile_photo: [''],
-      restaurant: ['', Validators.required]
+      restaurant: ['', Validators.required],
     });
   }
 
@@ -90,6 +86,9 @@ export class AdminDashboardWaitersComponent implements OnInit {
     this.restaurant_service.all().subscribe((data) => {
       this.restaurants = data;
     });
+
+    this.initAddressForm();
+    this.initWaiterForm();
   }
 
   get username() {
@@ -98,6 +97,14 @@ export class AdminDashboardWaitersComponent implements OnInit {
 
   get password() {
     return this.waiterForm.get('password');
+  }
+
+  get security_question() {
+    return this.waiterForm.get('security_question');
+  }
+
+  get security_question_answer() {
+    return this.waiterForm.get('security_question_answer');
   }
 
   get email() {
@@ -153,8 +160,6 @@ export class AdminDashboardWaitersComponent implements OnInit {
   }
 
   onSubmit() {
-    
-
     if (this.selectedFile) {
       this.waiterForm.patchValue({
         profile_photo: this.selectedFile.name, // Assign file name to plan in form
@@ -169,7 +174,6 @@ export class AdminDashboardWaitersComponent implements OnInit {
       });
     }
 
-    
     this.admin_service.register_waiter(this.waiterForm.value).subscribe({
       next: (data) => {
         this.waiters = [];
@@ -193,7 +197,4 @@ export class AdminDashboardWaitersComponent implements OnInit {
       },
     });
   }
-
-  
-
 }

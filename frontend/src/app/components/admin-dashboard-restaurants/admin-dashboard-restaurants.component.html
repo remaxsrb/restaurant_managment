@@ -18,24 +18,24 @@
           <th>Closed</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <ng-template pTemplate="body" let-restaurant let-i="rowIndex">
         <tr>
           <td>
             <p-radioButton
-              [value]="row.name"
+              [value]="restaurant.name"
               name="restaurantRadio"
-              (onClick)="onRestaurantRadioChange(row.name)"
+              (onClick)="onRestaurantRadioChange(restaurant.name)"
             ></p-radioButton>
           </td>
-          <td>{{ row.name }}</td>
-          <td>{{ row.type }}</td>
-          <td>{{ row.phone_number }}</td>
-          <td>{{ row.address.street }} {{ row.address.street_number }}</td>
-          <td>{{ row.address.city }}</td>
-          <td>{{ row.open }}</td>
-          <td>{{ row.close }}</td>
+          <td>{{ restaurant.name }}</td>
+          <td>{{ restaurant.type }}</td>
+          <td>{{ restaurant.phone_number }}</td>
+          <td>{{ restaurant.address.street }} {{ restaurant.address.number }}</td>
+          <td>{{ restaurant.address.city }}</td>
+          <td>{{ restaurant.open }}</td>
+          <td>{{ restaurant.close }}</td>
         </tr>
-        <tr *ngIf="selected_restaurant === row.name">
+        <tr *ngIf="selected_restaurant === restaurant.name">
           <td colspan="8">
             <canvas
               id="restaurantPlanCanvas"

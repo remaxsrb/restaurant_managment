@@ -37,61 +37,73 @@
     </div>
   </div>
 
-  <div formGroupName="address">
-    <div class="row">
-      <div class="col-md-4">
-        <span class="p-float-label">
-          <input
-            id="street"
-            type="text"
-            pInputText
-            formControlName="street"
-            placeholder=" "
-          />
-          <label for="street" *ngIf="!street?.invalid || !street?.touched"
-            >Street</label
-          >
-          <small class="p-error" *ngIf="street?.invalid && street?.touched"
-            >Street is required and should match the pattern.</small
-          >
-        </span>
-      </div>
-      <div class="col-md-4">
-        <span class="p-float-label">
-          <input
-            id="number"
-            type="text"
-            pInputText
-            formControlName="number"
-            placeholder=" "
-          />
-          <label for="number" *ngIf="!number?.invalid || !number?.touched"
-            >Number</label
-          >
-          <small class="p-error" *ngIf="number?.invalid && number?.touched"
-            >Number is required and should match the pattern.</small
-          >
-        </span>
-      </div>
-      <div class="col-md-4">
-        <span class="p-float-label">
-          <input
-            id="city"
-            type="text"
-            pInputText
-            formControlName="city"
-            placeholder=" "
-          />
-          <label for="city" *ngIf="!city?.invalid || !city?.touched"
-            >City</label
-          >
-          <small class="p-error" *ngIf="city?.invalid && city?.touched"
-            >City is required.</small
-          >
-        </span>
-      </div>
+  <div formGroupName="address" class = 'row'>
+    <div class="col-md-4">
+      <span class="p-float-label">
+        <input
+          id="street"
+          type="text"
+          pInputText
+          formControlName="street"
+          placeholder=" "
+        />
+        <label
+          for="street"
+          *ngIf="!street?.invalid || !street?.touched"
+          >Street</label
+        >
+        <small
+          class="p-error"
+          *ngIf="street?.invalid && street?.touched"
+          >Street is required and should match the
+          pattern.</small
+        >
+      </span>
     </div>
+    <div class="col-md-4">
+      <span class="p-float-label">
+        <input
+          id="number"
+          type="text"
+          pInputText
+          formControlName="number"
+          placeholder=" "
+        />
+        <label
+          for="number"
+          *ngIf="!number?.invalid || !number?.touched"
+          >Number</label
+        >
+        <small
+          class="p-error"
+          *ngIf="number?.invalid && number?.touched"
+          >Number is required and should match the
+          pattern.</small
+        >
+      </span>
+    </div>
+    <div class="col-md-4">
+      <span class="p-float-label">
+        <input
+          id="city"
+          type="text"
+          pInputText
+          formControlName="city"
+          placeholder=" "
+        />
+        <label
+          for="city"
+          *ngIf="!city?.invalid || !city?.touched"
+          >City</label
+        >
+        <small
+          class="p-error"
+          *ngIf="city?.invalid && city?.touched"
+          >City is required.</small
+        >
+      </span>
   </div>
+</div>
 
   <div class="row">
     <div class="col-md-6">

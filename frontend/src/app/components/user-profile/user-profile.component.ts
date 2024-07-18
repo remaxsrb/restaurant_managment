@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/model_services/user.service';
-import { FormValidationService } from 'src/app/services/utility_services/form-validation.service';
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RegexPatterns } from '../regex_patterns';

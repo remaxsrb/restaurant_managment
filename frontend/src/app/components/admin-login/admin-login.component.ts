@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/utility_services/auth.service';
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.css'],
 })
-export class AdminLoginComponent {
+export class AdminLoginComponent implements OnInit {
   constructor(
     private auth_service: AuthService,
     public jwtHelper: JwtHelperService,
@@ -24,7 +24,9 @@ export class AdminLoginComponent {
 
   logInForm! : FormGroup;
 
-
+  ngOnInit() {
+    this.initLoginForm();
+  }
   initLoginForm(): void {
     this.logInForm = this.fb.group({
       username: ['', Validators.required],

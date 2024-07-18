@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/model_services/user.service';
 import { ImageDimensionValidationService } from 'src/app/services/utility_services/image-dimension-validation.service';
 import { RegexPatterns } from '../regex_patterns';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { securityQuestions } from 'src/app/securityQuestions';
+import { Message } from 'primeng/api/message';
 
 @Component({
   selector: 'app-signup',
@@ -22,6 +24,9 @@ export class SignupComponent implements OnInit {
   signUpForm!: FormGroup;
   addressForm!: FormGroup;
   selectedFile: File | null = null;
+
+  securityQuestions = securityQuestions;
+  errorMessage: Message[] = [];
 
   ngOnInit(): void {
     this.initAddressForm();
@@ -51,6 +56,8 @@ export class SignupComponent implements OnInit {
       ],
       email: ['', [Validators.required, Validators.email]],
       role: ['guest'],
+      security_question: ['', Validators.required],
+      security_question_answer: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       gender: ['', Validators.required],
@@ -78,6 +85,15 @@ export class SignupComponent implements OnInit {
   get password() {
     return this.signUpForm.get('password');
   }
+
+  get security_question() {
+    return this.signUpForm.get('security_question');
+  }
+
+  get security_question_answer() {
+    return this.signUpForm.get('security_question_answer');
+  }
+
   get email() {
     return this.signUpForm.get('email');
   }
@@ -111,8 +127,7 @@ export class SignupComponent implements OnInit {
   }
 
   signup_response_flags = {
-    email_taken: false,
-    username_exists: false,
+    email_or_username_taken: false,
     general_errors: false,
   };
 
@@ -145,16 +160,33 @@ export class SignupComponent implements OnInit {
       },
       error: (error) => {
         // Handle specific errors or show a general message
-        if (error.status === 408) {
-          this.signup_response_flags.username_exists = true;
+        if (error.status === 409) {
           // Conflict error
-        } else if (error.status === 409) {
-          this.signup_response_flags.email_taken = true;
-        } else {
+
+          this.signup_response_flags.email_or_username_taken = true;
+          this.setErr(error.message);
+        } else if (error.status === 500) {
           this.signup_response_flags.general_errors = true; // General error
+          this.setErr(error.message);
+        } else {
+          this.clearErr();
         }
+
+        this.errorMessage = [
+          { severity: 'error', summary: 'Error', detail: error.error?.message },
+        ];
       },
     });
   }
 
+  private setErr(message: string) {
+    this.errorMessage = [
+      { severity: 'error', summary: 'Error', detail: message },
+    ];
+  }
+  private clearErr() {
+    this.signup_response_flags.email_or_username_taken = false;
+    this.signup_response_flags.general_errors = false;
+    this.errorMessage = [];
+  }
 }

@@ -8,6 +8,7 @@ export class RestaurantController {
     try {
       await new Restaurant(restaurant).save();
       console.log("Restaurant created");
+      return res.status(201)
     } catch (err) {
       console.error(err);
       return res.status(400).json({ message: "Error creating restaurant" });
@@ -134,7 +135,7 @@ export class RestaurantController {
         { $push: { dishes: dish } },
         { new: true }
       );
-      return res.json({ message: "Dish added successfully", restaurant });
+      return res.status(201);
     } catch (err) {
       console.error(err);
       return res
@@ -153,7 +154,8 @@ export class RestaurantController {
         { $pull: { dishes: { name: dish.name } } },
         { new: true }
       );
-      return res.json({ message: "Dish removed successfully", restaurant });
+      return res.status(201);
+
     } catch (err) {
       console.error(err);
       return res

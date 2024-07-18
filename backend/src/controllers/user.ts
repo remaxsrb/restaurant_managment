@@ -9,11 +9,8 @@ export class UserController {
   private async checkExistingUser(username: string, email: string) {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      if (existingUser.username === username) {
-        throw { status: 408, message: "Username already taken" };
-      } else if (existingUser.email === email) {
-        throw { status: 409, message: "Email already taken" };
-      }
+      if (existingUser.username === username || existingUser.email === email)
+        throw { status: 409, message: "Username or email are already taken" };
     }
   }
 
@@ -33,7 +30,8 @@ export class UserController {
 
       const user = await User.create(req.body);
       await this.createShoppingCart(user.username);
-      return res.json({ message: "User and shopping cart created" });
+      console.log("User created");
+      return res.json({ status: 201, message: "User and shopping cart created" });
     } catch (err: any) {
       const statusCode = err.status || 500;
       const message = err.message || "Error creating user";
@@ -48,8 +46,8 @@ export class UserController {
 
       if (!user) return res.status(404).json({ message: "User not found" });
 
-      if (user.role==="guest" && user.status !== "active")
-        return res.status(402).json({ message: "Guest is not approved" });
+      if (user.role === "guest" && user.status !== "active")
+        return res.status(403).json({ message: "Guest is not approved" });
 
       const isMatch = bcrypt.compareSync(password, user.password);
 
@@ -77,7 +75,7 @@ export class UserController {
       if (fieldToUpdate === "username") {
         const existingUser = await User.findOne({ username: updateValue });
         if (existingUser) {
-          throw { status: 408, message: "Username is already taken" };
+          throw { status: 409, message: "Username is already taken" };
         }
       } else if (fieldToUpdate === "email") {
         const existingUser = await User.findOne({ email: updateValue });
@@ -91,7 +89,7 @@ export class UserController {
 
       const result = await User.updateOne(updateQuery, update);
       if (result.modifiedCount > 0) {
-        return res.json({ message: successMessage });
+        return res.json({ status: 201, message: successMessage });
       } else {
         return res
           .status(404)
@@ -248,7 +246,6 @@ export class UserController {
     }
   }
 
-
   readByUsername(req: express.Request, res: express.Response) {
     this.readUserByField(
       "username",
@@ -282,12 +279,12 @@ export class UserController {
       }
       if (existingUser.security_question !== security_question) {
         return res
-          .status(400)
+          .status(403)
           .json({ message: "Security question does not match" });
       }
       if (existingUser.security_question_answer !== security_question_answer) {
         return res
-          .status(401)
+          .status(403)
           .json({ message: "Security answer is incorrect" });
       }
       return res.status(200).json({ message: "Security check passed" });
@@ -311,7 +308,6 @@ export class UserController {
       return res.status(500).json({ message: errorMessage });
     }
   }
-
 
   count_by_role(req: express.Request, res: express.Response) {
     const { role } = req.params;

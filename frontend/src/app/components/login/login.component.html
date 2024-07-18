@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <title>Kutak dobre hrane</title>
   </head>
   <body>
@@ -19,7 +19,7 @@
       <div>
         <div class="container">
           <div class="row justify-content-center">
-            <div class="com-md-12">
+            <div class="col-md-12">
               <form [formGroup]="logInForm" (ngSubmit)="onLogin()">
                 <div class="row">
                   <div class="col-md-12">
@@ -32,32 +32,46 @@
                         placeholder=" "
                       />
                       <label for="username">Username</label>
-
                     </span>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <span class="p-float-label">
-                        <input
-                          id="password"
-                          type="password"
-                          
-                          formControlName="password"
-                          placeholder=" "
-                        />
-                        <label for="password" >Password</label>
-                       
-                      </span>
-                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="p-float-label">
+                      <input
+                        id="password"
+                        type="password"
+                        formControlName="password"
+                        placeholder=" "
+                      />
+                      <label for="password">Password</label>
+                    </span>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <button pButton type="submit" label="Login" severity="contrast" [disabled]="logInForm.invalid"></button>
-                    </div>
+                  <a href="/change_password">Change password?</a>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button
+                      pButton
+                      type="submit"
+                      label="Login"
+                      severity="contrast"
+                      [disabled]="logInForm.invalid"
+                    ></button>
                   </div>
                 </div>
+                <p-messages
+                *ngIf="
+                login_form_flags.invalid_password ||
+                login_form_flags.user_not_approved ||
+                login_form_flags.user_not_found ||
+                login_form_flags.general_errors
+                "
+                [(value)]="errorMessage"
+                [closable]="false"
+                severity="error"
+              />
               </form>
-                
             </div>
           </div>
         </div>
