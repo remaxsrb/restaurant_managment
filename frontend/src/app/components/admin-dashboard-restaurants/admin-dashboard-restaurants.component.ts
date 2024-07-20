@@ -56,6 +56,6 @@ export class AdminDashboardRestaurantsComponent {
     this.restaurant_plan_service.renderRestaurantPlan(
       restaurant_plan,
       this.selected_restaurant,
-      canvas    );
+      canvas, null, null    );
   }
 }

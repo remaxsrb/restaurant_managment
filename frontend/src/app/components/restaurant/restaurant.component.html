@@ -21,7 +21,8 @@
                 height="400"
                 style="border: 1px solid #000000"
                 (mousemove)="onCanvasMouseMove($event)" 
-        (mouseleave)="onCanvasMouseLeave()">
+        (mouseleave)="onCanvasMouseLeave()"
+        (click)="onMouseClick($event)">
               ></canvas>
       </div>
     </div>

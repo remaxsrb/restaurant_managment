@@ -31,6 +31,8 @@ import { FloorPlan } from 'src/app/models/interfaces/FloorPlan';
 export class RestaurantComponent implements OnInit, AfterViewInit {
   @ViewChild('restaurantPlanCanvas') canvasRef!: ElementRef;
   private hoveredCircleIndex: number | null = null;
+  private clickedCircleIndex: number | null = null;
+
   private floorPlan: FloorPlan = { circles: [], rechtangles: [] };
   private map!: L.Map;
 
@@ -107,7 +109,9 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
       this.restaurantPlanService.renderRestaurantPlan(
         this.floorPlan,
         this.restaurant,
-        canvas
+        canvas,
+        this.hoveredCircleIndex,
+        this.clickedCircleIndex
       );
     } else {
       console.error('Failed to get 2D context from canvas element.');
@@ -115,12 +119,13 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   }
 
   onCanvasMouseMove(event: MouseEvent): void {
+    console.log('Mouse move event detected');
+
     const canvas = this.canvasRef.nativeElement as HTMLCanvasElement;
+    if (!canvas) return;
+
     const context = canvas.getContext('2d')!;
-
-    const mouseX = event.offsetX;
-    const mouseY = event.offsetY;
-
+    const { offsetX: mouseX, offsetY: mouseY } = event;
     const newHoveredCircleIndex =
       this.restaurantPlanService.getHoveredCircleIndex(
         this.floorPlan.circles,
@@ -128,33 +133,81 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
         mouseY
       );
 
+    // Ignore hover if a hovered circle is already clicked
+    if (this.clickedCircleIndex === newHoveredCircleIndex)
+      return;
+
     if (newHoveredCircleIndex !== this.hoveredCircleIndex) {
-      if (this.hoveredCircleIndex !== -1 && this.hoveredCircleIndex !== null) {
-        // Clear the previous hovered circle
-        const circle = this.floorPlan.circles[this.hoveredCircleIndex];
-        context.clearRect(
-          circle.x - circle.radius,
-          circle.y - circle.radius,
-          circle.radius * 2,
-          circle.radius * 2
-        );
-        this.restaurantPlanService.renderCircle(context, circle);
-      }
+      if (this.hoveredCircleIndex !== null && this.hoveredCircleIndex !== -1)
+        this.handleMouseLeaveCircle(canvas, this.hoveredCircleIndex);
 
       this.hoveredCircleIndex = newHoveredCircleIndex;
 
-      if (this.hoveredCircleIndex !== -1) {
-        // Draw the new hovered circle
-        const circle = this.floorPlan.circles[this.hoveredCircleIndex];
-        this.restaurantPlanService.renderCircle(context, circle, true);
-      }
+      if (this.hoveredCircleIndex !== null && this.hoveredCircleIndex !== -1)
+        this.handleMouseEnterCircle(canvas, this.hoveredCircleIndex);
     }
   }
 
-  onCanvasMouseLeave(): void {
-    this.hoveredCircleIndex = null;
-    const canvas = this.canvasRef.nativeElement;
+  private handleMouseLeaveCircle(
+    canvas: HTMLCanvasElement,
+    circleIndex: number
+  ): void {
+    console.log('Mouse left circle index: ' + circleIndex);
+
     const context = canvas.getContext('2d')!;
-    this.renderRestaurantPlan(context);
+    const circle = this.floorPlan.circles[circleIndex];
+
+    // Clear the hover effect of the left circle
+    context.clearRect(
+      circle.x - circle.radius,
+      circle.y - circle.radius,
+      circle.radius * 2,
+      circle.radius * 2
+    );
+
+    // Redraw the clicked circle if it was previously hovered
+    if (this.clickedCircleIndex === circleIndex) {
+      this.restaurantPlanService.renderCircle(context, circle, false, true); // Keep clicked circle green
+    } else {
+      this.restaurantPlanService.renderCircle(context, circle); // Redraw in default state
+    }
+  }
+
+  private handleMouseEnterCircle(
+    canvas: HTMLCanvasElement,
+    circleIndex: number
+  ): void {
+    console.log('Mouse entered circle index: ' + circleIndex);
+
+    const context = canvas.getContext('2d')!;
+    const circle = this.floorPlan.circles[circleIndex];
+
+    // Draw the hover effect on the new circle
+    this.restaurantPlanService.renderCircle(context, circle, true);
+  }
+  onCanvasMouseLeave(): void {
+    console.log('Mouse left the canvas ');
+  }
+
+  onMouseClick(event: MouseEvent): void {
+    console.log('Mouse click detected');
+
+    const canvas = this.canvasRef.nativeElement as HTMLCanvasElement;
+    const context = canvas.getContext('2d')!;
+  
+    const oldClickedIndex = this.clickedCircleIndex;
+    this.clickedCircleIndex = this.hoveredCircleIndex;
+  
+    if (oldClickedIndex === this.clickedCircleIndex) {
+      this.clickedCircleIndex = null;
+    }
+  
+    this.renderRestaurantPlan(canvas); // Clear and redraw the canvas
+  
+    if (this.clickedCircleIndex !== null && this.clickedCircleIndex !== -1) {
+      const circle = this.floorPlan.circles[this.clickedCircleIndex];
+      console.log('Clicked circle: ' + this.clickedCircleIndex);
+      this.restaurantPlanService.renderCircle(context, circle, false, true); // Draw the clicked circle in green
+    }
   }
 }

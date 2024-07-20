@@ -6,16 +6,26 @@ import { Rechtangle } from 'src/app/models/interfaces/rechtangle';
 import { Table } from 'src/app/models/interfaces/table';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RestaurantPlanService {
   private ctx: CanvasRenderingContext2D | null = null;
   private hoveredCircleIndex: number | null = null;
+  private clickedCircleIndex: number | null = null;
+
   private tables: Table[] = [];
 
-  renderRestaurantPlan(floorPlan: FloorPlan, restaurant: Restaurant, canvas: HTMLCanvasElement): void {
+  renderRestaurantPlan(
+    floorPlan: FloorPlan,
+    restaurant: Restaurant,
+    canvas: HTMLCanvasElement,
+    hoveredIndex: number | null,
+    clickedIndex: number | null
+  ): void {
     this.ctx = canvas.getContext('2d');
     this.tables = restaurant.tables;
+    this.hoveredCircleIndex = hoveredIndex;
+    this.clickedCircleIndex = clickedIndex;
 
     if (this.ctx) {
       this.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -26,27 +36,39 @@ export class RestaurantPlanService {
     }
   }
 
-  renderCircle(ctx: CanvasRenderingContext2D, circle: Circle, isHovered: boolean = false): void {
+  renderCircle(
+    ctx: CanvasRenderingContext2D,
+    circle: Circle,
+    isHovered: boolean = false,
+    isClicked: boolean = false
+  ): void {
     const text = circle.label;
     const textWidth = ctx.measureText(text).width;
 
     ctx.beginPath();
     ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+    ctx.closePath();
 
-    // Example condition based on circle ID and table status
     if (circle.id && this.tables[circle.id - 1]?.status === 'reserved') {
-      ctx.fillStyle = 'black'; // Example color for reserved tables
-      ctx.fillText('', circle.x, circle.y); // Clear text for reserved tables
-    } else if (isHovered) {
-      ctx.fillStyle = 'gray'; // Example color for hovered circles
-      ctx.fillText(text, circle.x - textWidth / 2, circle.y); // Render text for hovered circles
-    } else {
-      ctx.fillStyle = 'white'; // Default color for circles
-      ctx.fillText(text, circle.x - textWidth / 2, circle.y); // Render text for circles
-    }
+      ctx.fillStyle = 'black';
+      ctx.fillText('', circle.x, circle.y);
+  } else if (isClicked && this.tables[circle.id - 1]?.status === 'available') {
+      ctx.fillStyle = 'green';
+      ctx.fillText(text, circle.x - textWidth / 2, circle.y);
+  } else if (isHovered && this.tables[circle.id - 1]?.status === 'available') {
+      ctx.fillStyle = 'gray';
+      ctx.fillText(text, circle.x - textWidth / 2, circle.y);
+  } else {
+      ctx.fillStyle = 'white';
+      ctx.fillText(text, circle.x - textWidth / 2, circle.y);
+  }
+  
 
     ctx.fill();
     ctx.stroke();
+
+    ctx.fillStyle = 'black';
+    ctx.fillText(text, circle.x - textWidth / 2, circle.y + 5);
   }
 
   private renderRechtangles(rectangles: Rechtangle[]): void {
@@ -66,7 +88,9 @@ export class RestaurantPlanService {
   renderCircles(ctx: CanvasRenderingContext2D, circles: Circle[]): void {
     circles.forEach((circle, index) => {
       const isHovered = index === this.hoveredCircleIndex;
-      this.renderCircle(ctx, circle, isHovered);
+      const isClicked = index === this.clickedCircleIndex;
+
+      this.renderCircle(ctx, circle, isHovered, isClicked);
     });
   }
 
