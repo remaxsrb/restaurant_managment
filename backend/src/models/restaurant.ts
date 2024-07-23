@@ -30,7 +30,7 @@ const Restaurant = new Schema(
     phone_number: {
       type: String,
       required: true,
-      match: /^06\d{8}$/,
+      match: /^06\d{7,8}$/,
     },
     email: {
       type: String,
@@ -44,18 +44,13 @@ const Restaurant = new Schema(
     },
 
     address: { type: Address, required: true },
-
-    //Time is stored in a HH:MM formar as a string and on frontend it will be converted for calulations
-
     open: {
-      type: String,
+      type: Date,
       required: true,
-      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
     },
     close: {
-      type: String,
+      type: Date,
       required: true,
-      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
     },
     rating: {
       type: Number,

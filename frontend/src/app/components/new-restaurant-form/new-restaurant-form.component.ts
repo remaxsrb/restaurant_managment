@@ -56,7 +56,7 @@ export class NewRestaurantFormComponent implements OnInit {
       type: ['', Validators.required],
       address: this.addressForm,
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', Validators.required],
+      phone_number: ['', [Validators.required, Validators.pattern(RegexPatterns.PHONE_NUMBER)]],
       open: [void 0, Validators.required],
       close: [void 0, Validators.required],
       plan: [null, Validators.required],
@@ -118,10 +118,12 @@ export class NewRestaurantFormComponent implements OnInit {
   }
 
   onSubmit() {
-    const formattedOpen = this.timeService.formatTimeTo24HourString(
+    
+    //This part here is not really necessary to do but it is nice to have in order to remind that date part od Date object is not significant
+    const formattedOpen = this.timeService.replaceDateWithStartUnixEpoch(
       new Date(this.open?.value)
     );
-    const formattedClose = this.timeService.formatTimeTo24HourString(
+    const formattedClose = this.timeService.replaceDateWithStartUnixEpoch(
       new Date(this.close?.value)
     );
 

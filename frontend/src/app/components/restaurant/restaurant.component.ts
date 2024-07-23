@@ -1,27 +1,32 @@
 import {
-  Component,
-  OnInit,
   AfterViewInit,
+  Component,
   ElementRef,
+  OnInit,
   ViewChild,
 } from '@angular/core';
-import { Restaurant } from 'src/app/models/restaurant';
-import { GeocodingService } from 'src/app/services/utility_services/geocoding.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as L from 'leaflet';
-import 'leaflet-providers';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-import 'leaflet/dist/images/marker-icon.png';
+import 'leaflet-providers';
 import 'leaflet/dist/images/marker-icon-2x.png';
+import 'leaflet/dist/images/marker-icon.png';
 import 'leaflet/dist/images/marker-shadow.png';
+import { Circle } from 'src/app/models/interfaces/circle';
+import { FloorPlan } from 'src/app/models/interfaces/FloorPlan';
+import { Restaurant } from 'src/app/models/restaurant';
+import { User } from 'src/app/models/user';
 import {
   OSMSrbija,
   tileLayerOSMSrbija,
 } from 'src/app/OSMSerbia/leaflet_OSMSerbia_layer';
+import { ReservationService } from 'src/app/services/model_services/reservation.service';
+import { GeocodingService } from 'src/app/services/utility_services/geocoding.service';
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RestaurantPlanService } from 'src/app/services/utility_services/restaurant-plan.service';
-import { Circle } from 'src/app/models/interfaces/circle';
-import { FloorPlan } from 'src/app/models/interfaces/FloorPlan';
+import { TimeService } from 'src/app/services/utility_services/time.service';
+
 
 @Component({
   selector: 'app-restaurant',
@@ -35,20 +40,49 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
 
   private floorPlan: FloorPlan = { circles: [], rechtangles: [] };
   private map!: L.Map;
+  
+  reservationForm!: FormGroup;
 
   restaurant: Restaurant = new Restaurant();
+  guest: User = new User();
 
   constructor(
     private geocodingService: GeocodingService,
     private restaurantPlanService: RestaurantPlanService,
-    private json_service: JsonService
+    private json_service: JsonService,
+    private fb: FormBuilder,
+    private timeService: TimeService,
+    private reservationService: ReservationService
+
   ) {}
 
   ngOnInit(): void {
     const restaurant_data = localStorage.getItem('restaurant');
     if (restaurant_data) {
       this.restaurant = JSON.parse(restaurant_data);
+      this.restaurant.open = this.timeService.formatTimeTo24HourString(new Date(this.restaurant.open))
+      this.restaurant.close = this.timeService.formatTimeTo24HourString(new Date(this.restaurant.close))
+
     }
+    
+    const guest_data = localStorage.getItem('user');
+    if (guest_data)
+      this.guest = JSON.parse(guest_data);
+    
+    this.initReservationForm();
+  }
+  
+  initReservationForm() {
+    this.reservationForm = this.fb.group({
+      restaurant: [this.restaurant._id], //restaurant object id from localstorage
+      guest: [this.guest._id], //guest object id from localstorage
+      table: [-1],
+      status: ['pending'], //default pending
+      datetime: [void 0, Validators.required], //date picker
+      // time: [void 0, Validators.required], //time picker
+      showed_up: [false], //default false until shows up
+      
+    });
   }
 
   ngAfterViewInit(): void {
@@ -210,4 +244,17 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
       this.restaurantPlanService.renderCircle(context, circle, false, true); // Draw the clicked circle in green
     }
   }
+  
+  onSubmit() {
+    if (this.clickedCircleIndex === null || this.clickedCircleIndex===-1)
+      return;
+    console.log("Table ID: " + this.clickedCircleIndex)
+    this.reservationForm.patchValue({
+      table: this.clickedCircleIndex,
+    });
+    
+    this.reservationService.makeReservation(this.reservationForm.value)
+    
+  }
+  
 }

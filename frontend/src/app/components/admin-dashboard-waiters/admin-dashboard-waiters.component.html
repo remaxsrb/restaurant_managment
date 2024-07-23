@@ -237,6 +237,26 @@
                 </span>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12">
+                <span class="p-float-label">
+                  <p-dropdown
+                    [options]="restaurants"
+                    formControlName="restaurant"
+                    optionLabel="name"
+                    optionValue="_id"
+
+                    placeholder="Select a restaurant"
+                  ></p-dropdown>
+                </span>
+                <div
+                  *ngIf="restaurant?.invalid && restaurant?.touched"
+                  class="p-error"
+                >
+                  Restaurant is required
+                </div>
+              </div>
+            </div>
               <!-- Gender Selection -->
               <div class="row">
                 <div class="col-md-12">

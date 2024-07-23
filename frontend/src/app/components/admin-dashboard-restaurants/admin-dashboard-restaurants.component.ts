@@ -3,6 +3,7 @@ import { Restaurant } from 'src/app/models/restaurant';
 import { RestaurantService } from 'src/app/services/model_services/restaurant.service';
 import { JsonService } from 'src/app/services/utility_services/json.service';
 import { RestaurantPlanService } from 'src/app/services/utility_services/restaurant-plan.service';
+import { TimeService } from 'src/app/services/utility_services/time.service';
 
 @Component({
   selector: 'app-admin-dashboard-restaurants',
@@ -20,12 +21,20 @@ export class AdminDashboardRestaurantsComponent {
   constructor(
     private restaurant_service: RestaurantService,
     private restaurant_plan_service: RestaurantPlanService,
-    private json_service: JsonService
+    private json_service: JsonService,
+    private timeService: TimeService,
   ) {}
 
   ngOnInit(): void {
     this.restaurant_service.all().subscribe((data) => {
       this.restaurants = data;
+      
+      for (let  restaurant of this.restaurants) {
+        restaurant.open = this.timeService.formatTimeTo24HourString(new Date(restaurant.open));
+        restaurant.close = this.timeService.formatTimeTo24HourString(new Date(restaurant.close));
+
+      }
+      
     });
   }
 

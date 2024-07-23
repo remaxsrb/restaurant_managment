@@ -26,7 +26,9 @@
           (change)="onRestaurantRadioChange(restaurant.name)" />
       </td>
       <td>
+        <!-- <a routerLink="/restaurant_info" (click)="onLinkClick(restaurant)"> {{ restaurant.name }}</a> -->
         <a routerLink="/restaurant_info" (click)="onLinkClick(restaurant)"> {{ restaurant.name }}</a>
+
       </td>
       <td>{{ restaurant.type }}</td>
       <td>{{ restaurant.address.street }} {{ restaurant.address.street_number }}</td>
@@ -37,7 +39,7 @@
     <tr *ngIf="selected_restaurant === restaurant.name">
       <td colspan="5">
         <div *ngFor="let waiter of waiters">
-          <div *ngIf="restaurant.name === waiter.restaurant">
+          <div *ngIf="restaurant._id === waiter.restaurant">
             <ul class="list-group">
               <li class="list-group-item">
                 {{ waiter.firstname }} {{ waiter.lastname }}

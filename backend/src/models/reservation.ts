@@ -6,19 +6,20 @@ const Reservation = new Schema ({
 
     restaurant: { type: Schema.Types.ObjectId, ref: "Restaurant", required: true },
     guest: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  table: {type: Number, required: true},
     status: {
         type: String,
         required: true,
-        enum: ["active", "expired"]
+        enum: ["pending","active", "expired"]
     },
-    date: {
+    datetime: {
         type: Date,
         required: true,
     },
-    time: {
-        type: Date,
-        required: true
-    },
+    // time: {
+    //     type: Date,
+    //     required: true
+    // },
     showed_up: {
         type: Boolean,
         required: true,

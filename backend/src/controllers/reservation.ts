@@ -3,9 +3,11 @@ import Reservation from "../models/reservation";
 
 export class ReservationController {
   async create(req: express.Request, res: express.Response) {
-    const new_reservation = req.body;
+    const newReservation = req.body;
+    //check if reservation is in valid time frame
+    //time should ne within restaurant working hourse and at least 1
     try {
-      await new Reservation(new_reservation).save();
+      await new Reservation(newReservation).save();
       console.log("Reservation created");
     } catch (err) {
       console.error(err);

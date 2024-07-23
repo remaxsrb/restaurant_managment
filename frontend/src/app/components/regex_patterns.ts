@@ -5,7 +5,7 @@ export const RegexPatterns = {
   STREET_NAME: /^([A-Za-z]+(?:\s+[A-Za-z]+)*)$/,
   STREET_NUMBER: /^(\d{1,3}[a-zA-Z]?)$/,
 
-  PHONE_NUMBER: /^06\d{8}$/,
+  PHONE_NUMBER: /^06\d{7,8}$/,
   CREDIT_CARD_NUMBER: /^\d{16}$/,
   FILE_FORMAT: /\.(png|jpg)$/i,
   JSON: /\.json$/,
